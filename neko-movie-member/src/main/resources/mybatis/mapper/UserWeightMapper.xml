@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="neko.movie.nekomoviemember.mapper.UserWeightMapper">
+    <select id="getUserWeightByWeightType" resultType="neko.movie.nekomoviemember.entity.UserWeight">
+        select * from user_weight
+        where weight_type = #{weightType}
+    </select>
+
+    <select id="getUnbindUserWeightByRoleId" resultType="neko.movie.nekomoviemember.entity.UserWeight">
+        select * from user_weight
+        where weight_id not in(select weight_id from weight_role_relation
+                               where role_id = #{roleId})
+    </select>
+</mapper>

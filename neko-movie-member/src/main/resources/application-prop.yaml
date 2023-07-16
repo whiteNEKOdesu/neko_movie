@@ -1,0 +1,90 @@
+spring:
+  banner:
+    image:
+      location: classpath:img/IMG_6588.jpg
+      bitdepth: 8
+      pixelmode: block
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_URL:192.168.30.131:3306}/neko_movie_member?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true&autoReConnect=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:123456}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      #自动提交
+      auto-commit: true
+      connection-test-query: SELECT 1
+      #等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒 -->
+      connection-timeout: 30000
+      # 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟 -->
+      idle-timeout: 300000
+      #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟
+      max-lifetime: 1800000
+      #连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count) -->
+      maximum-pool-size: 20
+      #池中维护的最小空闲连接数，如果当连接池空闲连接少于 minimumIdle，
+      #而且总共连接数不大于 maximumPoolSize 时，HikariCP 会尽力补充新的连接。为了性能考虑，不建议设置此值，而是让 HikariCP 把连接池当做固定大小的处理，默认 minimumIdle 与 maximumPoolSize 一样。
+      minimum-idle: 5
+      pool-name: DatebookHikariCP
+      read-only: false
+      #验证与数据库连接的有效时间
+      validation-timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    host: ${REDIS_HOST:192.168.30.131}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    #redis数据库
+    database: 0
+    #连接超时时间，单位ms
+    timeout: 1800000
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 20
+        #最大阻塞等待时间，-1表示无限制
+        max-wait: -1
+        #最大空闲连接数
+        max-idle: 10
+        #最小空闲连接数
+        min-idle: 5
+  main:
+    #允许出现beanName一样的BeanDefinition
+    allow-bean-definition-overriding: true
+mybatis-plus:
+  config-location: classpath:mybatis/mybatis-config-prop.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+sa-token:
+  #token名称 (同时也是cookie名称)
+  token-name: neko_movie
+  #token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  #token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  #是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  #在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  #token风格
+  token-style: uuid
+  #是否输出操作日志
+  is-log: false
+  #是否尝试从 header 里读取 Token
+  is-read-header: true
+  #是否尝试从 body 里读取 Token
+  is-read-body: false
+  #是否尝试从 cookie 里读取 Token
+  is-read-cookie: false
+server:
+  port: 8003

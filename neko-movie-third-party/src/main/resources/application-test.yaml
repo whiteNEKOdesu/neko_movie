@@ -1,0 +1,54 @@
+spring:
+  banner:
+    image:
+      location: classpath:img/IMG_6588.jpg
+      bitdepth: 8
+      pixelmode: block
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    host: ${REDIS_HOST:192.168.30.131}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    #redis数据库
+    database: 0
+    #连接超时时间，单位ms
+    timeout: 1800000
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 20
+        #最大阻塞等待时间，-1表示无限制
+        max-wait: -1
+        #最大空闲连接数
+        max-idle: 10
+        #最小空闲连接数
+        min-idle: 5
+sa-token:
+  #token名称 (同时也是cookie名称)
+  token-name: neko_movie
+  #token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  #token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  #是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  #在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  #token风格
+  token-style: uuid
+  #是否输出操作日志
+  is-log: false
+  #是否尝试从 header 里读取 Token
+  is-read-header: true
+  #是否尝试从 body 里读取 Token
+  is-read-body: false
+  #是否尝试从 cookie 里读取 Token
+  is-read-cookie: false
+server:
+  port: 8006

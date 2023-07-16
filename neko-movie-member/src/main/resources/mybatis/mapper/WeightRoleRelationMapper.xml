@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="neko.movie.nekomoviemember.mapper.WeightRoleRelationMapper">
+    <select id="getRelationsByRoleIds" resultType="neko.movie.nekomoviemember.entity.WeightRoleRelation">
+        select weight_role_relation.*, user_weight.weight_type, user_role.role_type from weight_role_relation
+        join user_weight
+        on weight_role_relation.weight_id = user_weight.weight_id
+        join user_role
+        on weight_role_relation.role_id = user_role.role_id
+        where weight_role_relation.role_id in
+        <foreach collection="roleIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getRelationSbyRoleId" resultType="neko.movie.nekomoviemember.entity.WeightRoleRelation">
+        select weight_role_relation.*, user_weight.weight_type, user_role.role_type from weight_role_relation
+        join user_weight
+        on weight_role_relation.weight_id = user_weight.weight_id
+        join user_role
+        on weight_role_relation.role_id = user_role.role_id
+        where weight_role_relation.role_id = #{roleId}
+    </select>
+</mapper>

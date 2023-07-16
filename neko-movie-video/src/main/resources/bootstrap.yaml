@@ -1,0 +1,30 @@
+spring:
+  banner:
+    image:
+      location: classpath:img/IMG_6588.jpg
+      bitdepth: 8
+      pixelmode: block
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  application:
+    name: neko-movie-video
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:192.168.30.131:8848} #配置Nacos地址
+        group: NEKO-MOVIE #指定分组
+        namespace: 3de83da7-02c3-46e1-8c59-930031b9c30b #指定命名空间ID
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:192.168.30.131:8848} #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: NEKO-MOVIE-VIDEO #指定分组
+        namespace: 3de83da7-02c3-46e1-8c59-930031b9c30b #指定命名空间ID
+    sentinel:
+      transport:
+        #配置Sentinel dashboard地址
+        dashboard: ${SENTINEL_DASHBOARD_URL:192.168.30.131:8080}
+        #默认8719端口，假如被占用会自动从8719开始依次+1扫描,直至找到未被占用的端口
+        port: ${SENTINEL_PORT:8719}
+        client-ip: 192.168.30.1
