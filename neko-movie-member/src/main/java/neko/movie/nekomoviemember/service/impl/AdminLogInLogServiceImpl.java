@@ -6,6 +6,8 @@ import neko.movie.nekomoviemember.service.AdminLogInLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 管理员登录记录表 服务实现类
@@ -17,4 +19,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminLogInLogServiceImpl extends ServiceImpl<AdminLogInLogMapper, AdminLogInLog> implements AdminLogInLogService {
 
+    @Override
+    public int newLog(String uid, String ip, Boolean isLogIn) {
+        AdminLogInLog adminLogInLog = new AdminLogInLog();
+        adminLogInLog.setAdminId(uid)
+                .setIp(ip)
+                .setIsLogIn(isLogIn)
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now());
+
+        return this.baseMapper.insert(adminLogInLog);
+    }
 }

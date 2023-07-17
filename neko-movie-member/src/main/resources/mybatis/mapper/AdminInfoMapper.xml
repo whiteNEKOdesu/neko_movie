@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="neko.movie.nekomoviemember.mapper.AdminInfoMapper">
-
+    <select id="getAdminInfoByUserName" resultType="neko.movie.nekomoviemember.entity.AdminInfo">
+        select * from admin_info
+        where user_name = #{userName}
+    </select>
 </mapper>

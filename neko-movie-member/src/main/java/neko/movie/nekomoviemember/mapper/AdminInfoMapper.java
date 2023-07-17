@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AdminInfoMapper extends BaseMapper<AdminInfo> {
-
+    AdminInfo getAdminInfoByUserName(String userName);
 }
