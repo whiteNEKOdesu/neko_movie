@@ -2,6 +2,9 @@ package neko.movie.nekomovievideo.service;
 
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -12,5 +15,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-16
  */
 public interface VideoInfoService extends IService<VideoInfo> {
-
+    void newVideoInfo(String videoName,
+                      String videoDescription,
+                      String videoProducer,
+                      String videoActors,
+                      LocalDateTime upTime,
+                      MultipartFile file);
 }

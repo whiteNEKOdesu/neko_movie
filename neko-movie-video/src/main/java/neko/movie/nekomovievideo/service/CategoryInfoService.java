@@ -3,6 +3,8 @@ package neko.movie.nekomovievideo.service;
 import neko.movie.nekomovievideo.entity.CategoryInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 商品分类表 服务类
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-16
  */
 public interface CategoryInfoService extends IService<CategoryInfo> {
-
+    List<CategoryInfo> getLevelCategory();
 }
