@@ -120,6 +120,7 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
                 .setUserPassword(DigestUtils.md5DigestAsHex((userPassword + salt).getBytes()))
                 .setSalt(salt)
                 .setMail(email)
+                .setLevelExpireTime(LocalDateTime.now())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
 

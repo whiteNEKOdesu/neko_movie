@@ -6,9 +6,9 @@ spring:
       pixelmode: block
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_URL:192.168.30.131:3306}/neko_movie_video?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true&autoReConnect=true
+    url: jdbc:mysql://${MYSQL_URL:8.130.77.90:3306}/neko_movie_video?characterEncoding=utf8&useSSL=false&rewriteBatchedStatements=true&autoReConnect=true
     username: ${MYSQL_USERNAME:root}
-    password: ${MYSQL_PASSWORD:123456}
+    password: ${MYSQL_PASSWORD:group_2_password}
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       #自动提交
@@ -37,9 +37,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   redis:
-    host: ${REDIS_HOST:192.168.30.131}
+    host: ${REDIS_HOST:8.130.77.90}
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
+    password: ${REDIS_PASSWORD:group_2_password}
     #redis数据库
     database: 0
     #连接超时时间，单位ms
@@ -55,7 +55,7 @@ spring:
         #最小空闲连接数
         min-idle: 5
   rabbitmq:
-    host: ${RABBITMQ_HOST:192.168.30.131}
+    host: ${RABBITMQ_HOST:8.130.77.90}
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
@@ -83,7 +83,7 @@ neko:
         max-size: 200
         keep-alive-time: 10
     elasticsearch:
-      hosts: ${ELASTIC_SEARCH_HOSTS:192.168.30.131:9200}
+      hosts: ${ELASTIC_SEARCH_HOSTS:8.130.77.90:9200}
       user-name: ${ELASTIC_SEARCH_USERNAME:}
       password: ${ELASTIC_SEARCH_PASSWORD:}
 sa-token:
