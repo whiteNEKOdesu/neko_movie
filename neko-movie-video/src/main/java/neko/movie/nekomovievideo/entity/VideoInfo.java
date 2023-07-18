@@ -49,6 +49,8 @@ public class VideoInfo implements Serializable {
      */
     private String videoActors;
 
+    private Integer categoryId;
+
     /**
      * 上映时间
      */

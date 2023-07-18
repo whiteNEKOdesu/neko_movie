@@ -1329,6 +1329,119 @@ $baseUrl/video/video_info/new_video_info
 
 
 
+##### 2.2.2 添加影视信息
+
+- post请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_info/up_video
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/up_video?videoInfoId=1680781825485639682
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+#### 2.3 ElasticSearchController
+
+##### 2.3.1 分页查询查询影视信息
+
+- post请求，请求体传参
+
+```bash
+$baseUrl/video/elastic_search/product_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义           |
+| ----------- | ------------------ |
+| videoInfoId | 影视信息id，可选   |
+| categoryId  | 分类id，可选       |
+| minTime     | 最早上映时间，可选 |
+| maxTime     | 最晚上映时间，可选 |
+| queryWords  | 查询关键字，可选   |
+| currentPage | 当前页数           |
+| limited     | 每页数量           |
+
+
+
+- 示例
+
+```json
+{
+    "videoInfoId": "1680781825485639682",
+    "categoryId": 34,
+    "minTime": "2023-07-17 11:29:49",
+    "maxTime": "2023-07-17 11:35:41",
+    "queryWords": "NEKO",
+    "currentPage": 1,
+    "limited": 8
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "videoInfoId": "1680781825485639682",
+                "videoName": "NEO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "categoryId": 34,
+                "categoryName": "校园",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "upTime": "2023-07-17 11:29:49"
+            }
+        ],
+        "total": 1,
+        "size": 8,
+        "current": 1
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 3 third_party第三方微服务
 
 #### 3.1 MailController

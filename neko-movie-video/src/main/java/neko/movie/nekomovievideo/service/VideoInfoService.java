@@ -4,6 +4,7 @@ import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -21,4 +22,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
                       String videoActors,
                       LocalDateTime upTime,
                       MultipartFile file);
+
+    void upVideo(String videoInfoId) throws IOException;
 }
