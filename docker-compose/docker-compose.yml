@@ -8,27 +8,11 @@ services:
       - "6379:6379"
     volumes:
       - /usr/local/neko_convenient/backend/docker_data/redis_6379/data:/data
-      - /usr/local/neko_convenient/backend/docker_data/redis_6379/conf:/etc/redis/redis.conf
-    networks: 
+      - /usr/local/neko_convenient/backend/docker_data/redis_6379/conf:/etc/redis/conf
+    command: redis-server /etc/redis/conf/redis.conf
+    networks:
       - neko_convenient
-  
-  nacos:
-    image: nacos/nacos-server:v2.1.1
-    container_name: neko-convenient-nacos
-    ports:
-      - "8848:8848"
-    volumes:
-      - /usr/local/neko_convenient/backend/docker_data/nacos_8848/logs:/home/nacos/logs
-      - /usr/local/neko_convenient/backend/docker_data/nacos_8848/conf:/home/nacos/conf
-    networks: 
-      - neko_convenient
-    depends_on: 
-      - mysql
-    environment:
-      JVM_XMS: 256m
-      JVM_XMX: 256m
-      MODE: standalone
-  
+
   mysql:
     image: mysql:5.7.38
     container_name: neko-convenient-mysql
@@ -38,22 +22,20 @@ services:
       - /usr/local/neko_convenient/backend/docker_data/mysql_3306/log:/var/log/mysql
       - /usr/local/neko_convenient/backend/docker_data/mysql_3306/data:/var/lib/mysql
       - /usr/local/neko_convenient/backend/docker_data/mysql_3306/log:/etc/mysql/conf.d
-    networks: 
+    networks:
       - neko_convenient
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: group_2_password
       MYSQL_ALLOW_EMPTY_PASSWORD: no
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
 
   rabbitmq:
     image: rabbitmq:3.11.4-management
     container_name: neko-convenient-rabbitmq
     ports:
       - "5672:5672"
-    networks: 
+    networks:
       - neko_convenient
-  
+
   elasticsearch:
     image: elasticsearch:7.17.7
     container_name: neko-convenient-elasticsearch
@@ -64,12 +46,12 @@ services:
       - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/data:/usr/share/elasticsearch/data
       - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/plugins:/usr/share/elasticsearch/plugins
-    networks: 
+    networks:
       - neko_convenient
     environment:
-      - ES_JAVA_OPTS=-Xms64m -Xmx128m
+      - ES_JAVA_OPTS=-Xms128m -Xmx256m
       - discovery.type=single-node
-  
+
   nginx:
     image: nginx:1.23.3
     container_name: neko-convenient-nginx
@@ -79,8 +61,8 @@ services:
       - /usr/local/neko_convenient/backend/docker_data/nginx_80/html:/etc/nginx/html
       - /usr/local/neko_convenient/backend/docker_data/nginx_80/logs:/var/log/nginx
       - /usr/local/neko_convenient/backend/docker_data/nginx_80/conf:/etc/nginx
-    networks: 
+    networks:
       - neko_convenient
 
-networks: 
+networks:
   neko_convenient:

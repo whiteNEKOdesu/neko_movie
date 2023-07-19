@@ -2,10 +2,14 @@ package neko.movie.nekomovievideo.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
+import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,10 +56,20 @@ public class VideoInfoController {
     /**
      * 上架影视视频
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @PostMapping("up_video")
     public ResultObject<Object> upVideo(@RequestParam String videoInfoId) throws IOException {
         videoInfoService.upVideo(videoInfoId);
 
         return ResultObject.ok();
+    }
+
+    /**
+     * 分页查询影视视频信息
+     */
+    @PostMapping("video_infos")
+    public ResultObject<Page<VideoInfo>> videoInfos(@Validated @RequestBody QueryVo vo){
+        return ResultObject.ok(videoInfoService.getVideoInfoByQueryLimitedPage(vo));
     }
 }

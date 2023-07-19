@@ -348,4 +348,13 @@ public class ExceptionResponse {
                 .setResponseStatus(Response.FILE_TYPE_NOT_SUPPORT_ERROR)
                 .compact();
     }
+
+    //elasticsearch更新异常
+    @ExceptionHandler(value = ElasticSearchUpdateException.class)
+    public ResultObject<Object> elasticSearchUpdateExceptionHandler(ElasticSearchUpdateException e){
+        exceptionLogger(e);
+        return new ResultObject<>()
+                .setResponseStatus(Response.ELASTIC_SEARCH_UPDATE_ERROR)
+                .compact();
+    }
 }

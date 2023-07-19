@@ -4,10 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.VideoStatus;
+import neko.movie.nekomoviecommonbase.utils.exception.ElasticSearchUpdateException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
 import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
@@ -20,6 +24,7 @@ import neko.movie.nekomovievideo.service.VideoInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -83,7 +88,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void upVideo(String videoInfoId) throws IOException {
+    public void upVideo(String videoInfoId) {
         VideoInfo videoInfo = this.baseMapper.selectById(videoInfoId);
         if(videoInfo == null){
             throw new NoSuchResultException("无此videoInfoId影视信息");
@@ -110,8 +115,39 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                 .id(videoInfoId)
                 .document(videoInfoES)));
         BulkResponse bulkResponse;
-        bulkResponse = elasticsearchClient.bulk(builder.build());
+        try {
+            bulkResponse = elasticsearchClient.bulk(builder.build());
+        }catch (Exception e){
+            throw new ElasticSearchUpdateException("elasticsearch添加错误");
+        }
+        if(bulkResponse.errors()){
+            throw new ElasticSearchUpdateException("elasticsearch添加错误");
+        }
 
-        log.info("影视视频上架videoInfoId: " + videoInfoId + "，" + bulkResponse.toString());
+        log.info("影视视频上架videoInfoId: " + videoInfoId + "，" + bulkResponse);
+    }
+
+    /**
+     * 分页查询影视视频信息
+     */
+    @Override
+    public Page<VideoInfo> getVideoInfoByQueryLimitedPage(QueryVo vo) {
+        Page<VideoInfo> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
+        QueryWrapper<VideoInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().ne(VideoInfo::getStatus, 2);
+        if(StringUtils.hasText(vo.getQueryWords())){
+            queryWrapper.lambda().eq(VideoInfo::getVideoName, vo.getQueryWords());
+        }
+        if(vo.getObjectId() != null){
+            try {
+                queryWrapper.lambda().eq(VideoInfo::getStatus, Byte.valueOf(vo.getObjectId().toString()));
+            }catch (Exception e){
+                throw new IllegalArgumentException("状态参数类型错误");
+            }
+        }
+
+        this.baseMapper.selectPage(page, queryWrapper);
+
+        return page;
     }
 }

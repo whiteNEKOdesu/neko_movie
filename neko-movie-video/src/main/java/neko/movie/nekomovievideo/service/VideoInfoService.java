@@ -1,5 +1,7 @@
 package neko.movie.nekomovievideo.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,4 +26,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
                       MultipartFile file);
 
     void upVideo(String videoInfoId) throws IOException;
+
+    Page<VideoInfo> getVideoInfoByQueryLimitedPage(QueryVo vo);
 }

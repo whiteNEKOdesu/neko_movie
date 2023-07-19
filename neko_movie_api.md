@@ -1329,7 +1329,7 @@ $baseUrl/video/video_info/new_video_info
 
 
 
-##### 2.2.2 添加影视信息
+##### 2.2.2 上架影视视频
 
 - post请求，url传参
 - 需要admin角色
@@ -1362,6 +1362,145 @@ $baseUrl/video/video_info/up_video?videoInfoId=1680781825485639682
 ```json
 {
     "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.2.3 分页查询影视视频信息
+
+- post请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_info/video_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义                                             |
+| ----------- | ---------------------------------------------------- |
+| queryWords  | 查询关键字，可选                                     |
+| currentPage | 当前页数                                             |
+| limited     | 每页数量                                             |
+| objectId    | 影视视频信息状态，可选，-1->下架，0->上架，1->回收站 |
+
+
+
+- 示例
+
+```json
+{
+    "queryWords": "NEKO",
+    "currentPage": 1,
+    "limited": 8,
+    "objectId": "-1"
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "videoInfoId": "1680783199812259841",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/68085315-f614-42de-ba03-329b09a95762_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:17",
+                "updateTime": "2023-07-17T11:35:17"
+            },
+            {
+                "videoInfoId": "1680783216799191041",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/4614a8fc-6307-48c0-b250-5726358041a5_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:21",
+                "updateTime": "2023-07-17T11:35:21"
+            },
+            {
+                "videoInfoId": "1680783233358303233",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/40f59830-6945-4c48-8cec-5bc5433364d5_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:25",
+                "updateTime": "2023-07-17T11:35:25"
+            },
+            {
+                "videoInfoId": "1680783251037294593",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/463e007e-74a6-43c2-ab7a-37345a2bfe8d_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:29",
+                "updateTime": "2023-07-17T11:35:29"
+            },
+            {
+                "videoInfoId": "1680783299959656449",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/260b5481-b78e-4ea9-92ec-5bb88d0d3842_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:41",
+                "updateTime": "2023-07-17T11:35:41"
+            },
+            {
+                "videoInfoId": "1680783320826318849",
+                "videoName": "NEKO",
+                "videoDescription": "NEKO",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/259da5b9-f07d-4d0e-ad94-f0cae0a64762_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoProducer": "NEKO",
+                "videoActors": "NEKO",
+                "categoryId": 34,
+                "upTime": "2023-03-29T15:46:35",
+                "status": -1,
+                "createTime": "2023-07-17T11:35:46",
+                "updateTime": "2023-07-17T11:35:46"
+            }
+        ],
+        "total": 6,
+        "size": 8,
+        "current": 1,
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": 1
+    },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
