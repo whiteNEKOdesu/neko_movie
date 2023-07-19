@@ -60,6 +60,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                              String videoDescription,
                              String videoProducer,
                              String videoActors,
+                             Integer categoryId,
                              LocalDateTime upTime,
                              MultipartFile file) {
         //上传图片到oss
@@ -76,6 +77,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                 .setVideoImage(videoImage)
                 .setVideoProducer(videoProducer)
                 .setVideoActors(videoActors)
+                .setCategoryId(categoryId)
                 .setUpTime(upTime)
                 .setCreateTime(now)
                 .setUpdateTime(now);
@@ -134,7 +136,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     public Page<VideoInfo> getVideoInfoByQueryLimitedPage(QueryVo vo) {
         Page<VideoInfo> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
         QueryWrapper<VideoInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().ne(VideoInfo::getStatus, 2);
+        //排除已删除影视视频信息
+        queryWrapper.lambda().ne(VideoInfo::getStatus, 2)
+                .orderByDesc(VideoInfo::getVideoInfoId);
         if(StringUtils.hasText(vo.getQueryWords())){
             queryWrapper.lambda().eq(VideoInfo::getVideoName, vo.getQueryWords());
         }

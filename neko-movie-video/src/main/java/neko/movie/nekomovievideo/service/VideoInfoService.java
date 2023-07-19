@@ -22,6 +22,7 @@ public interface VideoInfoService extends IService<VideoInfo> {
                       String videoDescription,
                       String videoProducer,
                       String videoActors,
+                      Integer categoryId,
                       LocalDateTime upTime,
                       MultipartFile file);
 

@@ -1312,6 +1312,7 @@ $baseUrl/video/video_info/new_video_info
 | videoDescription | 影视描述 |
 | videoProducer    | 制作人   |
 | videoActors      | 演员信息 |
+| categoryId       | 分类id   |
 | upTime           | 上映时间 |
 
 

@@ -41,12 +41,14 @@ public class VideoInfoController {
                                              @RequestParam String videoDescription,
                                              @RequestParam String videoProducer,
                                              @RequestParam String videoActors,
+                                             @RequestParam Integer categoryId,
                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam LocalDateTime upTime,
                                              @RequestPart MultipartFile file){
         videoInfoService.newVideoInfo(videoName,
                 videoDescription,
                 videoProducer,
                 videoActors,
+                categoryId,
                 upTime,
                 file);
 
