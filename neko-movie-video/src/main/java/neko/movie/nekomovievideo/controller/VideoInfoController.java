@@ -8,6 +8,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.service.VideoInfoService;
+import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class VideoInfoController {
     private VideoInfoService videoInfoService;
 
     /**
-     * 添加影视信息
+     * 管理员添加影视信息
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
@@ -56,7 +57,7 @@ public class VideoInfoController {
     }
 
     /**
-     * 上架影视视频
+     * 管理员上架影视视频
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
@@ -68,10 +69,20 @@ public class VideoInfoController {
     }
 
     /**
-     * 分页查询影视视频信息
+     * 管理员分页查询影视视频信息
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @PostMapping("video_infos")
     public ResultObject<Page<VideoInfo>> videoInfos(@Validated @RequestBody QueryVo vo){
         return ResultObject.ok(videoInfoService.getVideoInfoByQueryLimitedPage(vo));
+    }
+
+    /**
+     * 管理员根据videoInfoId查询影视视频信息
+     */
+    @GetMapping("video_info_by_video_info_id")
+    public ResultObject<VideoInfoVo> videoInfoByVideoInfoId(@RequestParam String videoInfoId){
+        return ResultObject.ok(videoInfoService.getVideoInfoByVideoInfoId(videoInfoId));
     }
 }

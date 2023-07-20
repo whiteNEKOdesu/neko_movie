@@ -54,4 +54,12 @@ public class OOSController {
 
         return ResultObject.ok();
     }
+
+    /**
+     * oss视频上传，建议只提供给微服务远程调用
+     */
+    @PostMapping("upload_video")
+    public ResultObject<String> uploadVideo(@RequestPart MultipartFile file) throws IOException {
+        return ResultObject.ok(ossService.uploadVideo(file));
+    }
 }

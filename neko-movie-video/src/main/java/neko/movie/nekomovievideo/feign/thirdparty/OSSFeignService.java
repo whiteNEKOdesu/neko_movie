@@ -17,4 +17,7 @@ public interface OSSFeignService {
 
     @DeleteMapping("oss/delete_file")
     ResultObject<Object> deleteFile(@RequestParam String ossFilePath);
+
+    @PostMapping(value = "oss/upload_video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResultObject<String> uploadVideo(@RequestPart MultipartFile file);
 }

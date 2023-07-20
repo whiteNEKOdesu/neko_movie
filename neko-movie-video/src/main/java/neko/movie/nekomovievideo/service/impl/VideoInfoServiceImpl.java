@@ -22,6 +22,7 @@ import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -142,7 +143,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         if(StringUtils.hasText(vo.getQueryWords())){
             queryWrapper.lambda().eq(VideoInfo::getVideoName, vo.getQueryWords());
         }
-        if(vo.getObjectId() != null){
+        if(vo.getObjectId() != null && StringUtils.hasText(vo.getObjectId().toString())){
             try {
                 queryWrapper.lambda().eq(VideoInfo::getStatus, Byte.valueOf(vo.getObjectId().toString()));
             }catch (Exception e){
@@ -153,5 +154,27 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         this.baseMapper.selectPage(page, queryWrapper);
 
         return page;
+    }
+
+    /**
+     * 根据videoInfoId查询影视视频信息
+     */
+    @Override
+    public VideoInfoVo getVideoInfoByVideoInfoId(String videoInfoId) {
+        QueryWrapper<VideoInfo> queryWrapper = new QueryWrapper<>();
+        //排除已删除影视视频信息
+        queryWrapper.lambda().eq(VideoInfo::getVideoInfoId, videoInfoId)
+                .ne(VideoInfo::getStatus, 2);
+        VideoInfoVo videoInfoVo = new VideoInfoVo();
+        VideoInfo videoInfo = this.baseMapper.selectOne(queryWrapper);
+        if(videoInfo == null){
+            throw new NoSuchResultException("无此影视视频信息");
+        }
+
+        BeanUtil.copyProperties(videoInfo, videoInfoVo);
+        //设置分类名
+        videoInfoVo.setCategoryName(categoryInfoService.getById(videoInfo.getCategoryId()).getCategoryName());
+
+        return videoInfoVo;
     }
 }

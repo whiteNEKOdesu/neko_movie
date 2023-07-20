@@ -30,6 +30,7 @@ public class SATokenConfig {
                 .addInclude("/member/member_info/real_name_info")
                 .addInclude("/third_party/oss/upload_image")
                 .addInclude("/third_party/oss/delete_file")
+                .addInclude("/third_party/oss/upload_video")
                 .setAuth(obj -> {
                     StpUtil.checkRole("*");
                 })

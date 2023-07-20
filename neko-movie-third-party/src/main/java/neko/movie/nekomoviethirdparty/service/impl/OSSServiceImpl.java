@@ -46,6 +46,8 @@ public class OSSServiceImpl implements OSSService {
 
     private static final Set<String> imageType = new HashSet<>(Arrays.asList("jpg", "jpeg", "gif", "tiff", "webp", "png"));
 
+    private static final Set<String> videoType = new HashSet<>(Arrays.asList("mp4", "ogg"));
+
     /**
      * 获取oss上传信息
      */
@@ -106,21 +108,7 @@ public class OSSServiceImpl implements OSSService {
             throw new FileTypeNotSupportException("图片类型错误");
         }
 
-        // 填写Bucket名称，例如examplebucket。
-        String bucket = ossConfigProperties.getBucket();
-        String filePath = ossConfigProperties.getDir() + "/" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE) +
-                "/" + IdUtil.randomUUID() + "_" + file.getOriginalFilename();
-        String url = "https://" + bucket + "." + endpoint + "/" + filePath;
-
-        try(InputStream inputStream = file.getInputStream()) {
-            // 创建PutObjectRequest对象。
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, inputStream);
-            // 创建PutObject请求。
-            PutObjectResult result = ossClient.putObject(putObjectRequest);
-            log.info("图片上传成功，url: " + url + "，eTag: " + result.getETag());
-        }
-
-        return url;
+        return uploadFile(file);
     }
 
     /**
@@ -135,5 +123,36 @@ public class OSSServiceImpl implements OSSService {
         // 删除文件。
         ossClient.deleteObject(bucketName, objectName);
         log.info("文件删除成功，url: " + ossFilePath);
+    }
+
+    /**
+     * oss视频上传
+     */
+    @Override
+    public String uploadVideo(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        if(!StringUtils.hasText(fileName) || !videoType.contains(fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase(Locale.ROOT))){
+            throw new FileTypeNotSupportException("视频类型错误");
+        }
+
+        return uploadFile(file);
+    }
+
+    private String uploadFile(MultipartFile file) throws IOException {
+        // 填写Bucket名称，例如examplebucket。
+        String bucket = ossConfigProperties.getBucket();
+        String filePath = ossConfigProperties.getDir() + "/" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE) +
+                "/" + IdUtil.randomUUID() + "_" + file.getOriginalFilename();
+        String url = "https://" + bucket + "." + endpoint + "/" + filePath;
+
+        try(InputStream inputStream = file.getInputStream()) {
+            // 创建PutObjectRequest对象。
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, inputStream);
+            // 创建PutObject请求。
+            PutObjectResult result = ossClient.putObject(putObjectRequest);
+            log.info("文件上传成功，url: " + url + "，eTag: " + result.getETag());
+        }
+
+        return url;
     }
 }

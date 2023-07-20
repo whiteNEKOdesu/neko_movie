@@ -1292,7 +1292,7 @@ $baseUrl/video/category_Info/level_category_info
 
 #### 2.2 VideoInfoController
 
-##### 2.2.1 添加影视信息
+##### 2.2.1 管理员添加影视信息
 
 - put请求，form-data上传文件
 - 需要admin角色
@@ -1330,7 +1330,7 @@ $baseUrl/video/video_info/new_video_info
 
 
 
-##### 2.2.2 上架影视视频
+##### 2.2.2 管理员上架影视视频
 
 - post请求，url传参
 - 需要admin角色
@@ -1371,7 +1371,7 @@ $baseUrl/video/video_info/up_video?videoInfoId=1680781825485639682
 
 
 
-##### 2.2.3 分页查询影视视频信息
+##### 2.2.3 管理员分页查询影视视频信息
 
 - post请求，请求体传参
 - 需要admin角色
@@ -1510,6 +1510,60 @@ $baseUrl/video/video_info/video_infos
 
 
 
+##### 2.2.4 管理员根据videoInfoId查询影视视频信息
+
+- get请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_info/video_info_by_video_info_id
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义       |
+| ----------- | -------------- |
+| videoInfoId | 影视视频信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/video_info_by_video_info_id?videoInfoId=1680781825485639682
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "videoInfoId": "1680781825485639682",
+        "videoName": "NEKO",
+        "videoDescription": "NEKO",
+        "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+        "videoProducer": "NEKO",
+        "videoActors": "NEKO",
+        "categoryId": 34,
+        "categoryName": "校园",
+        "upTime": "2023-03-29T15:46:35",
+        "status": 0,
+        "createTime": "2023-07-17T11:29:49",
+        "updateTime": "2023-07-17T11:29:49"
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息
@@ -1573,6 +1627,79 @@ $baseUrl/video/elastic_search/product_infos
         "total": 1,
         "size": 8,
         "current": 1
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+#### 2.4 VideoSeriesInfoController
+
+##### 2.4.1 管理员分页查询指定videoSeriesId视频分集信息
+
+- post请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_series_info/admin_video_series_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义                                           |
+| ----------- | -------------------------------------------------- |
+| queryWords  | 查询关键字，可选，指定后可按集数查询               |
+| currentPage | 当前页数                                           |
+| limited     | 每页数量                                           |
+| objectId    | 影视视频信息id，为要查询视频分集所属影视视频信息id |
+
+
+
+- 示例
+
+```json
+{
+    "queryWords": "1",
+    "currentPage": 1,
+    "limited": 8,
+    "objectId": "1680781825485639682"
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "videoSeriesId": "1680781825485639682",
+                "videoInfoId": "1680781825485639682",
+                "seriesNumber": 1,
+                "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "requireLevel": 0,
+                "isDelete": false,
+                "createTime": "2023-07-20T09:58:25",
+                "updateTime": "2023-07-20T09:58:29"
+            }
+        ],
+        "total": 1,
+        "size": 8,
+        "current": 1,
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": 1
     },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
@@ -1725,6 +1852,30 @@ $baseUrl/third_party/oss/delete_file?ossFilePath=https://neko-bucket.oss-cn-shan
 ```json
 {
     "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 3.2.4 oss视频上传
+
+- post请求，form-data上传文件
+- 建议只提供给微服务远程调用
+
+```bash
+$baseUrl/third_party/oss/upload_video
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-20/7ffcdf19-4d4c-4440-b454-2bce2735ed24_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.mp4",
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
