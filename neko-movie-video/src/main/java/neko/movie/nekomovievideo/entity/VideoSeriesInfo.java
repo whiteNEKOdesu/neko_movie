@@ -43,9 +43,9 @@ public class VideoSeriesInfo implements Serializable {
     private String videoUrl;
 
     /**
-     * 观看所需等级
+     * 观看所需等级id，对应neko_movie_member数据库member_level_dict表member_level_id
      */
-    private Integer requireLevel;
+    private Integer requireMemberLevelId;
 
     private Boolean isDelete;
 

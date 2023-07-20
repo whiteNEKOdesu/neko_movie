@@ -1122,6 +1122,59 @@ $baseUrl/member/user_role_relation/new_user_role_relation
 
 
 
+#### 1.7 MemberLevelDictController
+
+##### 1.7.1 获取用户等级信息
+
+- get请求
+
+```bash
+$baseUrl/member/member_level_dict/level_infos
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "memberLevelId": 1,
+            "memberLevel": 0,
+            "levelName": "用户",
+            "price": 0.00,
+            "isDelete": false,
+            "createTime": "2023-05-02T14:22:53",
+            "updateTime": "2023-05-02T14:22:57"
+        },
+        {
+            "memberLevelId": 4,
+            "memberLevel": 1,
+            "levelName": "1级会员",
+            "price": 10.00,
+            "isDelete": false,
+            "createTime": "2023-05-02T14:50:24",
+            "updateTime": "2023-05-02T14:50:24"
+        },
+        {
+            "memberLevelId": 6,
+            "memberLevel": 2,
+            "levelName": "2级会员",
+            "price": 15.00,
+            "isDelete": false,
+            "createTime": "2023-05-02T15:56:52",
+            "updateTime": "2023-05-02T16:26:55"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 2 video视频微服务
 
 #### 2.1 CategoryInfoController
@@ -1701,6 +1754,42 @@ $baseUrl/video/video_series_info/admin_video_series_infos
         "countId": null,
         "pages": 1
     },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.4.2 管理员添加视频分集集数
+
+- put请求，form-data上传文件
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_series_info/new_video_series
+```
+
+
+
+- 参数
+
+| 参数名               | 参数含义           |
+| -------------------- | ------------------ |
+| file                 | 文件               |
+| videoInfoId          | 集数所属影视信息id |
+| seriesNumber         | 集数               |
+| requireMemberLevelId | 观看所需会员等级id |
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

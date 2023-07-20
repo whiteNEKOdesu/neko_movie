@@ -9,10 +9,8 @@ import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -38,5 +36,21 @@ public class VideoSeriesInfoController {
     @PostMapping("admin_video_series_infos")
     public ResultObject<Page<VideoSeriesInfo>> adminVideoSeriesInfos(@Validated @RequestBody QueryVo vo){
         return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfoForAdminByQueryLimitedPage(vo));
+    }
+
+    /**
+     * 管理员添加视频分集集数
+     */
+    @PutMapping("new_video_series")
+    public ResultObject<Object> newVideoSeries(@RequestParam String videoInfoId,
+                                               @RequestParam Integer seriesNumber,
+                                               @RequestParam Integer requireMemberLevelId,
+                                               @RequestPart MultipartFile file) throws InterruptedException {
+        videoSeriesInfoService.newVideoSeriesInfo(videoInfoId,
+                seriesNumber,
+                requireMemberLevelId,
+                file);
+
+        return ResultObject.ok();
     }
 }

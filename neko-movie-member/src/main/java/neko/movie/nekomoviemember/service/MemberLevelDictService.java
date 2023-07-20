@@ -3,6 +3,8 @@ package neko.movie.nekomoviemember.service;
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户等级字典表 服务类
@@ -12,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-16
  */
 public interface MemberLevelDictService extends IService<MemberLevelDict> {
-
+    List<MemberLevelDict> getMemberLevelDictInfo();
 }

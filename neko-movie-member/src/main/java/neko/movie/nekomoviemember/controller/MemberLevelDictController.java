@@ -1,7 +1,14 @@
 package neko.movie.nekomoviemember.controller;
 
+import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
+import neko.movie.nekomoviemember.entity.MemberLevelDict;
+import neko.movie.nekomoviemember.service.MemberLevelDictService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -12,7 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-07-16
  */
 @RestController
-@RequestMapping("/memberLevelDict")
+@RequestMapping("member_level_dict")
 public class MemberLevelDictController {
+    @Resource
+    private MemberLevelDictService memberLevelDictService;
 
+    /**
+     * 获取用户等级信息
+     */
+    @GetMapping("level_infos")
+    public ResultObject<List<MemberLevelDict>> levelInfos(){
+        return ResultObject.ok(memberLevelDictService.getMemberLevelDictInfo());
+    }
 }
