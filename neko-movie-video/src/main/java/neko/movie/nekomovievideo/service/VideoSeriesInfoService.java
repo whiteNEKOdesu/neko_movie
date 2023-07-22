@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
@@ -15,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @since 2023-07-16
  */
 public interface VideoSeriesInfoService extends IService<VideoSeriesInfo> {
-    Page<VideoSeriesInfo> getVideoSeriesInfoForAdminByQueryLimitedPage(QueryVo vo);
+    Page<VideoSeriesInfoVo> getVideoSeriesInfoForAdminByQueryLimitedPage(QueryVo vo) throws ExecutionException, InterruptedException;
 
     void newVideoSeriesInfo(String videoInfoId,
                             Integer seriesNumber,

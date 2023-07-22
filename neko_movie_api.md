@@ -1721,7 +1721,7 @@ $baseUrl/video/video_series_info/admin_video_series_infos
     "queryWords": "1",
     "currentPage": 1,
     "limited": 8,
-    "objectId": "1680781825485639682"
+    "objectId": "1682551371754180610"
 }
 ```
 
@@ -1734,14 +1734,14 @@ $baseUrl/video/video_series_info/admin_video_series_infos
     "result": {
         "records": [
             {
-                "videoSeriesId": "1680781825485639682",
-                "videoInfoId": "1680781825485639682",
+                "videoSeriesId": "1682564048132014082",
+                "videoInfoId": "1682551371754180610",
                 "seriesNumber": 1,
-                "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
-                "requireLevel": 0,
-                "isDelete": false,
-                "createTime": "2023-07-20T09:58:25",
-                "updateTime": "2023-07-20T09:58:29"
+                "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/89a91135-f3f3-4147-9ef6-2240702d1acb_nilou.mp4",
+                "requireMemberLevelId": 1,
+                "levelName": "用户",
+                "createTime": "2023-07-22T09:31:44",
+                "updateTime": "2023-07-22T09:31:44"
             }
         ],
         "total": 1,

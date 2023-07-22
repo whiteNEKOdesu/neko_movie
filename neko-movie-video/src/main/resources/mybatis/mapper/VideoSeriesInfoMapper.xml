@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper">
+    <select id="getVideoSeriesInfoForAdminByQueryLimitedPage" resultType="neko.movie.nekomovievideo.vo.VideoSeriesInfoVo">
+        select video_series_id, video_info_id, series_number,
+        video_url, require_member_level_id, create_time, update_time from video_series_info
+        where is_delete = 0 and video_info_id = #{videoInfoId}
+        <if test="@org.springframework.util.StringUtils@hasText(queryWords)">
+            and series_number = #{queryWords}
+        </if>
+        order by series_number
+        limit #{start}, #{limited}
+    </select>
 
+    <select id="getVideoSeriesInfoForAdminByQueryLimitedPageNumber" resultType="int">
+        select count(video_series_id) from video_series_info
+        where is_delete = 0 and video_info_id = #{videoInfoId}
+        <if test="@org.springframework.util.StringUtils@hasText(queryWords)">
+            and series_number = #{queryWords}
+        </if>
+    </select>
 </mapper>

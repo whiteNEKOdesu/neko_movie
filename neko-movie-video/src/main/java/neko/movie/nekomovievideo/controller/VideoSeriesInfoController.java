@@ -8,11 +8,13 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
+import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
@@ -34,7 +36,7 @@ public class VideoSeriesInfoController {
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
     @PostMapping("admin_video_series_infos")
-    public ResultObject<Page<VideoSeriesInfo>> adminVideoSeriesInfos(@Validated @RequestBody QueryVo vo){
+    public ResultObject<Page<VideoSeriesInfoVo>> adminVideoSeriesInfos(@Validated @RequestBody QueryVo vo) throws ExecutionException, InterruptedException {
         return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfoForAdminByQueryLimitedPage(vo));
     }
 
