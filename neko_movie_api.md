@@ -1566,8 +1566,6 @@ $baseUrl/video/video_info/video_infos
 ##### 2.2.4 管理员根据videoInfoId查询影视视频信息
 
 - get请求，url传参
-- 需要admin角色
-- 需要登录状态
 
 ```bash
 $baseUrl/video/video_info/video_info_by_video_info_id
@@ -1691,10 +1689,9 @@ $baseUrl/video/elastic_search/product_infos
 
 #### 2.4 VideoSeriesInfoController
 
-##### 2.4.1 管理员分页查询指定videoSeriesId视频分集信息
+##### 2.4.1 分页查询指定videoSeriesId视频分集信息
 
 - post请求，请求体传参
-- 需要admin角色
 - 需要登录状态
 
 ```bash
@@ -1790,6 +1787,55 @@ $baseUrl/video/video_series_info/new_video_series
 ```json
 {
     "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.4.3 根据影视集数id获取影视单集信息
+
+- post请求，url传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_series_info/video_series_info_by_id
+```
+
+
+
+- 参数
+
+| 参数名        | 参数含义   |
+| ------------- | ---------- |
+| videoSeriesId | 影视集数id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_series_info/video_series_info_by_id?videoSeriesId=1682564048132014082
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "videoSeriesId": "1682564048132014082",
+        "videoInfoId": "1682551371754180610",
+        "seriesNumber": 1,
+        "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/89a91135-f3f3-4147-9ef6-2240702d1acb_nilou.mp4",
+        "requireMemberLevelId": 1,
+        "levelName": "用户",
+        "createTime": "2023-07-22T09:31:44",
+        "updateTime": "2023-07-22T09:31:44"
+    },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

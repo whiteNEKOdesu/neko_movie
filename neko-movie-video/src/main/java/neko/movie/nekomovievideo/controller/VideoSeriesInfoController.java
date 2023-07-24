@@ -31,9 +31,8 @@ public class VideoSeriesInfoController {
     private VideoSeriesInfoService videoSeriesInfoService;
 
     /**
-     * 管理员分页查询指定videoSeriesId视频分集信息
+     * 分页查询指定videoSeriesId视频分集信息
      */
-    @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
     @PostMapping("admin_video_series_infos")
     public ResultObject<Page<VideoSeriesInfoVo>> adminVideoSeriesInfos(@Validated @RequestBody QueryVo vo) throws ExecutionException, InterruptedException {
@@ -54,5 +53,13 @@ public class VideoSeriesInfoController {
                 file);
 
         return ResultObject.ok();
+    }
+
+    /**
+     * 根据影视集数id获取影视单集信息
+     */
+    @PostMapping("video_series_info_by_id")
+    public ResultObject<VideoSeriesInfoVo> videoSeriesInfoById(@RequestParam String videoSeriesId){
+        return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfoByVideoSeriesInfoId(videoSeriesId));
     }
 }

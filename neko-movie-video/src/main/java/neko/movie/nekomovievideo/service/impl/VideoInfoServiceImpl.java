@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * <p>
@@ -176,5 +178,34 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         videoInfoVo.setCategoryName(categoryInfoService.getById(videoInfo.getCategoryId()).getCategoryName());
 
         return videoInfoVo;
+    }
+
+    /**
+     * 下架影视视频
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void downVideo(String videoInfoId) throws IOException {
+        VideoInfo videoInfo = this.baseMapper.selectById(videoInfoId);
+        if(videoInfo == null){
+            throw new NoSuchResultException("无此videoInfoId影视信息");
+        }
+
+        VideoInfo todoUpdate = new VideoInfo();
+        todoUpdate.setVideoInfoId(videoInfoId)
+                .setStatus(VideoStatus.DOWN);
+
+        this.baseMapper.updateById(todoUpdate);
+
+        DeleteByQueryResponse response = elasticsearchClient.deleteByQuery(builder ->
+                builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                        .query(q ->
+                                q.term(t ->
+                                        t.field("videoInfoId")
+                                                .value(videoInfoId))));
+
+        if(response == null || !Objects.equals(response.deleted(), 1L)){
+            throw new ElasticSearchUpdateException("elasticsearch添加错误");
+        }
     }
 }

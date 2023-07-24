@@ -24,4 +24,6 @@ public interface VideoSeriesInfoService extends IService<VideoSeriesInfo> {
                             Integer seriesNumber,
                             Integer requireMemberLevelId,
                             MultipartFile file) throws InterruptedException;
+
+    VideoSeriesInfoVo getVideoSeriesInfoByVideoSeriesInfoId(String videoSeriesId);
 }

@@ -64,7 +64,7 @@ public class VideoInfoESQueryVo implements Serializable {
     private Integer currentPage;
 
     @NotNull
-    @Min(value = 5)
+    @Min(value = 3)
     @Max(value = 50)
     private Integer limited;
 

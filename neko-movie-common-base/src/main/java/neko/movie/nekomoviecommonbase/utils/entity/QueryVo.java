@@ -25,7 +25,7 @@ public class QueryVo implements Serializable {
     private Integer currentPage;
 
     @NotNull
-    @Min(value = 5)
+    @Min(value = 1)
     @Max(value = 50)
     private Integer limited;
 

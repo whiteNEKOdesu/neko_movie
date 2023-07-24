@@ -32,4 +32,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     Page<VideoInfo> getVideoInfoByQueryLimitedPage(QueryVo vo);
 
     VideoInfoVo getVideoInfoByVideoInfoId(String videoInfoId);
+
+    void downVideo(String videoInfoId) throws IOException;
 }

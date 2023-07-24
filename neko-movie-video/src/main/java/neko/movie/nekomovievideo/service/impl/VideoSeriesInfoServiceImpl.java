@@ -1,14 +1,15 @@
 package neko.movie.nekomovievideo.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import neko.movie.nekomoviecommonbase.utils.entity.Constant;
-import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
-import neko.movie.nekomoviecommonbase.utils.entity.Response;
-import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
+import neko.movie.nekomoviecommonbase.utils.entity.*;
 import neko.movie.nekomoviecommonbase.utils.exception.FileTypeNotSupportException;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
+import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
@@ -20,6 +21,7 @@ import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,6 +54,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
     @Resource
     private MemberLevelDictFeignService memberLevelDictFeignService;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Resource(name = "threadPoolExecutor")
     private Executor threadPool;
 
@@ -79,12 +84,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
         CompletableFuture<Void> levelTask = CompletableFuture.runAsync(() -> {
             //获取会员等级信息
-            ResultObject<List<MemberLevelDictTo>> r = memberLevelDictFeignService.levelInfos();
-            if(!r.getResponseCode().equals(200)){
-                throw new MemberServiceException("member微服务调用异常");
-            }
+            List<MemberLevelDictTo> levelInfos = getLevelInfos();
 
-            for(MemberLevelDictTo memberLevelDictTo : r.getResult()){
+            for(MemberLevelDictTo memberLevelDictTo : levelInfos){
                 levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getLevelName());
             }
         }, threadPool);
@@ -145,6 +147,56 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             }
         }else{
             throw new InterruptedException("获取分布式锁失败");
+        }
+    }
+
+    /**
+     * 根据影视集数id获取影视单集信息
+     */
+    @Override
+    public VideoSeriesInfoVo getVideoSeriesInfoByVideoSeriesInfoId(String videoSeriesId) {
+        VideoSeriesInfo videoSeriesInfo = this.baseMapper.selectById(videoSeriesId);
+        if(videoSeriesInfo == null){
+            throw new NoSuchResultException("无此影视集数信息");
+        }
+
+        List<MemberLevelDictTo> levelInfos = getLevelInfos();
+        VideoSeriesInfoVo videoSeriesInfoVo = new VideoSeriesInfoVo();
+        BeanUtil.copyProperties(videoSeriesInfo, videoSeriesInfoVo);
+
+        for(MemberLevelDictTo memberLevelDictTo : levelInfos){
+            if(videoSeriesInfo.getRequireMemberLevelId().equals(memberLevelDictTo.getMemberLevelId())){
+                videoSeriesInfoVo.setLevelName(memberLevelDictTo.getLevelName());
+            }
+        }
+
+        return videoSeriesInfoVo;
+    }
+
+    /**
+     * 获取会员等级信息
+     */
+    private List<MemberLevelDictTo> getLevelInfos(){
+        String key = Constant.VIDEO_REDIS_PREFIX + "level_info";
+        String cache = stringRedisTemplate.opsForValue().get(key);
+
+        //缓存有数据
+        if(cache != null){
+            return JSONUtil.toList(JSONUtil.parseArray(cache), MemberLevelDictTo.class);
+        }else{
+            //获取会员等级信息
+            ResultObject<List<MemberLevelDictTo>> r = memberLevelDictFeignService.levelInfos();
+            if(!r.getResponseCode().equals(200)){
+                throw new MemberServiceException("member微服务调用异常");
+            }
+
+            //缓存无数据，查询存入缓存
+            stringRedisTemplate.opsForValue().setIfAbsent(key,
+                    JSONUtil.toJsonStr(r.getResult()),
+                    1000 * 60 * 60 * 5,
+                    TimeUnit.MILLISECONDS);
+
+            return r.getResult();
         }
     }
 }

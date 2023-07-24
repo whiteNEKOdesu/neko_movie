@@ -12,9 +12,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   redis:
-    host: ${REDIS_HOST:192.168.30.131}
+    host: ${REDIS_HOST:8.130.77.90}
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
+    password: ${REDIS_PASSWORD:group_2_password}
     #redis数据库
     database: 0
     #连接超时时间，单位ms
