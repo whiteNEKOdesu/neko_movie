@@ -35,6 +35,7 @@ public class VideoSeriesInfoController {
     /**
      * 管理员分页查询指定videoSeriesId视频分集信息
      */
+    @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
     @PostMapping("admin_video_series_infos")
     public ResultObject<Page<VideoSeriesInfoVo>> adminVideoSeriesInfos(@Validated @RequestBody QueryVo vo) throws ExecutionException, InterruptedException {

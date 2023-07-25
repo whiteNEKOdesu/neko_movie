@@ -36,9 +36,19 @@ public class OrderInfo implements Serializable {
     private String uid;
 
     /**
+     * 秒杀折扣id，对应discount_info表discount_id
+     */
+    private String discountId;
+
+    /**
      * 订单总价
      */
     private BigDecimal cost;
+
+    /**
+     * 实际支付价格
+     */
+    private BigDecimal actualCost;
 
     /**
      * -1->取消，0->未支付，1->已支付
@@ -46,14 +56,19 @@ public class OrderInfo implements Serializable {
     private Byte status;
 
     /**
-     * 订单购买等级
+     * 订单购买等级id
      */
-    private Integer level;
+    private Integer memberLevelId;
 
     /**
-     * 开通天数
+     * 订单购买等级名，冗余字段
      */
-    private Integer payLevelDays;
+    private String levelName;
+
+    /**
+     * 开通月数
+     */
+    private Integer payLevelMonths;
 
     private LocalDateTime createTime;
 
