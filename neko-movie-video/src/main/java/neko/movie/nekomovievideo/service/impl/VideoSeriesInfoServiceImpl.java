@@ -17,6 +17,7 @@ import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.to.MemberLevelDictTo;
+import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -171,6 +172,36 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         }
 
         return videoSeriesInfoVo;
+    }
+
+    /**
+     * 查询指定videoSeriesId全部视频分集信息
+     */
+    @Override
+    public List<VideoSeriesInfoUserVo> getVideoSeriesInfosByVideoInfoId(String videoInfoId) throws ExecutionException, InterruptedException {
+        CompletableFuture<List<VideoSeriesInfoUserVo>> videoSeriesInfoTask = CompletableFuture.supplyAsync(() ->
+                this.baseMapper.getVideoSeriesInfosByVideoInfoId(videoInfoId), threadPool);
+
+        Map<Integer,String> levelMap = new HashMap<>();
+
+        CompletableFuture<Void> levelTask = CompletableFuture.runAsync(() -> {
+            //获取会员等级信息
+            List<MemberLevelDictTo> levelInfos = getLevelInfos();
+
+            for(MemberLevelDictTo memberLevelDictTo : levelInfos){
+                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getLevelName());
+            }
+        }, threadPool);
+
+        CompletableFuture.allOf(videoSeriesInfoTask, levelTask).get();
+
+        List<VideoSeriesInfoUserVo> list = videoSeriesInfoTask.get();
+        //为vo设置会员等级名
+        for(VideoSeriesInfoUserVo videoSeriesInfoUserVo : list){
+            videoSeriesInfoUserVo.setLevelName(levelMap.get(videoSeriesInfoUserVo.getRequireMemberLevelId()));
+        }
+
+        return list;
     }
 
     /**

@@ -19,4 +19,11 @@
             and series_number = #{queryWords}
         </if>
     </select>
+
+    <select id="getVideoSeriesInfosByVideoInfoId" resultType="neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo">
+        select video_series_id, video_info_id, series_number,
+               require_member_level_id, create_time, update_time from video_series_info
+        where is_delete = 0 and video_info_id = #{videoInfoId}
+        order by series_number
+    </select>
 </mapper>

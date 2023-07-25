@@ -1689,9 +1689,10 @@ $baseUrl/video/elastic_search/product_infos
 
 #### 2.4 VideoSeriesInfoController
 
-##### 2.4.1 分页查询指定videoSeriesId视频分集信息
+##### 2.4.1 管理员分页查询指定videoSeriesId视频分集信息
 
 - post请求，请求体传参
+- 需要admin角色
 - 需要登录状态
 
 ```bash
@@ -1836,6 +1837,64 @@ $baseUrl/video/video_series_info/video_series_info_by_id?videoSeriesId=168256404
         "createTime": "2023-07-22T09:31:44",
         "updateTime": "2023-07-22T09:31:44"
     },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.4.4 查询指定videoSeriesId全部视频分集信息
+
+- get请求，url传参
+
+```bash
+$baseUrl/video/video_series_info/video_series_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义           |
+| ----------- | ------------------ |
+| videoInfoId | 集数所属影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121218
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "videoSeriesId": "1683373881982767105",
+            "videoInfoId": "1683373796746121218",
+            "seriesNumber": 5,
+            "requireMemberLevelId": 1,
+            "levelName": "用户",
+            "createTime": "2023-07-24T15:09:44",
+            "updateTime": "2023-07-24T15:09:44"
+        },
+        {
+            "videoSeriesId": "1683374990189187074",
+            "videoInfoId": "1683373796746121218",
+            "seriesNumber": 6,
+            "requireMemberLevelId": 1,
+            "levelName": "用户",
+            "createTime": "2023-07-24T15:14:08",
+            "updateTime": "2023-07-24T15:14:08"
+        }
+    ],
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

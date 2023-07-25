@@ -2,6 +2,7 @@ package neko.movie.nekomovievideo.mapper;
 
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,4 +24,6 @@ public interface VideoSeriesInfoMapper extends BaseMapper<VideoSeriesInfo> {
                                                                          String videoInfoId);
 
     int getVideoSeriesInfoForAdminByQueryLimitedPageNumber(String queryWords, String videoInfoId);
+
+    List<VideoSeriesInfoUserVo> getVideoSeriesInfosByVideoInfoId(String videoInfoId);
 }

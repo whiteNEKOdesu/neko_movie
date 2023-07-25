@@ -23,4 +23,9 @@ public class VideoSeriesInfoMapperTest {
         System.out.println(videoSeriesInfoMapper.getVideoSeriesInfoForAdminByQueryLimitedPageNumber("1",
                 "1680783320826318849"));
     }
+
+    @Test
+    public void getVideoSeriesInfosByVideoInfoId(){
+        System.out.println(videoSeriesInfoMapper.getVideoSeriesInfosByVideoInfoId("1683373796746121218"));
+    }
 }

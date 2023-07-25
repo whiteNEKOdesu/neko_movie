@@ -8,12 +8,14 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
+import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -31,7 +33,7 @@ public class VideoSeriesInfoController {
     private VideoSeriesInfoService videoSeriesInfoService;
 
     /**
-     * 分页查询指定videoSeriesId视频分集信息
+     * 管理员分页查询指定videoSeriesId视频分集信息
      */
     @SaCheckLogin
     @PostMapping("admin_video_series_infos")
@@ -61,5 +63,13 @@ public class VideoSeriesInfoController {
     @PostMapping("video_series_info_by_id")
     public ResultObject<VideoSeriesInfoVo> videoSeriesInfoById(@RequestParam String videoSeriesId){
         return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfoByVideoSeriesInfoId(videoSeriesId));
+    }
+
+    /**
+     * 查询指定videoSeriesId全部视频分集信息
+     */
+    @GetMapping("video_series_infos")
+    public ResultObject<List<VideoSeriesInfoUserVo>> videoSeriesInfos(@RequestParam String videoInfoId) throws ExecutionException, InterruptedException {
+        return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfosByVideoInfoId(videoInfoId));
     }
 }
