@@ -203,9 +203,6 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                                 q.term(t ->
                                         t.field("videoInfoId")
                                                 .value(videoInfoId))));
-
-        if(response == null || !Objects.equals(response.deleted(), 1L)){
-            throw new ElasticSearchUpdateException("elasticsearch添加错误");
-        }
+        log.info("影视视频下架videoInfoId: " + videoInfoId + "，下架数量" + response.deleted());
     }
 }

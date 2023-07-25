@@ -1615,6 +1615,47 @@ $baseUrl/video/video_info/video_info_by_video_info_id?videoInfoId=16807818254856
 
 
 
+##### 2.2.5 管理员下架影视视频
+
+- post请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_info/down_video
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/down_video?videoInfoId=1683373796746121218
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息

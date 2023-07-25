@@ -85,4 +85,16 @@ public class VideoInfoController {
     public ResultObject<VideoInfoVo> videoInfoByVideoInfoId(@RequestParam String videoInfoId){
         return ResultObject.ok(videoInfoService.getVideoInfoByVideoInfoId(videoInfoId));
     }
+
+    /**
+     * 管理员下架影视视频
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("down_video")
+    public ResultObject<Object> downVideo(@RequestParam String videoInfoId) throws IOException {
+        videoInfoService.downVideo(videoInfoId);
+
+        return ResultObject.ok();
+    }
 }
