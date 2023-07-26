@@ -25,4 +25,8 @@ public interface UserWeightService extends IService<UserWeight> {
     void newMemberLevelWeight(String weightType);
 
     List<UserWeight> getUnbindMemberLevelWeightByRoleId(Integer roleId);
+
+    boolean checkWeightIdsAreMemberLevelType(List<Integer> weightIds);
+
+    Page<UserWeight> getMemberLevelUserWeightByQueryLimitedPage(QueryVo vo);
 }

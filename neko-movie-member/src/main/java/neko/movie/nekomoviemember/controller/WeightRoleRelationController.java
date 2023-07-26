@@ -27,6 +27,9 @@ public class WeightRoleRelationController {
     @Resource
     private WeightRoleRelationService weightRoleRelationService;
 
+    /**
+     * 管理员新增普通类型权限，角色关系
+     */
     @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
     @PutMapping("new_relations")
@@ -37,7 +40,7 @@ public class WeightRoleRelationController {
     }
 
     /**
-     * 获指定roleId权限，角色关系
+     * 管理员获指定roleId权限，角色关系
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
@@ -53,5 +56,17 @@ public class WeightRoleRelationController {
     @PostMapping("relation_info_by_uid")
     public ResultObject<List<WeightRoleRelation>> relationInfoByUid(@RequestParam String uid){
         return ResultObject.ok(weightRoleRelationService.getRelations(uid));
+    }
+
+    /**
+     * 管理员新增会员等级类型权限，角色关系
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PutMapping("new_member_level_relations")
+    public ResultObject<Object> newMemberLevelRelations(@Validated @RequestBody NewWeightRoleRelationVo vo){
+        weightRoleRelationService.newMemberLevelRelations(vo);
+
+        return ResultObject.ok();
     }
 }

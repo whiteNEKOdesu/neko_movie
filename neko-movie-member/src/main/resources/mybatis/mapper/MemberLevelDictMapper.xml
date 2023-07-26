@@ -9,4 +9,12 @@
         on member_level_dict.role_id = user_role.role_id
         where member_level_dict.is_delete = 0
     </select>
+
+    <select id="getRoleTypeByMemberLevelId" resultType="String">
+        select role_type from user_role
+        where role_id = (
+            select role_id from member_level_dict
+            where member_level_id = #{memberLevelId}
+        )
+    </select>
 </mapper>

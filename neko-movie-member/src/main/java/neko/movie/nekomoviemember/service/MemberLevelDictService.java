@@ -19,4 +19,6 @@ public interface MemberLevelDictService extends IService<MemberLevelDict> {
     List<MemberLevelDictVo> getMemberLevelDictInfo();
 
     void newMemberLevelDict(NewMemberLevelDictVo vo);
+
+    String getRoleTypeByMemberLevelId(Integer memberLevelId);
 }

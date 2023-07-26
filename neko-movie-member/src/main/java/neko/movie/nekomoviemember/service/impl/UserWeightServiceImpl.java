@@ -95,4 +95,29 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
     public List<UserWeight> getUnbindMemberLevelWeightByRoleId(Integer roleId) {
         return this.baseMapper.getUnbindMemberLevelWeightByRoleId(roleId);
     }
+
+    /**
+     * 检查weightId list是否为会员等级类型
+     */
+    @Override
+    public boolean checkWeightIdsAreMemberLevelType(List<Integer> weightIds) {
+        return weightIds.size() == this.baseMapper.getMemberLevelWeightNumberByWeightIds(weightIds);
+    }
+
+    /**
+     * 分页查询会员等级类型权限信息
+     */
+    @Override
+    public Page<UserWeight> getMemberLevelUserWeightByQueryLimitedPage(QueryVo vo) {
+        Page<UserWeight> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
+        QueryWrapper<UserWeight> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserWeight::getType, WeightSortType.MEMBER_LEVEL_TYPE);
+        if(StringUtils.hasText(vo.getQueryWords())){
+            queryWrapper.lambda().eq(UserWeight::getWeightType, vo.getQueryWords());
+        }
+
+        this.baseMapper.selectPage(page, queryWrapper);
+
+        return page;
+    }
 }

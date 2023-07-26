@@ -18,4 +18,6 @@ import java.util.List;
 @Mapper
 public interface MemberLevelDictMapper extends BaseMapper<MemberLevelDict> {
     List<MemberLevelDictVo> getMemberLevelDictInfo();
+
+    String getRoleTypeByMemberLevelId(Integer memberLevelId);
 }

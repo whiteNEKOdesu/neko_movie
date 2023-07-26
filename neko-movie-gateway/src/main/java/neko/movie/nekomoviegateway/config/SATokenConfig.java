@@ -31,6 +31,7 @@ public class SATokenConfig {
                 .addInclude("/third_party/oss/upload_image")
                 .addInclude("/third_party/oss/delete_file")
                 .addInclude("/third_party/oss/upload_video")
+                .addInclude("/member/member_level_dict/role_type_by_member_level_id")
                 .setAuth(obj -> {
                     StpUtil.checkRole("*");
                 })

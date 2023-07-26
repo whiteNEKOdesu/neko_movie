@@ -9,6 +9,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import neko.movie.nekomoviecommonbase.utils.entity.BaseRoleId;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviecommonbase.utils.entity.Response;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
@@ -100,7 +101,7 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int register(String userName, String userPassword, String email, String code) {
+    public void register(String userName, String userPassword, String email, String code) {
         if(userNameIsRepeat(userName)){
             throw new UserNameRepeatException("用户名重复");
         }
@@ -127,8 +128,9 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         this.baseMapper.insert(memberInfo);
         MemberInfo memberInfoByUserName = this.baseMapper.getMemberInfoByUserName(userName);
 
-        //为用户设置普通用户角色
-        return userRoleRelationService.newRelation(memberInfoByUserName.getUid(), 1);
+        //为用户设置普通用户以及普通会员角色
+        userRoleRelationService.newRelations(memberInfoByUserName.getUid(),
+                Arrays.asList(BaseRoleId.BASE_NORMAL_TYPE_ROLE_ID, BaseRoleId.BASE_MEMBER_LEVEL_TYPE_ROLE_ID));
     }
 
     @Override

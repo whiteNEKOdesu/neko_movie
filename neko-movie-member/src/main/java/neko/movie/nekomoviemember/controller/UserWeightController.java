@@ -81,4 +81,14 @@ public class UserWeightController {
     public ResultObject<List<UserWeight>> unbindMemberLevelWeightInfo(@RequestParam Integer roleId){
         return ResultObject.ok(userWeightService.getUnbindMemberLevelWeightByRoleId(roleId));
     }
+
+    /**
+     * 管理员分页查询会员等级类型权限信息
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("member_level_weight_info")
+    public ResultObject<Page<UserWeight>> memberLevelWeightInfo(@Validated @RequestBody QueryVo vo){
+        return ResultObject.ok(userWeightService.getMemberLevelUserWeightByQueryLimitedPage(vo));
+    }
 }

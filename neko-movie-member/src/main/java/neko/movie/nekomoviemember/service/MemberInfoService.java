@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface MemberInfoService extends IService<MemberInfo> {
     ResultObject<MemberInfoVo> logIn(LogInVo vo, HttpServletRequest request);
 
-    int register(String userName, String userPassword, String email, String code);
+    void register(String userName, String userPassword, String email, String code);
 
     boolean userNameIsRepeat(String userName);
 

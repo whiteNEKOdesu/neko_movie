@@ -33,11 +33,13 @@ public class MemberInfoController {
     }
 
     @PostMapping("register")
-    public ResultObject<Integer> register(@RequestParam String userName,
+    public ResultObject<Object> register(@RequestParam String userName,
                                           @RequestParam String userPassword,
                                           @RequestParam String email,
                                           @RequestParam String code){
-        return ResultObject.ok(memberInfoService.register(userName, userPassword, email, code));
+        memberInfoService.register(userName, userPassword, email, code);
+
+        return ResultObject.ok();
     }
 
     @GetMapping("user_name_is_repeat")

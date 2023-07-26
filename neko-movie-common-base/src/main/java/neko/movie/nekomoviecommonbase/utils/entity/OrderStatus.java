@@ -1,11 +1,21 @@
 package neko.movie.nekomoviecommonbase.utils.entity;
 
+/**
+ * 订单状态
+ */
 public class OrderStatus {
-    public static final Byte PAY = 0;
+    /**
+     * 取消
+     */
+    public static final Byte CANCELED = -1;
 
-    public static final Byte DELIVERING = 1;
+    /**
+     * 未支付
+     */
+    public static final Byte UNPAID = 0;
 
-    public static final Byte COURIER_CONFIRM_DELIVERED = 2;
-
-    public static final Byte USER_CONFIRM_DELIVERED = 3;
+    /**
+     * 已支付
+     */
+    public static final Byte PAID = 1;
 }

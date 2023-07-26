@@ -7,6 +7,6 @@
         <foreach collection="roleIds" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
-        and type = 2
+        and type = ${@neko.movie.nekomoviecommonbase.utils.entity.RoleSortType@MEMBER_LEVEL_TYPE}
     </select>
 </mapper>

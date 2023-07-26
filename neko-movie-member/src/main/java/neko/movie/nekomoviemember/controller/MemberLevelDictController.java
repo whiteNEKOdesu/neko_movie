@@ -47,4 +47,12 @@ public class MemberLevelDictController {
 
         return ResultObject.ok();
     }
+
+    /**
+     * 根据memberLevelId获取角色名，建议只提供给微服务远程调用
+     */
+    @GetMapping("role_type_by_member_level_id")
+    public ResultObject<String> roleTypeByMemberLevelId(@RequestParam Integer memberLevelId){
+        return ResultObject.ok(memberLevelDictService.getRoleTypeByMemberLevelId(memberLevelId));
+    }
 }

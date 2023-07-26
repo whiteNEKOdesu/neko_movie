@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @SpringBootTest
 public class UserWeightMapperTest {
@@ -23,5 +24,10 @@ public class UserWeightMapperTest {
     @Test
     public void getUnbindMemberLevelWeightByRoleId(){
         System.out.println(userWeightMapper.getUnbindMemberLevelWeightByRoleId(11));
+    }
+
+    @Test
+    public void getMemberLevelWeightNumberByWeightIds(){
+        System.out.println(userWeightMapper.getMemberLevelWeightNumberByWeightIds(Arrays.asList(11, 12)));
     }
 }

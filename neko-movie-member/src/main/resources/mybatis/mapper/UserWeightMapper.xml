@@ -9,12 +9,21 @@
     <select id="getUnbindUserWeightByRoleId" resultType="neko.movie.nekomoviemember.entity.UserWeight">
         select * from user_weight
         where weight_id not in(select weight_id from weight_role_relation
-                               where role_id = #{roleId}) and type = 0
+                               where role_id = #{roleId}) and type = ${@neko.movie.nekomoviecommonbase.utils.entity.WeightSortType@NORMAL_TYPE}
     </select>
 
     <select id="getUnbindMemberLevelWeightByRoleId" resultType="neko.movie.nekomoviemember.entity.UserWeight">
         select * from user_weight
         where weight_id not in(select weight_id from weight_role_relation
-                               where role_id = #{roleId}) and type = 1
+                               where role_id = #{roleId}) and type = ${@neko.movie.nekomoviecommonbase.utils.entity.WeightSortType@MEMBER_LEVEL_TYPE}
+    </select>
+
+    <select id="getMemberLevelWeightNumberByWeightIds" resultType="int">
+        select count(weight_id) from user_weight
+        where weight_id in
+        <foreach collection="weightIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        and type = ${@neko.movie.nekomoviecommonbase.utils.entity.WeightSortType@MEMBER_LEVEL_TYPE}
     </select>
 </mapper>

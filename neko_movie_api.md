@@ -112,7 +112,7 @@ $baseUrl/member/member_info/register?userName=koori&userPassword=Liekonggenji2&e
 
 ```json
 {
-    "result": 1,
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
@@ -846,6 +846,72 @@ $baseUrl/member/user_weight/unbind_member_level_weight_info?roleId=11
 
 
 
+##### 1.3.6 管理员分页查询会员等级类型权限信息
+
+- post请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_weight/member_level_weight_info
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义         |
+| ----------- | ---------------- |
+| queryWords  | 查询关键字，可选 |
+| currentPage | 当前页数         |
+| limited     | 每页数量         |
+
+
+
+- 示例
+
+```json
+{
+    "queryWords": "courier_read",
+    "currentPage": 1,
+    "limited": 8
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "weightId": 11,
+                "weightType": "courier_read",
+                "type": 1,
+                "createTime": "2023-05-25T12:04:27",
+                "updateTime": "2023-05-25T12:04:27"
+            }
+        ],
+        "total": 1,
+        "size": 8,
+        "current": 1,
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": 1
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.4 UserRoleController
 
 ##### 1.4.1 管理员新增非会员等级类型角色信息角色
@@ -1061,7 +1127,7 @@ $baseUrl/member/user_role/new_member_level_role?roleType=普通会员
 
 #### 1.5 WeightRoleRelationController
 
-##### 1.5.1 新增权重，角色关系
+##### 1.5.1 管理员新增普通类型权重，角色关系
 
 - put请求，请求体传参
 - 需要 root 角色
@@ -1106,7 +1172,7 @@ $baseUrl/member/weight_role_relation/new_relations
 
 
 
-##### 1.5.2 获指定roleId权限，角色关系
+##### 1.5.2 管理员获指定roleId权限，角色关系
 
 - post请求，url传参
 - 需要admin权限
@@ -1199,6 +1265,51 @@ $baseUrl/member/weight_role_relation/relation_info_by_uid?uid=164206760587334861
             "updateTime": "2023-03-27T16:04:08"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.5.4 管理员新增会员等级类型权限，角色关系
+
+- put请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/weight_role_relation/new_member_level_relations
+```
+
+
+
+- 参数
+
+| 参数名    | 参数含义     |
+| --------- | ------------ |
+| roleId    | 角色id       |
+| weightIds | 权限id，数组 |
+
+
+
+- 示例
+
+```json
+{
+    "roleId": 11,
+    "weightIds": [11, 12]
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
@@ -1324,6 +1435,46 @@ $baseUrl/member/member_level_dict/new_level
 ```json
 {
     "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.7.3 根据memberLevelId获取角色名
+
+- get请求，url传参
+- 建议只提供给微服务远程调用
+
+```bash
+$baseUrl/member/member_level_dict/role_type_by_member_level_id
+```
+
+
+
+- 参数
+
+| 参数名        | 参数含义   |
+| ------------- | ---------- |
+| memberLevelId | 会员等级id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/member_level_dict/role_type_by_member_level_id?memberLevelId=1
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": "普通会员",
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

@@ -14,4 +14,9 @@ public class MemberLevelDictMapperTest {
     public void getMemberLevelDictInfo(){
         System.out.println(memberLevelDictMapper.getMemberLevelDictInfo());
     }
+
+    @Test
+    public void getRoleTypeByMemberLevelId(){
+        System.out.println(memberLevelDictMapper.getRoleTypeByMemberLevelId(1));
+    }
 }

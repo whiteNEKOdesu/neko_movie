@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-16
  */
 public interface OrderInfoService extends IService<OrderInfo> {
-
+    String getPreOrderToken();
 }

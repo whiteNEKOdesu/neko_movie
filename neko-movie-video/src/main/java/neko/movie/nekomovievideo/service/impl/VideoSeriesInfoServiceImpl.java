@@ -161,15 +161,18 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             throw new NoSuchResultException("无此影视集数信息");
         }
 
-        List<MemberLevelDictTo> levelInfos = getLevelInfos();
+        ResultObject<String> r = memberLevelDictFeignService.roleTypeByMemberLevelId(videoSeriesInfo.getRequireMemberLevelId());
+        if(!r.getResponseCode().equals(200)){
+            throw new MemberServiceException("member微服务远程调用异常");
+        }
+
+        String roleType = r.getResult();
+        //校验是否拥有观看权限
+        StpUtil.checkRole(roleType);
+
         VideoSeriesInfoVo videoSeriesInfoVo = new VideoSeriesInfoVo();
         BeanUtil.copyProperties(videoSeriesInfo, videoSeriesInfoVo);
-
-        for(MemberLevelDictTo memberLevelDictTo : levelInfos){
-            if(videoSeriesInfo.getRequireMemberLevelId().equals(memberLevelDictTo.getMemberLevelId())){
-                videoSeriesInfoVo.setLevelName(memberLevelDictTo.getRoleType());
-            }
-        }
+        videoSeriesInfoVo.setLevelName(roleType);
 
         return videoSeriesInfoVo;
     }

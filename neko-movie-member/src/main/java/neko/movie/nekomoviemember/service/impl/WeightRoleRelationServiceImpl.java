@@ -8,6 +8,7 @@ import neko.movie.nekomoviemember.entity.WeightRoleRelation;
 import neko.movie.nekomoviemember.mapper.WeightRoleRelationMapper;
 import neko.movie.nekomoviemember.service.UserRoleRelationService;
 import neko.movie.nekomoviemember.service.UserRoleService;
+import neko.movie.nekomoviemember.service.UserWeightService;
 import neko.movie.nekomoviemember.service.WeightRoleRelationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomoviemember.vo.NewWeightRoleRelationVo;
@@ -34,6 +35,9 @@ import java.util.stream.Collectors;
 public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelationMapper, WeightRoleRelation> implements WeightRoleRelationService {
     @Resource
     private UserRoleRelationService userRoleRelationService;
+
+    @Resource
+    private UserWeightService userWeightService;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -95,18 +99,16 @@ public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelatio
     }
 
     /**
-     * 新增权限，角色关系
+     * 新增普通类型权限，角色关系
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void newRelations(NewWeightRoleRelationVo vo) {
-        UserRole userRole = userRoleService.getById(vo.getRoleId());
         LocalDateTime now = LocalDateTime.now();
 
         List<WeightRoleRelation> relations = vo.getWeightIds().stream().filter(Objects::nonNull)
                 .distinct()
                 .map(w -> new WeightRoleRelation().setRoleId(vo.getRoleId())
-                        .setRoleType(userRole.getRoleType())
                         .setWeightId(w)
                         .setCreateTime(now)
                         .setUpdateTime(now)).collect(Collectors.toList());
@@ -114,11 +116,21 @@ public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelatio
         this.saveBatch(relations);
     }
 
+    /**
+     * 新增会员等级类型权限，角色关系
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void newMemberLevelRelations(NewWeightRoleRelationVo vo) {
         UserRole userRole = userRoleService.getById(vo.getRoleId());
         if(!userRole.getType().equals(RoleSortType.MEMBER_LEVEL_TYPE)){
             throw new IllegalArgumentException("角色类型错误");
         }
+
+        if(!userWeightService.checkWeightIdsAreMemberLevelType(vo.getWeightIds())){
+            throw new IllegalArgumentException("权限类型错误");
+        }
+
+        newRelations(vo);
     }
 }

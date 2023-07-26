@@ -70,4 +70,12 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
         //删除会员等级缓存
         stringRedisTemplate.delete(key);
     }
+
+    /**
+     * 根据memberLevelId获取角色名
+     */
+    @Override
+    public String getRoleTypeByMemberLevelId(Integer memberLevelId) {
+        return this.baseMapper.getRoleTypeByMemberLevelId(memberLevelId);
+    }
 }

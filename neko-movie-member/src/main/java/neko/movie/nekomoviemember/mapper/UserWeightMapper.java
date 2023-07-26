@@ -21,4 +21,6 @@ public interface UserWeightMapper extends BaseMapper<UserWeight> {
     List<UserWeight> getUnbindUserWeightByRoleId(Integer roleId);
 
     List<UserWeight> getUnbindMemberLevelWeightByRoleId(Integer roleId);
+
+    int getMemberLevelWeightNumberByWeightIds(List<Integer> weightIds);
 }

@@ -61,9 +61,9 @@ public class OrderInfo implements Serializable {
     private Integer memberLevelId;
 
     /**
-     * 订单购买等级名，冗余字段
+     * 订单购买会员等级类型角色名，冗余字段
      */
-    private String levelName;
+    private String roleType;
 
     /**
      * 开通月数
