@@ -2,6 +2,8 @@ package neko.movie.nekomoviemember.service;
 
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomoviemember.vo.MemberLevelDictVo;
+import neko.movie.nekomoviemember.vo.NewMemberLevelDictVo;
 
 import java.util.List;
 
@@ -14,5 +16,7 @@ import java.util.List;
  * @since 2023-07-16
  */
 public interface MemberLevelDictService extends IService<MemberLevelDict> {
-    List<MemberLevelDict> getMemberLevelDictInfo();
+    List<MemberLevelDictVo> getMemberLevelDictInfo();
+
+    void newMemberLevelDict(NewMemberLevelDictVo vo);
 }

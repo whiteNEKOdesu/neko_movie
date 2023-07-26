@@ -88,7 +88,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             List<MemberLevelDictTo> levelInfos = getLevelInfos();
 
             for(MemberLevelDictTo memberLevelDictTo : levelInfos){
-                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getLevelName());
+                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getRoleType());
             }
         }, threadPool);
 
@@ -167,7 +167,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
         for(MemberLevelDictTo memberLevelDictTo : levelInfos){
             if(videoSeriesInfo.getRequireMemberLevelId().equals(memberLevelDictTo.getMemberLevelId())){
-                videoSeriesInfoVo.setLevelName(memberLevelDictTo.getLevelName());
+                videoSeriesInfoVo.setLevelName(memberLevelDictTo.getRoleType());
             }
         }
 
@@ -189,7 +189,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             List<MemberLevelDictTo> levelInfos = getLevelInfos();
 
             for(MemberLevelDictTo memberLevelDictTo : levelInfos){
-                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getLevelName());
+                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getRoleType());
             }
         }, threadPool);
 

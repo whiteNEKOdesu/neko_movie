@@ -29,7 +29,7 @@ public class UserRoleController {
     private UserRoleService userRoleService;
 
     /**
-     * 新增角色
+     * 新增非会员等级类型角色信息角色
      */
     @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
@@ -41,7 +41,7 @@ public class UserRoleController {
     }
 
     /**
-     * 分页查询角色信息
+     * 分页查询非会员等级类型角色信息角色信息
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
@@ -58,5 +58,17 @@ public class UserRoleController {
     @PostMapping("admin_role_info")
     public ResultObject<List<UserRole>> adminRoleInfo(){
         return ResultObject.ok(userRoleService.getAdminRoles());
+    }
+
+    /**
+     * 新增会员等级类型角色信息角色
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PutMapping("new_member_level_role")
+    public ResultObject<Object> newMemberLevelRole(@RequestParam String roleType){
+        userRoleService.newMemberLevelRole(roleType);
+
+        return ResultObject.ok();
     }
 }

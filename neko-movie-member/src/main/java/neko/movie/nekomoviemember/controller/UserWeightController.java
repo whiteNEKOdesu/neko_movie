@@ -29,7 +29,7 @@ public class UserWeightController {
     private UserWeightService userWeightService;
 
     /**
-     * 新增权限
+     * 管理员新增普通权限
      */
     @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
@@ -41,9 +41,9 @@ public class UserWeightController {
     }
 
     /**
-     * 分页查询权限信息
+     * 管理员分页查询普通权限信息
      */
-    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
     @PostMapping("weight_info")
     public ResultObject<Page<UserWeight>> weightInfo(@Validated @RequestBody QueryVo vo){
@@ -51,12 +51,34 @@ public class UserWeightController {
     }
 
     /**
-     * 获取指定roleId还未绑定权限信息
+     * 管理员获取指定roleId还未绑定普通权限信息
      */
-    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
     @PostMapping("unbind_weight_info")
     public ResultObject<List<UserWeight>> unbindWeightInfo(@RequestParam Integer roleId){
         return ResultObject.ok(userWeightService.getUnbindWeightByRoleId(roleId));
+    }
+
+    /**
+     * 管理员新增会员等级类型权限
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PutMapping("new_member_level_weight")
+    public ResultObject<Object> newMemberLevelWeight(@RequestParam String weightType){
+        userWeightService.newMemberLevelWeight(weightType);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员获取指定roleId还未绑定会员等级权限信息
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("unbind_member_level_weight_info")
+    public ResultObject<List<UserWeight>> unbindMemberLevelWeightInfo(@RequestParam Integer roleId){
+        return ResultObject.ok(userWeightService.getUnbindMemberLevelWeightByRoleId(roleId));
     }
 }

@@ -3,6 +3,7 @@ package neko.movie.nekomoviemember.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
+import neko.movie.nekomoviecommonbase.utils.entity.RoleSortType;
 import neko.movie.nekomoviemember.entity.UserRole;
 import neko.movie.nekomoviemember.mapper.UserRoleMapper;
 import neko.movie.nekomoviemember.service.UserRoleService;
@@ -26,7 +27,7 @@ import java.util.List;
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
 
     /**
-     * 新增角色
+     * 新增非会员等级类型角色信息角色
      */
     @Override
     public void newUserRole(String roleType) {
@@ -44,12 +45,13 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     }
 
     /**
-     * 分页查询角色信息
+     * 分页查询非会员等级类型角色信息
      */
     @Override
     public Page<UserRole> getUserRolesByQueryLimitedPage(QueryVo vo) {
         Page<UserRole> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
         QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().ne(UserRole::getType, RoleSortType.MEMBER_LEVEL_TYPE);
         if(StringUtils.hasText(vo.getQueryWords())){
             queryWrapper.lambda().eq(UserRole::getRoleType, vo.getQueryWords());
         }
@@ -64,7 +66,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
      */
     @Override
     public List<UserRole> getAdminRoles() {
-        return this.lambdaQuery().eq(UserRole::getIsAdmin, true).list();
+        return this.lambdaQuery().eq(UserRole::getType, RoleSortType.ADMIN_TYPE).list();
     }
 
     /**
@@ -75,5 +77,24 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
         return this.baseMapper.selectOne(new QueryWrapper<UserRole>()
                 .lambda()
                 .eq(UserRole::getRoleType, roleType));
+    }
+
+    /**
+     * 新增会员等级类型角色信息角色
+     */
+    @Override
+    public void newMemberLevelRole(String roleType) {
+        if(this.baseMapper.selectOne(new QueryWrapper<UserRole>().eq("role_type", roleType)) != null){
+            throw new DuplicateKeyException("roleType重复");
+        }
+
+        UserRole userRole = new UserRole();
+        LocalDateTime now = LocalDateTime.now();
+        userRole.setRoleType(roleType)
+                .setType(RoleSortType.MEMBER_LEVEL_TYPE)
+                .setCreateTime(now)
+                .setUpdateTime(now);
+
+        this.baseMapper.insert(userRole);
     }
 }

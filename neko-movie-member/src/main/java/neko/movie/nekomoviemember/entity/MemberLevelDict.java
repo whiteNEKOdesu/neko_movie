@@ -29,14 +29,9 @@ public class MemberLevelDict implements Serializable {
     private Integer memberLevelId;
 
     /**
-     * 用户等级
+     * 角色id，对应user_role表role_id
      */
-    private Integer memberLevel;
-
-    /**
-     * 等级名
-     */
-    private String levelName;
+    private Integer roleId;
 
     /**
      * 开通价格/月

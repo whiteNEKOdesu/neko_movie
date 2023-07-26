@@ -9,6 +9,12 @@
     <select id="getUnbindUserWeightByRoleId" resultType="neko.movie.nekomoviemember.entity.UserWeight">
         select * from user_weight
         where weight_id not in(select weight_id from weight_role_relation
-                               where role_id = #{roleId})
+                               where role_id = #{roleId}) and type = 0
+    </select>
+
+    <select id="getUnbindMemberLevelWeightByRoleId" resultType="neko.movie.nekomoviemember.entity.UserWeight">
+        select * from user_weight
+        where weight_id not in(select weight_id from weight_role_relation
+                               where role_id = #{roleId}) and type = 1
     </select>
 </mapper>

@@ -23,4 +23,6 @@ public interface UserRoleService extends IService<UserRole> {
     List<UserRole> getAdminRoles();
 
     UserRole getUserRoleByRoleType(String roleType);
+
+    void newMemberLevelRole(String roleType);
 }

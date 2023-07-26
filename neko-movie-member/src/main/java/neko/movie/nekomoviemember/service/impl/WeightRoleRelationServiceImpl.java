@@ -2,6 +2,7 @@ package neko.movie.nekomoviemember.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
+import neko.movie.nekomoviecommonbase.utils.entity.RoleSortType;
 import neko.movie.nekomoviemember.entity.UserRole;
 import neko.movie.nekomoviemember.entity.WeightRoleRelation;
 import neko.movie.nekomoviemember.mapper.WeightRoleRelationMapper;
@@ -86,7 +87,7 @@ public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelatio
     }
 
     /**
-     * 获指定roleId权限，角色关系
+     * 获取指定roleId权限，角色关系
      */
     @Override
     public List<WeightRoleRelation> getRelationsByRoleId(Integer roleId) {
@@ -111,5 +112,13 @@ public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelatio
                         .setUpdateTime(now)).collect(Collectors.toList());
 
         this.saveBatch(relations);
+    }
+
+    @Override
+    public void newMemberLevelRelations(NewWeightRoleRelationVo vo) {
+        UserRole userRole = userRoleService.getById(vo.getRoleId());
+        if(!userRole.getType().equals(RoleSortType.MEMBER_LEVEL_TYPE)){
+            throw new IllegalArgumentException("角色类型错误");
+        }
     }
 }

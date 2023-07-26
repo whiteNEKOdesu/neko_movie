@@ -2,7 +2,10 @@ package neko.movie.nekomoviemember.mapper;
 
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import neko.movie.nekomoviemember.vo.MemberLevelDictVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface MemberLevelDictMapper extends BaseMapper<MemberLevelDict> {
-
+    List<MemberLevelDictVo> getMemberLevelDictInfo();
 }

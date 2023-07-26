@@ -28,11 +28,14 @@ public class UserRole implements Serializable {
     private Integer roleId;
 
     /**
-     * 角色类型
+     * 角色名
      */
     private String roleType;
 
-    private Boolean isAdmin;
+    /**
+     * 角色类型种类，0->普通角色类型，1->管理员角色类型，2->会员等级角色类型
+     */
+    private Byte type;
 
     private LocalDateTime createTime;
 

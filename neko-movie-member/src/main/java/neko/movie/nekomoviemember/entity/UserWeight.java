@@ -28,9 +28,14 @@ public class UserWeight implements Serializable {
     private Integer weightId;
 
     /**
-     * 权限类型
+     * 权限名
      */
     private String weightType;
+
+    /**
+     * 权限类型种类，0->普通权限，1->会员等级权限
+     */
+    private Byte type;
 
     private LocalDateTime createTime;
 

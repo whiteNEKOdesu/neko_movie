@@ -19,4 +19,9 @@ public class UserWeightMapperTest {
     public void getUnbindUserWeightByRoleId(){
         System.out.println(userWeightMapper.getUnbindUserWeightByRoleId(1));
     }
+
+    @Test
+    public void getUnbindMemberLevelWeightByRoleId(){
+        System.out.println(userWeightMapper.getUnbindMemberLevelWeightByRoleId(11));
+    }
 }

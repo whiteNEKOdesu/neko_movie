@@ -549,10 +549,10 @@ $baseUrl/member/admin_info/user_name_is_repeat?userName=NEKO
 
 #### 1.3 UserWeightController
 
-##### 1.3.1 新增权限
+##### 1.3.1 管理员新增普通权限
 
 - put请求，url传参
-- 需要 admin 角色
+- 需要 root 角色
 - 需要登录状态
 
 ```bash
@@ -590,10 +590,10 @@ $baseUrl/member/user_weight/new_user_weight?weightType=$weightType
 
 
 
-##### 1.3.2 分页查询权限信息
+##### 1.3.2 管理员分页查询普通权限信息
 
 - post请求，请求体传参
-- 需要 admin 角色
+- 需要 root 角色
 - 需要登录状态
 
 ```bash
@@ -684,10 +684,10 @@ $baseUrl/member/user_weight/weight_info
 
 
 
-##### 1.4.4 查询指定roleId还未绑定权限信息
+##### 1.3.3 管理员查询指定roleId还未绑定普通权限信息
 
 - post请求，url传参
-- 需要 admin 角色
+- 需要 root 角色
 - 需要登录状态
 
 ```bash
@@ -756,9 +756,99 @@ $baseUrl/member/user_weight/unbind_weight_info?roleId=1
 
 
 
+##### 1.3.4 管理员新增会员等级类型权限
+
+- put请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_weight/new_member_level_weight
+```
+
+
+
+- 参数
+
+| 参数名     | 参数含义 |
+| ---------- | -------- |
+| weightType | 权限名   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_weight/new_member_level_weight?weightType=1类视频
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.3.5 管理员获取指定roleId还未绑定会员等级权限信息
+
+- post请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_weight/unbind_member_level_weight_info
+```
+
+
+
+- 参数
+
+| 参数名 | 参数含义 |
+| ------ | -------- |
+| roleId | 角色名   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_weight/unbind_member_level_weight_info?roleId=11
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "weightId": 16,
+            "weightType": "1类视频",
+            "type": 1,
+            "createTime": "2023-07-26T10:45:56",
+            "updateTime": "2023-07-26T10:45:58"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.4 UserRoleController
 
-##### 1.4.1 新增角色
+##### 1.4.1 管理员新增非会员等级类型角色信息角色
 
 - put请求，url传参
 - 需要 root 角色
@@ -799,7 +889,7 @@ $baseUrl/member/user_role/new_user_role?roleType=koori
 
 
 
-##### 1.4.2 分页查询角色信息
+##### 1.4.2 管理员分页查询非会员等级类型角色信息
 
 - post请求，请求体传参
 - 需要admin角色
@@ -881,7 +971,7 @@ $baseUrl/member/user_role/role_info
 
 
 
-##### 1.4.3 查询管理员角色信息
+##### 1.4.3 管理员查询管理员角色信息
 
 - post请求，无参数
 - 需要root角色
@@ -920,6 +1010,47 @@ $baseUrl/member/user_role/admin_role_info
             "updateTime": "2023-04-02T13:36:52"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.4.4 新增会员等级类型角色信息角色
+
+- put请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_role/new_member_level_role
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义 |
+| -------- | -------- |
+| roleType | 角色名   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_role/new_member_level_role?roleType=普通会员
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
@@ -1141,32 +1272,58 @@ $baseUrl/member/member_level_dict/level_infos
     "result": [
         {
             "memberLevelId": 1,
-            "memberLevel": 0,
-            "levelName": "用户",
+            "roleId": 11,
+            "roleType": "普通会员",
             "price": 0.00,
-            "isDelete": false,
             "createTime": "2023-05-02T14:22:53",
             "updateTime": "2023-05-02T14:22:57"
-        },
-        {
-            "memberLevelId": 4,
-            "memberLevel": 1,
-            "levelName": "1级会员",
-            "price": 10.00,
-            "isDelete": false,
-            "createTime": "2023-05-02T14:50:24",
-            "updateTime": "2023-05-02T14:50:24"
-        },
-        {
-            "memberLevelId": 6,
-            "memberLevel": 2,
-            "levelName": "2级会员",
-            "price": 15.00,
-            "isDelete": false,
-            "createTime": "2023-05-02T15:56:52",
-            "updateTime": "2023-05-02T16:26:55"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.7.2 管理员添加用户等级信息
+
+- put请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/member_level_dict/new_level
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义    |
+| -------- | ----------- |
+| roleType | 角色名      |
+| price    | 开通价格/月 |
+
+
+
+- 示例
+
+```json
+{
+    "roleType": "普通会员",
+    "price": 15
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
@@ -1922,7 +2079,7 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "videoInfoId": "1683373796746121218",
             "seriesNumber": 5,
             "requireMemberLevelId": 1,
-            "levelName": "用户",
+            "levelName": "普通会员",
             "createTime": "2023-07-24T15:09:44",
             "updateTime": "2023-07-24T15:09:44"
         },
@@ -1931,7 +2088,7 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "videoInfoId": "1683373796746121218",
             "seriesNumber": 6,
             "requireMemberLevelId": 1,
-            "levelName": "用户",
+            "levelName": "普通会员",
             "createTime": "2023-07-24T15:14:08",
             "updateTime": "2023-07-24T15:14:08"
         }

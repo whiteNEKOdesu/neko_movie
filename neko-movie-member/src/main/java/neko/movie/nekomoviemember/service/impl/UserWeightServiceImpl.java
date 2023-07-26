@@ -3,6 +3,7 @@ package neko.movie.nekomoviemember.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
+import neko.movie.nekomoviecommonbase.utils.entity.WeightSortType;
 import neko.movie.nekomoviemember.entity.UserWeight;
 import neko.movie.nekomoviemember.mapper.UserWeightMapper;
 import neko.movie.nekomoviemember.service.UserWeightService;
@@ -26,7 +27,7 @@ import java.util.List;
 public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWeight> implements UserWeightService {
 
     /**
-     * 新增权限
+     * 新增普通权限
      */
     @Override
     public void newUserWeight(String weightType) {
@@ -44,12 +45,13 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
     }
 
     /**
-     * 分页查询权限信息
+     * 分页查询普通权限信息
      */
     @Override
     public Page<UserWeight> getUserWeightByQueryLimitedPage(QueryVo vo) {
         Page<UserWeight> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
         QueryWrapper<UserWeight> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserWeight::getType, WeightSortType.NORMAL_TYPE);
         if(StringUtils.hasText(vo.getQueryWords())){
             queryWrapper.lambda().eq(UserWeight::getWeightType, vo.getQueryWords());
         }
@@ -60,10 +62,37 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
     }
 
     /**
-     * 获取指定roleId还未绑定权限信息
+     * 获取指定roleId还未绑定普通权限信息
      */
     @Override
     public List<UserWeight> getUnbindWeightByRoleId(Integer roleId) {
         return this.baseMapper.getUnbindUserWeightByRoleId(roleId);
+    }
+
+    /**
+     * 新增会员等级类型权限
+     */
+    @Override
+    public void newMemberLevelWeight(String weightType) {
+        if(this.baseMapper.getUserWeightByWeightType(weightType) != null){
+            throw new DuplicateKeyException("weightType重复");
+        }
+
+        UserWeight userWeight = new UserWeight();
+        LocalDateTime now = LocalDateTime.now();
+        userWeight.setWeightType(weightType)
+                .setType(WeightSortType.MEMBER_LEVEL_TYPE)
+                .setCreateTime(now)
+                .setUpdateTime(now);
+
+        this.baseMapper.insert(userWeight);
+    }
+
+    /**
+     * 获取指定roleId还未绑定会员等级权限信息
+     */
+    @Override
+    public List<UserWeight> getUnbindMemberLevelWeightByRoleId(Integer roleId) {
+        return this.baseMapper.getUnbindMemberLevelWeightByRoleId(roleId);
     }
 }
