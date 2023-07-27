@@ -2,6 +2,7 @@ package neko.movie.nekomovievideo.service;
 
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
 
 /**
  * <p>
@@ -13,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderInfoService extends IService<OrderInfo> {
     String getPreOrderToken();
+
+    String newOrder(NewOrderInfoVo vo);
 }

@@ -1,5 +1,6 @@
 package neko.movie.nekomoviemember.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
@@ -77,5 +78,19 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
     @Override
     public String getRoleTypeByMemberLevelId(Integer memberLevelId) {
         return this.baseMapper.getRoleTypeByMemberLevelId(memberLevelId);
+    }
+
+    /**
+     * 根据memberLevelId获取用户等级信息
+     */
+    @Override
+    public MemberLevelDictVo getMemberLevelDictMemberLevelId(Integer memberLevelId) {
+        MemberLevelDict memberLevelDict = this.baseMapper.selectOne(new QueryWrapper<MemberLevelDict>().lambda()
+                .eq(MemberLevelDict::getMemberLevelId, memberLevelId)
+                .eq(MemberLevelDict::getIsDelete, false));
+        MemberLevelDictVo vo = new MemberLevelDictVo();
+        BeanUtil.copyProperties(memberLevelDict, vo);
+
+        return vo;
     }
 }

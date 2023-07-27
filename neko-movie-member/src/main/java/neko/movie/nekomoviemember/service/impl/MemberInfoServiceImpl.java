@@ -57,6 +57,9 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
     private WeightRoleRelationService weightRoleRelationService;
 
     @Resource
+    private MemberLevelDictService memberLevelDictService;
+
+    @Resource
     private MailFeignService mailFeignService;
 
     @Resource
@@ -81,7 +84,8 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
                 StpUtil.login(memberInfo.getUid());
                 MemberInfoVo memberInfoVo = new MemberInfoVo();
                 BeanUtil.copyProperties(memberInfo, memberInfoVo);
-                memberInfoVo.setToken(StpUtil.getTokenValue())
+                memberInfoVo.setMemberLevelRoleType(memberLevelDictService.getRoleTypeByMemberLevelId(memberInfo.getMemberLevelId()))
+                        .setToken(StpUtil.getTokenValue())
                         .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(memberInfo.getUid()))
                         .setRoleTypes(weightRoleRelationService.getRoleTypesByUid(memberInfo.getUid()));
                 resultObject.setResult(memberInfoVo)

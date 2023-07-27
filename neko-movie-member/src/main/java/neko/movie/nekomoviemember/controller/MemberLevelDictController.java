@@ -55,4 +55,12 @@ public class MemberLevelDictController {
     public ResultObject<String> roleTypeByMemberLevelId(@RequestParam Integer memberLevelId){
         return ResultObject.ok(memberLevelDictService.getRoleTypeByMemberLevelId(memberLevelId));
     }
+
+    /**
+     * 根据memberLevelId获取用户等级信息
+     */
+    @GetMapping("member_level_dict_by_member_level_id")
+    public ResultObject<MemberLevelDictVo> memberLevelDictByMemberLevelId(@RequestParam Integer memberLevelId){
+        return ResultObject.ok(memberLevelDictService.getMemberLevelDictMemberLevelId(memberLevelId));
+    }
 }

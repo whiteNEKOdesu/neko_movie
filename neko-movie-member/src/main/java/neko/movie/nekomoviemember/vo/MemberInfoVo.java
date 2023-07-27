@@ -30,6 +30,8 @@ public class MemberInfoVo implements Serializable {
 
     private List<String> roleTypes;
 
+    private String memberLevelRoleType;
+
     private String token;
 
     private Byte gender;

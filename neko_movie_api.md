@@ -32,7 +32,7 @@ $baseUrl/member/member_info/log_in
 ```bash
 {
     "userName": "NEKO",
-    "userPassword": "K1fPQ3TFolOdP56BES51CL25KW/VcZVcYPR9GyWG5Zr657Ke767sVU+QzlxDATmJh7fvq30Png+ptJMAuJonlfKn1TmeH6GS5iEzmXjltBgKtmm6tCtWMFItNNlPtUczXNpoE1TiYkI99WwIKYvuYLSKSJK/vCGHNWx8/iUhTL4="
+    "userPassword": "QWTfNFa5JBWNDjawnGp2HShWBIWSXagEmQ/bttkmApglyPbdGRDUAwUzGgI/DGIZyhimznKlB0FTQtnOFWm93A0uzEKFKtgiOHxiOAouPR1AU8erCiSFwH0LvqcsdhTVzx3BRa5OvEfq2jsSQNjNxnAhcEL8YV4VjOVbBWnH0Bo="
 }
 ```
 
@@ -46,30 +46,36 @@ $baseUrl/member/member_info/log_in
         "uid": "1642067605873348610",
         "userName": "NEKO",
         "sourceName": null,
-        "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_market/2023-01-22/1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+        "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg",
         "weightTypes": [
             "base",
+            "courier_read",
+            "courier_write",
             "market_read",
-            "market_write"
+            "market_write",
+            "基本视频观看"
         ],
         "roleTypes": [
+            "courier",
+            "market",
             "user",
-            "market"
+            "普通会员"
         ],
-        "token": "de98e0a5-7332-4962-9681-8ae7c10626fb",
+        "memberLevelRoleType": "普通会员",
+        "token": "d393fdb3-3441-46a2-af15-04533b1b89bd",
         "gender": null,
         "source": null,
         "sourceUid": null,
-        "realName": null,
-        "idCardNumber": null,
+        "realName": "NEKO",
+        "idCardNumber": "420881200101184053",
         "phone": null,
         "mail": "NEKO@NEKO.com",
-        "level": 0,
-        "point": 0,
+        "level": null,
+        "point": null,
         "isBan": false,
         "isDelete": false,
         "createTime": "2023-04-01T15:33:20",
-        "updateTime": "2023-04-01T15:33:20"
+        "updateTime": "2023-07-25T17:12:07"
     },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
@@ -2332,6 +2338,32 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "updateTime": "2023-07-24T15:14:08"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+#### 2.5 OrderInfoController
+
+##### 2.5.1 获取预生成订单token，保证预生成订单接口幂等性
+
+- get请求
+- 此接口获取的token用于提交订单接口处参数使用，保证提交订单接口幂等性
+
+```bash
+$baseUrl/video/order_info/preorder_token
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": "202307271014218061684386714539352066",
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
