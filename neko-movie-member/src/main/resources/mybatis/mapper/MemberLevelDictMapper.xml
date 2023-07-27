@@ -17,4 +17,13 @@
             where member_level_id = #{memberLevelId}
         )
     </select>
+
+    <select id="getMemberLevelDictMemberLevelId" resultType="neko.movie.nekomoviemember.vo.MemberLevelDictVo">
+        select member_level_dict.member_level_id, member_level_dict.role_id,
+               user_role.role_type, member_level_dict.price,
+               member_level_dict.create_time, member_level_dict.update_time from member_level_dict
+        join user_role
+        on member_level_dict.role_id = user_role.role_id
+        where member_level_dict.member_level_id = #{memberLevelId} and member_level_dict.is_delete = 0
+    </select>
 </mapper>

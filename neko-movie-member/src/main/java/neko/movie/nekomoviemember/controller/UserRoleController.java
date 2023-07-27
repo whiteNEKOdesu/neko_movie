@@ -8,6 +8,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomoviemember.entity.UserRole;
 import neko.movie.nekomoviemember.service.UserRoleService;
+import neko.movie.nekomoviemember.vo.NewUserRoleVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,8 @@ public class UserRoleController {
     @SaCheckRole(RoleType.ROOT)
     @SaCheckLogin
     @PutMapping("new_user_role")
-    public ResultObject<Object> newUserRole(@RequestParam String roleType){
-        userRoleService.newUserRole(roleType);
+    public ResultObject<Object> newUserRole(@Validated @RequestBody NewUserRoleVo vo){
+        userRoleService.newUserRole(vo);
 
         return ResultObject.ok();
     }

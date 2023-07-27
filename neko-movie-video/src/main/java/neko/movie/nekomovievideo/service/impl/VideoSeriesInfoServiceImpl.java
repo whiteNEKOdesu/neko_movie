@@ -227,7 +227,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             //获取会员等级信息
             ResultObject<List<MemberLevelDictTo>> r = memberLevelDictFeignService.levelInfos();
             if(!r.getResponseCode().equals(200)){
-                throw new MemberServiceException("member微服务调用异常");
+                throw new MemberServiceException("member微服务远程调用异常");
             }
 
             //缓存无数据，查询存入缓存
@@ -254,7 +254,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             //远程调用member微服务获取会员等级类型权限信息
             ResultObject<List<UserWeightTo>> r = userWeightFeignService.memberLevelWeightInfos();
             if(!r.getResponseCode().equals(200)){
-                throw new MemberServiceException("member微服务调用异常");
+                throw new MemberServiceException("member微服务远程调用异常");
             }
 
             //缓存无数据，查询存入缓存

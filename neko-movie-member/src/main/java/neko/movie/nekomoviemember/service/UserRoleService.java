@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviemember.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomoviemember.vo.NewUserRoleVo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @since 2023-07-16
  */
 public interface UserRoleService extends IService<UserRole> {
-    void newUserRole(String roleType);
+    void newUserRole(NewUserRoleVo vo);
 
     Page<UserRole> getUserRolesByQueryLimitedPage(QueryVo vo);
 

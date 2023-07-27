@@ -16,4 +16,7 @@ public interface MemberLevelDictFeignService {
 
     @GetMapping("member_level_dict/role_type_by_member_level_id")
     ResultObject<String> roleTypeByMemberLevelId(@RequestParam Integer memberLevelId);
+
+    @GetMapping("member_level_dict/member_level_dict_by_member_level_id")
+    ResultObject<MemberLevelDictTo> memberLevelDictByMemberLevelId(@RequestParam Integer memberLevelId);
 }

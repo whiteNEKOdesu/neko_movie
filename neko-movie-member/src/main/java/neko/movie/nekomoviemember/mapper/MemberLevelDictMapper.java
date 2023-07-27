@@ -20,4 +20,6 @@ public interface MemberLevelDictMapper extends BaseMapper<MemberLevelDict> {
     List<MemberLevelDictVo> getMemberLevelDictInfo();
 
     String getRoleTypeByMemberLevelId(Integer memberLevelId);
+
+    MemberLevelDictVo getMemberLevelDictMemberLevelId(Integer memberLevelId);
 }

@@ -85,12 +85,6 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
      */
     @Override
     public MemberLevelDictVo getMemberLevelDictMemberLevelId(Integer memberLevelId) {
-        MemberLevelDict memberLevelDict = this.baseMapper.selectOne(new QueryWrapper<MemberLevelDict>().lambda()
-                .eq(MemberLevelDict::getMemberLevelId, memberLevelId)
-                .eq(MemberLevelDict::getIsDelete, false));
-        MemberLevelDictVo vo = new MemberLevelDictVo();
-        BeanUtil.copyProperties(memberLevelDict, vo);
-
-        return vo;
+        return this.baseMapper.getMemberLevelDictMemberLevelId(memberLevelId);
     }
 }

@@ -1010,7 +1010,7 @@ $baseUrl/member/user_weight/member_level_weight_name_by_weight_id?weightId=16
 
 ##### 1.4.1 管理员新增非会员等级类型角色信息角色
 
-- put请求，url传参
+- put请求，请求体传参
 - 需要 root 角色
 - 需要登录状态
 
@@ -1022,16 +1022,20 @@ $baseUrl/member/user_role/new_user_role
 
 - 参数
 
-| 参数名   | 参数含义 |
-| -------- | -------- |
-| roleType | 角色名   |
+| 参数名   | 参数含义                                         |
+| -------- | ------------------------------------------------ |
+| roleType | 角色名                                           |
+| type     | 角色类型种类，0->普通角色类型，1->管理员角色类型 |
 
 
 
 - 示例
 
-```bash
-$baseUrl/member/user_role/new_user_role?roleType=koori
+```json
+{
+    "roleType": "base_admin",
+    "type": 0
+}
 ```
 
 
@@ -1569,6 +1573,52 @@ $baseUrl/member/member_level_dict/role_type_by_member_level_id?memberLevelId=1
 ```json
 {
     "result": "普通会员",
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.7.4 根据memberLevelId获取用户等级信息
+
+- get请求，url传参
+
+```bash
+$baseUrl/member/member_level_dict/member_level_dict_by_member_level_id
+```
+
+
+
+- 参数
+
+| 参数名        | 参数含义   |
+| ------------- | ---------- |
+| memberLevelId | 会员等级id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/member_level_dict/member_level_dict_by_member_level_id?memberLevelId=1
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "memberLevelId": 1,
+        "roleId": 11,
+        "roleType": "普通会员",
+        "price": 0.00,
+        "createTime": "2023-05-02T14:22:53",
+        "updateTime": "2023-05-02T14:22:57"
+    },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

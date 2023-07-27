@@ -15,5 +15,5 @@ import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
 public interface OrderInfoService extends IService<OrderInfo> {
     String getPreOrderToken();
 
-    String newOrder(NewOrderInfoVo vo);
+    void newOrder(NewOrderInfoVo vo);
 }

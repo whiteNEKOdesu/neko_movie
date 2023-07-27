@@ -1,5 +1,6 @@
 package neko.movie.nekomoviemember.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
@@ -8,6 +9,7 @@ import neko.movie.nekomoviemember.entity.UserRole;
 import neko.movie.nekomoviemember.mapper.UserRoleMapper;
 import neko.movie.nekomoviemember.service.UserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomoviemember.vo.NewUserRoleVo;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,15 +32,15 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
      * 新增非会员等级类型角色信息角色
      */
     @Override
-    public void newUserRole(String roleType) {
-        if(this.baseMapper.selectOne(new QueryWrapper<UserRole>().eq("role_type", roleType)) != null){
+    public void newUserRole(NewUserRoleVo vo) {
+        if(this.baseMapper.selectOne(new QueryWrapper<UserRole>().eq("role_type", vo.getRoleType())) != null){
             throw new DuplicateKeyException("roleType重复");
         }
 
         UserRole userRole = new UserRole();
         LocalDateTime now = LocalDateTime.now();
-        userRole.setRoleType(roleType)
-                .setCreateTime(now)
+        BeanUtil.copyProperties(vo, userRole);
+        userRole.setCreateTime(now)
                 .setUpdateTime(now);
 
         this.baseMapper.insert(userRole);
