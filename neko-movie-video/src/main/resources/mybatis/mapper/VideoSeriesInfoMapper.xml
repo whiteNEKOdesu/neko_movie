@@ -3,7 +3,7 @@
 <mapper namespace="neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper">
     <select id="getVideoSeriesInfoForAdminByQueryLimitedPage" resultType="neko.movie.nekomovievideo.vo.VideoSeriesInfoVo">
         select video_series_id, video_info_id, series_number,
-        video_url, require_member_level_id, create_time, update_time from video_series_info
+        video_url, weight_id, create_time, update_time from video_series_info
         where is_delete = 0 and video_info_id = #{videoInfoId}
         <if test="@org.springframework.util.StringUtils@hasText(queryWords)">
             and series_number = #{queryWords}
@@ -22,7 +22,7 @@
 
     <select id="getVideoSeriesInfosByVideoInfoId" resultType="neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo">
         select video_series_id, video_info_id, series_number,
-               require_member_level_id, create_time, update_time from video_series_info
+               weight_id, create_time, update_time from video_series_info
         where is_delete = 0 and video_info_id = #{videoInfoId}
         order by series_number
     </select>

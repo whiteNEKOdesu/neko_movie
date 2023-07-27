@@ -48,11 +48,11 @@ public class VideoSeriesInfoController {
     @PutMapping("new_video_series")
     public ResultObject<Object> newVideoSeries(@RequestParam String videoInfoId,
                                                @RequestParam Integer seriesNumber,
-                                               @RequestParam Integer requireMemberLevelId,
+                                               @RequestParam Integer weightId,
                                                @RequestPart MultipartFile file) throws InterruptedException {
         videoSeriesInfoService.newVideoSeriesInfo(videoInfoId,
                 seriesNumber,
-                requireMemberLevelId,
+                weightId,
                 file);
 
         return ResultObject.ok();

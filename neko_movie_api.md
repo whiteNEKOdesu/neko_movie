@@ -912,6 +912,94 @@ $baseUrl/member/user_weight/member_level_weight_info
 
 
 
+##### 1.3.7 获取会员等级类型全部权限信息
+
+- get请求
+
+```bash
+$baseUrl/member/user_weight/member_level_weight_infos
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "weightId": 16,
+            "weightType": "基本视频观看",
+            "type": 1,
+            "isDelete": false,
+            "createTime": "2023-07-26T16:00:49",
+            "updateTime": "2023-07-26T16:00:49"
+        },
+        {
+            "weightId": 17,
+            "weightType": "1级视频观看",
+            "type": 1,
+            "isDelete": false,
+            "createTime": "2023-07-26T16:08:59",
+            "updateTime": "2023-07-26T16:08:59"
+        },
+        {
+            "weightId": 18,
+            "weightType": "2级视频观看",
+            "type": 1,
+            "isDelete": false,
+            "createTime": "2023-07-26T16:09:12",
+            "updateTime": "2023-07-26T16:09:12"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.3.8 根据weightId获取会员等级类型权限名
+
+- get请求，url传参
+- 建议只提供给微服务远程调用
+
+```bash
+$baseUrl/member/user_weight/member_level_weight_name_by_weight_id
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义 |
+| -------- | -------- |
+| weightId | 权限id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_weight/member_level_weight_name_by_weight_id?weightId=16
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": "基本视频观看",
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.4 UserRoleController
 
 ##### 1.4.1 管理员新增非会员等级类型角色信息角色
@@ -2085,8 +2173,8 @@ $baseUrl/video/video_series_info/admin_video_series_infos
                 "videoInfoId": "1682551371754180610",
                 "seriesNumber": 1,
                 "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/89a91135-f3f3-4147-9ef6-2240702d1acb_nilou.mp4",
-                "requireMemberLevelId": 1,
-                "levelName": "用户",
+                "weightId": 16,
+                "weightType": "基本视频观看",
                 "createTime": "2023-07-22T09:31:44",
                 "updateTime": "2023-07-22T09:31:44"
             }
@@ -2123,12 +2211,12 @@ $baseUrl/video/video_series_info/new_video_series
 
 - 参数
 
-| 参数名               | 参数含义           |
-| -------------------- | ------------------ |
-| file                 | 文件               |
-| videoInfoId          | 集数所属影视信息id |
-| seriesNumber         | 集数               |
-| requireMemberLevelId | 观看所需会员等级id |
+| 参数名       | 参数含义                   |
+| ------------ | -------------------------- |
+| file         | 文件                       |
+| videoInfoId  | 集数所属影视信息id         |
+| seriesNumber | 集数                       |
+| weightId     | 观看所需会员等级类型权限id |
 
 
 
@@ -2181,8 +2269,8 @@ $baseUrl/video/video_series_info/video_series_info_by_id?videoSeriesId=168256404
         "videoInfoId": "1682551371754180610",
         "seriesNumber": 1,
         "videoUrl": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/89a91135-f3f3-4147-9ef6-2240702d1acb_nilou.mp4",
-        "requireMemberLevelId": 1,
-        "levelName": "用户",
+        "weightId": 16,
+        "weightType": "基本视频观看",
         "createTime": "2023-07-22T09:31:44",
         "updateTime": "2023-07-22T09:31:44"
     },
@@ -2229,8 +2317,8 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "videoSeriesId": "1683373881982767105",
             "videoInfoId": "1683373796746121218",
             "seriesNumber": 5,
-            "requireMemberLevelId": 1,
-            "levelName": "普通会员",
+            "weightId": 16,
+            "weightType": "基本视频观看",
             "createTime": "2023-07-24T15:09:44",
             "updateTime": "2023-07-24T15:09:44"
         },
@@ -2238,8 +2326,8 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "videoSeriesId": "1683374990189187074",
             "videoInfoId": "1683373796746121218",
             "seriesNumber": 6,
-            "requireMemberLevelId": 1,
-            "levelName": "普通会员",
+            "weightId": 16,
+            "weightType": "基本视频观看",
             "createTime": "2023-07-24T15:14:08",
             "updateTime": "2023-07-24T15:14:08"
         }

@@ -2,6 +2,7 @@ package neko.movie.nekomoviemember.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviecommonbase.utils.entity.WeightSortType;
 import neko.movie.nekomoviemember.entity.UserWeight;
@@ -9,9 +10,11 @@ import neko.movie.nekomoviemember.mapper.UserWeightMapper;
 import neko.movie.nekomoviemember.service.UserWeightService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +28,8 @@ import java.util.List;
  */
 @Service
 public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWeight> implements UserWeightService {
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 新增普通权限
@@ -86,6 +91,10 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
                 .setUpdateTime(now);
 
         this.baseMapper.insert(userWeight);
+
+        String key = Constant.MEMBER_REDIS_PREFIX + "member_level_weight_info";
+        //删除会员等级类型权限缓存
+        stringRedisTemplate.delete(key);
     }
 
     /**
@@ -119,5 +128,23 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
         this.baseMapper.selectPage(page, queryWrapper);
 
         return page;
+    }
+
+    /**
+     * 获取会员等级类型全部权限信息
+     */
+    @Override
+    public List<UserWeight> getMemberLevelUserWeights() {
+        return this.baseMapper.selectList(new QueryWrapper<UserWeight>().lambda()
+                .eq(UserWeight::getType, WeightSortType.MEMBER_LEVEL_TYPE)
+                .eq(UserWeight::getIsDelete, false));
+    }
+
+    /**
+     * 根据weightId获取会员等级类型权限名
+     */
+    @Override
+    public String getMemberLevelWeightTypeByWeightId(Integer weightId) {
+        return this.baseMapper.getMemberLevelWeightTypeByWeightId(weightId);
     }
 }

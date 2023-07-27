@@ -91,4 +91,20 @@ public class UserWeightController {
     public ResultObject<Page<UserWeight>> memberLevelWeightInfo(@Validated @RequestBody QueryVo vo){
         return ResultObject.ok(userWeightService.getMemberLevelUserWeightByQueryLimitedPage(vo));
     }
+
+    /**
+     * 获取会员等级类型全部权限信息
+     */
+    @GetMapping("member_level_weight_infos")
+    public ResultObject<List<UserWeight>> memberLevelWeightInfos(){
+        return ResultObject.ok(userWeightService.getMemberLevelUserWeights());
+    }
+
+    /**
+     * 根据weightId获取会员等级类型权限名，建议只提供给微服务远程调用
+     */
+    @GetMapping("member_level_weight_name_by_weight_id")
+    public ResultObject<String> memberLevelWeightNameByWeightId(@RequestParam Integer weightId){
+        return ResultObject.ok(userWeightService.getMemberLevelWeightTypeByWeightId(weightId));
+    }
 }

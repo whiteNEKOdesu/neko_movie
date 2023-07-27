@@ -13,10 +13,12 @@ import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
+import neko.movie.nekomovievideo.feign.member.UserWeightFeignService;
 import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.to.MemberLevelDictTo;
+import neko.movie.nekomovievideo.to.UserWeightTo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
 import org.redisson.api.RLock;
@@ -56,6 +58,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
     private MemberLevelDictFeignService memberLevelDictFeignService;
 
     @Resource
+    private UserWeightFeignService userWeightFeignService;
+
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     @Resource(name = "threadPoolExecutor")
@@ -81,14 +86,14 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             page.setTotal(this.baseMapper.getVideoSeriesInfoForAdminByQueryLimitedPageNumber(vo.getQueryWords(), vo.getObjectId().toString()));
         }, threadPool);
 
-        Map<Integer,String> levelMap = new HashMap<>();
+        Map<Integer,String> weightMap = new HashMap<>();
 
         CompletableFuture<Void> levelTask = CompletableFuture.runAsync(() -> {
-            //获取会员等级信息
-            List<MemberLevelDictTo> levelInfos = getLevelInfos();
+            //获取会员等级类型全部权限信息
+            List<UserWeightTo> memberLevelWeightInfos = getMemberLevelWeightInfos();
 
-            for(MemberLevelDictTo memberLevelDictTo : levelInfos){
-                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getRoleType());
+            for(UserWeightTo userWeightTo : memberLevelWeightInfos){
+                weightMap.put(userWeightTo.getWeightId(), userWeightTo.getWeightType());
             }
         }, threadPool);
 
@@ -96,7 +101,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
         //为vo设置会员等级名
         for(VideoSeriesInfoVo videoSeriesInfoVo : page.getRecords()){
-            videoSeriesInfoVo.setLevelName(levelMap.get(videoSeriesInfoVo.getRequireMemberLevelId()));
+            videoSeriesInfoVo.setWeightType(weightMap.get(videoSeriesInfoVo.getWeightId()));
         }
 
         return page;
@@ -108,7 +113,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
     @Override
     public void newVideoSeriesInfo(String videoInfoId,
                                    Integer seriesNumber,
-                                   Integer requireMemberLevelId,
+                                   Integer weightId,
                                    MultipartFile file) throws InterruptedException {
         //获取分布式锁
         RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:video_series:" + videoInfoId);
@@ -138,7 +143,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
                 videoSeriesInfo.setVideoInfoId(videoInfoId)
                         .setSeriesNumber(seriesNumber)
                         .setVideoUrl(videoUrl)
-                        .setRequireMemberLevelId(requireMemberLevelId)
+                        .setWeightId(weightId)
                         .setCreateTime(now)
                         .setUpdateTime(now);
 
@@ -161,18 +166,19 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             throw new NoSuchResultException("无此影视集数信息");
         }
 
-        ResultObject<String> r = memberLevelDictFeignService.roleTypeByMemberLevelId(videoSeriesInfo.getRequireMemberLevelId());
+        //远程调用member微服务获取影视集数观看要求权限名
+        ResultObject<String> r = userWeightFeignService.memberLevelWeightNameByWeightId(videoSeriesInfo.getWeightId());
         if(!r.getResponseCode().equals(200)){
             throw new MemberServiceException("member微服务远程调用异常");
         }
 
-        String roleType = r.getResult();
+        String weightType = r.getResult();
         //校验是否拥有观看权限
-        StpUtil.checkRole(roleType);
+        StpUtil.checkPermission(weightType);
 
         VideoSeriesInfoVo videoSeriesInfoVo = new VideoSeriesInfoVo();
         BeanUtil.copyProperties(videoSeriesInfo, videoSeriesInfoVo);
-        videoSeriesInfoVo.setLevelName(roleType);
+        videoSeriesInfoVo.setWeightType(weightType);
 
         return videoSeriesInfoVo;
     }
@@ -185,14 +191,14 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         CompletableFuture<List<VideoSeriesInfoUserVo>> videoSeriesInfoTask = CompletableFuture.supplyAsync(() ->
                 this.baseMapper.getVideoSeriesInfosByVideoInfoId(videoInfoId), threadPool);
 
-        Map<Integer,String> levelMap = new HashMap<>();
+        Map<Integer,String> weightMap = new HashMap<>();
 
         CompletableFuture<Void> levelTask = CompletableFuture.runAsync(() -> {
-            //获取会员等级信息
-            List<MemberLevelDictTo> levelInfos = getLevelInfos();
+            //获取会员等级类型全部权限信息
+            List<UserWeightTo> memberLevelWeightInfos = getMemberLevelWeightInfos();
 
-            for(MemberLevelDictTo memberLevelDictTo : levelInfos){
-                levelMap.put(memberLevelDictTo.getMemberLevelId(), memberLevelDictTo.getRoleType());
+            for(UserWeightTo userWeightTo : memberLevelWeightInfos){
+                weightMap.put(userWeightTo.getWeightId(), userWeightTo.getWeightType());
             }
         }, threadPool);
 
@@ -201,7 +207,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         List<VideoSeriesInfoUserVo> list = videoSeriesInfoTask.get();
         //为vo设置会员等级名
         for(VideoSeriesInfoUserVo videoSeriesInfoUserVo : list){
-            videoSeriesInfoUserVo.setLevelName(levelMap.get(videoSeriesInfoUserVo.getRequireMemberLevelId()));
+            videoSeriesInfoUserVo.setWeightType(weightMap.get(videoSeriesInfoUserVo.getWeightId()));
         }
 
         return list;
@@ -211,7 +217,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
      * 获取会员等级信息
      */
     private List<MemberLevelDictTo> getLevelInfos(){
-        String key = Constant.VIDEO_REDIS_PREFIX + "level_info";
+        String key = Constant.MEMBER_REDIS_PREFIX + "level_info";
         String cache = stringRedisTemplate.opsForValue().get(key);
 
         //缓存有数据
@@ -220,6 +226,33 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         }else{
             //获取会员等级信息
             ResultObject<List<MemberLevelDictTo>> r = memberLevelDictFeignService.levelInfos();
+            if(!r.getResponseCode().equals(200)){
+                throw new MemberServiceException("member微服务调用异常");
+            }
+
+            //缓存无数据，查询存入缓存
+            stringRedisTemplate.opsForValue().setIfAbsent(key,
+                    JSONUtil.toJsonStr(r.getResult()),
+                    1000 * 60 * 60 * 5,
+                    TimeUnit.MILLISECONDS);
+
+            return r.getResult();
+        }
+    }
+
+    /**
+     * 获取会员等级类型全部权限信息
+     */
+    private List<UserWeightTo> getMemberLevelWeightInfos(){
+        String key = Constant.MEMBER_REDIS_PREFIX + "member_level_weight_info";
+        String cache = stringRedisTemplate.opsForValue().get(key);
+
+        //缓存有数据
+        if(cache != null){
+            return JSONUtil.toList(JSONUtil.parseArray(cache), UserWeightTo.class);
+        }else{
+            //远程调用member微服务获取会员等级类型权限信息
+            ResultObject<List<UserWeightTo>> r = userWeightFeignService.memberLevelWeightInfos();
             if(!r.getResponseCode().equals(200)){
                 throw new MemberServiceException("member微服务调用异常");
             }

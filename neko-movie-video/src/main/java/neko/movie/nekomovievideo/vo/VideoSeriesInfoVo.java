@@ -29,14 +29,14 @@ public class VideoSeriesInfoVo implements Serializable {
     private String videoUrl;
 
     /**
-     * 观看所需等级id，对应neko_movie_member数据库member_level_dict表member_level_id
+     * 观看所需会员等级类型权限id，对应neko_movie_member数据库user_weight表weight_id
      */
-    private Integer requireMemberLevelId;
+    private Integer weightId;
 
     /**
-     * 观看所需等级名
+     * 观看所需权限名
      */
-    private String levelName;
+    private String weightType;
 
     private LocalDateTime createTime;
 

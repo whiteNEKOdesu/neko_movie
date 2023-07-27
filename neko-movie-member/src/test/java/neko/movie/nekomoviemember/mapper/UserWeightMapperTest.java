@@ -30,4 +30,9 @@ public class UserWeightMapperTest {
     public void getMemberLevelWeightNumberByWeightIds(){
         System.out.println(userWeightMapper.getMemberLevelWeightNumberByWeightIds(Arrays.asList(11, 12)));
     }
+
+    @Test
+    public void getMemberLevelWeightTypeByWeightId(){
+        System.out.println(userWeightMapper.getMemberLevelWeightTypeByWeightId(16));
+    }
 }

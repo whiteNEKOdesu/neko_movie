@@ -26,4 +26,10 @@
         </foreach>
         and type = ${@neko.movie.nekomoviecommonbase.utils.entity.WeightSortType@MEMBER_LEVEL_TYPE}
     </select>
+
+    <select id="getMemberLevelWeightTypeByWeightId" resultType="String">
+        select weight_type from user_weight
+        where weight_id = #{weightId}
+        and type = ${@neko.movie.nekomoviecommonbase.utils.entity.WeightSortType@MEMBER_LEVEL_TYPE}
+    </select>
 </mapper>

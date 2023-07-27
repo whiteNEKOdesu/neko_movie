@@ -66,7 +66,7 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
         //添加用户等级信息
         this.baseMapper.insert(memberLevelDict);
 
-        String key = Constant.VIDEO_REDIS_PREFIX + "level_info";
+        String key = Constant.MEMBER_REDIS_PREFIX + "level_info";
         //删除会员等级缓存
         stringRedisTemplate.delete(key);
     }
