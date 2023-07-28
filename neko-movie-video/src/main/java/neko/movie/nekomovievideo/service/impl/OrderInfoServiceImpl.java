@@ -11,9 +11,11 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomovievideo.config.AliPayTemplate;
+import neko.movie.nekomovievideo.entity.DiscountInfo;
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
 import neko.movie.nekomovievideo.mapper.OrderInfoMapper;
+import neko.movie.nekomovievideo.service.DiscountInfoService;
 import neko.movie.nekomovievideo.service.OrderInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomovievideo.to.AliPayTo;
@@ -44,6 +46,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> implements OrderInfoService {
+    @Resource
+    private DiscountInfoService discountInfoService;
+
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
@@ -97,10 +102,17 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         BigDecimal cost = memberLevelDictTo.getPrice()
                 .multiply(new BigDecimal(vo.getPayLevelMonths().toString()))
                 .setScale(2, BigDecimal.ROUND_DOWN);
+        LocalDateTime now = LocalDateTime.now();
+        if(vo.getDiscountId() != null){
+            DiscountInfo discountInfo = discountInfoService.getById(vo.getDiscountId());
+            if(!discountInfo.getIsDelete() && !discountInfo.getIsEnd()){
+                cost = cost.multiply(new BigDecimal(discountInfo.getDiscountRate() * 0.01 + ""))
+                        .setScale(2, BigDecimal.ROUND_DOWN);
+            }
+        }
 
         OrderInfo orderInfo = new OrderInfo();
         BeanUtil.copyProperties(vo, orderInfo);
-        LocalDateTime now = LocalDateTime.now();
         orderInfo.setOrderId(orderId)
                 .setUid(uid)
                 .setCost(cost)

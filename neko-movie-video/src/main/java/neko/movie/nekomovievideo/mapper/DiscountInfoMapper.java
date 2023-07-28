@@ -2,7 +2,10 @@ package neko.movie.nekomovievideo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
+import neko.movie.nekomovievideo.vo.DiscountInfoVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DiscountInfoMapper extends BaseMapper<DiscountInfo> {
+    DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable();
 
+    int lockStock(String discountId, LocalDateTime updateTime);
 }

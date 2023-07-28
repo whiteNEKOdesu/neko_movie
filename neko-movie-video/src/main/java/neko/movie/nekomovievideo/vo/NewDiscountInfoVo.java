@@ -42,7 +42,7 @@ public class NewDiscountInfoVo implements Serializable {
     private Integer number;
 
     /**
-     * 开始时间
+     * 开始时间，必须晚于添加时间2天
      */
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -2,6 +2,7 @@ package neko.movie.nekomovievideo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
+import neko.movie.nekomovievideo.vo.DiscountInfoVo;
 import neko.movie.nekomovievideo.vo.NewDiscountInfoVo;
 
 /**
@@ -14,4 +15,6 @@ import neko.movie.nekomovievideo.vo.NewDiscountInfoVo;
  */
 public interface DiscountInfoService extends IService<DiscountInfo> {
     void newDiscountInfo(NewDiscountInfoVo vo);
+
+    DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable();
 }

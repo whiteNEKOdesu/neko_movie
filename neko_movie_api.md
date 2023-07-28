@@ -2422,6 +2422,93 @@ $baseUrl/video/order_info/preorder_token
 
 
 
+#### 2.6 DiscountInfoController
+
+##### 2.6.1 管理员添加折扣信息
+
+- put请求，请求体传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/video/discount_info/new_discount_info
+```
+
+
+
+- 参数
+
+| 参数名       | 参数含义                      |
+| ------------ | ----------------------------- |
+| discountName | 秒杀折扣名                    |
+| discountRate | 折扣百分比                    |
+| number       | 限制数量                      |
+| startTime    | 开始时间，必须晚于添加时间2天 |
+| endTime      | 结束时间                      |
+
+
+
+- 示例
+
+```json
+{
+    "discountName": "会员折扣活动",
+    "discountRate": 90,
+    "number": 5,
+    "startTime": "2023-07-30 11:35:41",
+    "endTime": "2023-07-30 12:35:41"
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.6.2 获取2天内开始或已开始折扣信息
+
+- get请求
+
+```bash
+$baseUrl/video/discount_info/two_days_or_available_discount_info
+```
+
+
+
+- 响应结果
+
+> discountRate为折扣百分比
+>
+> number为限制数量
+
+```json
+{
+    "result": {
+        "discountId": "1684759662223716354",
+        "discountName": "会员折扣活动",
+        "discountRate": 90,
+        "number": 5,
+        "startTime": "2023-07-30T11:35:41",
+        "endTime": "2023-07-30T12:35:41"
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 3 third_party第三方微服务
 
 #### 3.1 MailController

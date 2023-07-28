@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
 import neko.movie.nekomovievideo.mapper.DiscountInfoMapper;
 import neko.movie.nekomovievideo.service.DiscountInfoService;
+import neko.movie.nekomovievideo.vo.DiscountInfoVo;
 import neko.movie.nekomovievideo.vo.NewDiscountInfoVo;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +28,26 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
      */
     @Override
     public void newDiscountInfo(NewDiscountInfoVo vo) {
-        if(!vo.getStartTime().isBefore(vo.getEndTime())){
+        LocalDateTime now = LocalDateTime.now();
+        //开始时间必须晚于添加时间2天
+        if(!now.plusDays(2).isBefore(vo.getStartTime()) || !vo.getStartTime().isBefore(vo.getEndTime())){
             throw new IllegalArgumentException("秒杀折扣开始时间，结束时间非法");
         }
 
         DiscountInfo discountInfo = new DiscountInfo();
         BeanUtil.copyProperties(vo, discountInfo);
-        LocalDateTime now = LocalDateTime.now();
         discountInfo.setOperateAdminUid(StpUtil.getLoginId().toString())
                 .setCreateTime(now)
                 .setUpdateTime(now);
 
         this.baseMapper.insert(discountInfo);
+    }
+
+    /**
+     * 获取2天内开始或已开始折扣信息
+     */
+    @Override
+    public DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable() {
+        return this.baseMapper.getDiscountInfoNearTwoDaysOrAvailable();
     }
 }

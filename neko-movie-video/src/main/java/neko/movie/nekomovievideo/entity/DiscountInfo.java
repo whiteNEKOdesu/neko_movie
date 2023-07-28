@@ -58,6 +58,11 @@ public class DiscountInfo implements Serializable {
     private Integer lockNumber;
 
     /**
+     * 是否结束
+     */
+    private Boolean isEnd;
+
+    /**
      * 是否删除
      */
     private Boolean isDelete;
