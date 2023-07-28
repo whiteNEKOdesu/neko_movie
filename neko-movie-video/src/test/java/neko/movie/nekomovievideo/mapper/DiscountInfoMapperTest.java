@@ -18,6 +18,8 @@ public class DiscountInfoMapperTest {
 
     @Test
     public void lockStock(){
-        discountInfoMapper.lockStock("1684763322789949442", LocalDateTime.now());
+        discountInfoMapper.lockStock("1684813417543634945",
+                1,
+                LocalDateTime.now());
     }
 }

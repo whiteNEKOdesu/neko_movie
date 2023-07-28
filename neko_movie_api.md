@@ -2422,6 +2422,54 @@ $baseUrl/video/order_info/preorder_token
 
 
 
+##### 2.6.1 提交订单
+
+- put请求，请求体传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/order_info/new_order
+```
+
+
+
+- 参数
+
+| 参数名         | 参数含义                                                     |
+| -------------- | ------------------------------------------------------------ |
+| token          | 2.5.1接口获取，用于保证提交订单接口幂等性，订单提交后为订单号 |
+| discountId     | 秒杀折扣id                                                   |
+| memberLevelId  | 要开通的会员等级id                                           |
+| payLevelMonths | 购买月数                                                     |
+
+
+
+- 示例
+
+```json
+{
+    "token": "202307281615561901684840095271706625",
+    "discountId": "1684813417543634945",
+    "memberLevelId": 4,
+    "payLevelMonths": 1
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.6 DiscountInfoController
 
 ##### 2.6.1 管理员添加折扣信息

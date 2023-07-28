@@ -19,5 +19,7 @@ import java.time.LocalDateTime;
 public interface DiscountInfoMapper extends BaseMapper<DiscountInfo> {
     DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable();
 
-    int lockStock(String discountId, LocalDateTime updateTime);
+    int lockStock(String discountId,
+                  Integer lockNumber,
+                  LocalDateTime updateTime);
 }

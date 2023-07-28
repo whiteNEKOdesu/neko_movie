@@ -17,4 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiscountLockLogServiceImpl extends ServiceImpl<DiscountLockLogMapper, DiscountLockLog> implements DiscountLockLogService {
 
+    /**
+     * 添加库存锁定记录
+     */
+    @Override
+    public void newDiscountLockLog(DiscountLockLog discountLockLog) {
+        this.baseMapper.insert(discountLockLog);
+    }
 }

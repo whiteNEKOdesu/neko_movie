@@ -17,4 +17,6 @@ public interface DiscountInfoService extends IService<DiscountInfo> {
     void newDiscountInfo(NewDiscountInfoVo vo);
 
     DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable();
+
+    void lockStock(String discountId, String orderId, Integer lockNumber);
 }

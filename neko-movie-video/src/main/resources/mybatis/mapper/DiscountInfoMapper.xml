@@ -11,7 +11,7 @@
 
     <update id="lockStock">
         update discount_info
-        set lock_number = lock_number + 1, update_time = #{updateTime}
-        where discount_id = #{discountId} and number >= lock_number + 1
+        set lock_number = lock_number + #{lockNumber}, update_time = #{updateTime}
+        where discount_id = #{discountId} and number >= lock_number + #{lockNumber}
     </update>
 </mapper>

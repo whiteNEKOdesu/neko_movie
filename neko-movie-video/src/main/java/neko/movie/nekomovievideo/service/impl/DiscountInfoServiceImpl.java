@@ -3,13 +3,18 @@ package neko.movie.nekomovievideo.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomoviecommonbase.utils.exception.StockNotEnoughException;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
+import neko.movie.nekomovievideo.entity.DiscountLockLog;
 import neko.movie.nekomovievideo.mapper.DiscountInfoMapper;
 import neko.movie.nekomovievideo.service.DiscountInfoService;
+import neko.movie.nekomovievideo.service.DiscountLockLogService;
 import neko.movie.nekomovievideo.vo.DiscountInfoVo;
 import neko.movie.nekomovievideo.vo.NewDiscountInfoVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
@@ -22,6 +27,8 @@ import java.time.LocalDateTime;
  */
 @Service
 public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, DiscountInfo> implements DiscountInfoService {
+    @Resource
+    private DiscountLockLogService discountLockLogService;
 
     /**
      * 添加折扣信息
@@ -49,5 +56,28 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
     @Override
     public DiscountInfoVo getDiscountInfoNearTwoDaysOrAvailable() {
         return this.baseMapper.getDiscountInfoNearTwoDaysOrAvailable();
+    }
+
+    /**
+     * 锁定库存
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void lockStock(String discountId, String orderId, Integer lockNumber) {
+        LocalDateTime now = LocalDateTime.now();
+        //锁定库存
+        if(this.baseMapper.lockStock(discountId, lockNumber, now) != 1){
+            throw new StockNotEnoughException("库存不足");
+        }
+
+        DiscountLockLog discountLockLog = new DiscountLockLog();
+        discountLockLog.setOrderId(orderId)
+                .setDiscountId(discountId)
+                .setLockNumber(lockNumber)
+                .setCreateTime(now)
+                .setUpdateTime(now);
+
+        //添加库存锁定记录
+        discountLockLogService.newDiscountLockLog(discountLockLog);
     }
 }
