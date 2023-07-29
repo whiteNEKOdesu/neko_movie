@@ -228,6 +228,9 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         return url;
     }
 
+    /**
+     * 修改会员等级
+     */
     @Override
     public void updateMemberLevel(String uid, Integer payLevelMonths, Integer memberLevelId) {
         MemberLevelDict memberLevelDict = memberLevelDictService.getById(memberLevelId);
