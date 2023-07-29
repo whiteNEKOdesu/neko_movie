@@ -1,4 +1,4 @@
-package neko.movie.nekomovievideo.config;
+package neko.movie.nekomoviemember.config;
 
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
 import org.springframework.amqp.core.*;

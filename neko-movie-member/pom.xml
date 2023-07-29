@@ -16,6 +16,10 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <!--开启自定义配置提示 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

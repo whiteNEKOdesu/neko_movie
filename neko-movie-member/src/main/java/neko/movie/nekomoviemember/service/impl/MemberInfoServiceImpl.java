@@ -15,6 +15,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.Response;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.exception.*;
 import neko.movie.nekomoviemember.entity.MemberInfo;
+import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import neko.movie.nekomoviemember.feign.thirdparty.MailFeignService;
 import neko.movie.nekomoviemember.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomoviemember.ip.IPHandler;
@@ -225,5 +226,20 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         this.baseMapper.updateById(todoUpdateMemberInfo);
 
         return url;
+    }
+
+    @Override
+    public void updateMemberLevel(String uid, Integer payLevelMonths, Integer memberLevelId) {
+        MemberLevelDict memberLevelDict = memberLevelDictService.getById(memberLevelId);
+        if(memberLevelDict != null && !memberLevelDict.getIsDelete()){
+            LocalDateTime now = LocalDateTime.now();
+            MemberInfo memberInfo = new MemberInfo();
+            memberInfo.setUid(uid)
+                    .setMemberLevelId(memberLevelId)
+                    .setLevelExpireTime(now.plusMonths(payLevelMonths))
+                    .setUpdateTime(now);
+
+            this.baseMapper.updateById(memberInfo);
+        }
     }
 }
