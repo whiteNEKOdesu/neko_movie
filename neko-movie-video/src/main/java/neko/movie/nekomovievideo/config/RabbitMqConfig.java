@@ -110,7 +110,7 @@ public class RabbitMqConfig {
         return QueueBuilder.durable(RabbitMqConstant.VIDEO_DELETE_DELAY_QUEUE_NAME)
                 .deadLetterExchange(RabbitMqConstant.VIDEO_DELETE_EXCHANGE_NAME)
                 .deadLetterRoutingKey(RabbitMqConstant.VIDEO_DELETE_QUEUE_ROUTING_KEY_NAME)
-                .ttl(1000 * 60 * 60 * 24 * 15)
+                .withArgument("x-message-ttl", 1000 * 60 * 60 * 24 * 15)
                 .build();
     }
 

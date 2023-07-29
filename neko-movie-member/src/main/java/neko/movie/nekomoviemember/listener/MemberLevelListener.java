@@ -33,17 +33,17 @@ public class MemberLevelListener {
                 true);
         UpdateMemberLevelTo updateMemberLevelTo = rabbitMQMessageTo.getMessage();
         try {
-            log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级: " + updateMemberLevelTo.getMemberLevelId() + "，开始处理");
+            log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId() + "，开始处理");
             //修改用户等级信息
             memberInfoService.updateMemberLevel(updateMemberLevelTo.getUid(),
                     updateMemberLevelTo.getPayLevelMonths(),
                     updateMemberLevelTo.getMemberLevelId());
 
-            log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级: " + updateMemberLevelTo.getMemberLevelId() + "，开通成功");
+            log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId() + "，开通成功");
             //单个确认消费消息
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception e){
-            log.error("开通会员等级发生异常，uid: " + updateMemberLevelTo.getUid() + "，开通会员等级: " + updateMemberLevelTo.getMemberLevelId());
+            log.error("开通会员等级发生异常，uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId());
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
         }
