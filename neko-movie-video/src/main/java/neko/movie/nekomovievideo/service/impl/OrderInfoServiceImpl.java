@@ -313,4 +313,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             return "error";
         }
     }
+
+    /**
+     * 根据订单号修改订单状态为取消状态
+     */
+    @Override
+    public void updateOrderInfoStatusToCancel(String orderId) {
+        this.baseMapper.updateOrderInfoStatusToCancel(orderId, LocalDateTime.now());
+    }
 }

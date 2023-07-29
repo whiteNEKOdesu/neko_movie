@@ -21,4 +21,6 @@ public interface DiscountInfoService extends IService<DiscountInfo> {
     void lockStock(String discountId, String orderId, Integer lockNumber);
 
     void confirmLockStockPay(String orderId);
+
+    void unlockStock(String orderId);
 }

@@ -39,6 +39,7 @@ public class OrderInfoController {
     /**
      * 提交订单
      */
+    @SaCheckLogin
     @PutMapping("new_order")
     public ResultObject<Object> newOrder(@Validated @RequestBody NewOrderInfoVo vo) throws ExecutionException, InterruptedException {
         orderInfoService.newOrder(vo);

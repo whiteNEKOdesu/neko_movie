@@ -20,4 +20,11 @@
         set number = number - #{lockNumber}, lock_number = lock_number - #{lockNumber}, update_time = #{updateTime}
         where discount_id = #{discountId}
     </update>
+
+    <update id="unlockStock">
+        update discount_info
+        set lock_number = lock_number - (select lock_number from discount_lock_log
+            where order_id = #{orderId} and status = ${@neko.movie.nekomoviecommonbase.utils.entity.StockStatus@LOCKING}), update_time = #{updateTime}
+        where discount_id = #{discountId}
+    </update>
 </mapper>

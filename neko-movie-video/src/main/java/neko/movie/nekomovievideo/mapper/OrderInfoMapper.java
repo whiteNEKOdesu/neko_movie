@@ -4,6 +4,8 @@ import neko.movie.nekomovievideo.entity.OrderInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 订单表 Mapper 接口
@@ -14,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
-
+    void updateOrderInfoStatusToCancel(String orderId,
+                                      LocalDateTime updateTime);
 }

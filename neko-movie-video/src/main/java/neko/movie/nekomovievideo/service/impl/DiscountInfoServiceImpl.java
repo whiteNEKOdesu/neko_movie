@@ -4,11 +4,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import neko.movie.nekomoviecommonbase.utils.entity.OrderStatus;
 import neko.movie.nekomoviecommonbase.utils.entity.StockStatus;
 import neko.movie.nekomoviecommonbase.utils.exception.StockNotEnoughException;
+import neko.movie.nekomoviecommonbase.utils.exception.StockUnlockException;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
 import neko.movie.nekomovievideo.entity.DiscountLockLog;
+import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.mapper.DiscountInfoMapper;
+import neko.movie.nekomovievideo.mapper.OrderInfoMapper;
 import neko.movie.nekomovievideo.service.DiscountInfoService;
 import neko.movie.nekomovievideo.service.DiscountLockLogService;
 import neko.movie.nekomovievideo.vo.DiscountInfoVo;
@@ -32,6 +36,9 @@ import java.time.LocalDateTime;
 public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, DiscountInfo> implements DiscountInfoService {
     @Resource
     private DiscountLockLogService discountLockLogService;
+
+    @Resource
+    private OrderInfoMapper orderInfoMapper;
 
     /**
      * 添加折扣信息
@@ -103,5 +110,50 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
         this.baseMapper.decreaseStock(discountLockLog.getDiscountId(),
                 discountLockLog.getLockNumber(),
                 LocalDateTime.now());
+    }
+
+    /**
+     * 解锁指定订单号库存数量
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void unlockStock(String orderId) {
+        log.info("订单超时准备解锁库存，订单号: " + orderId);
+        //获取订单信息
+        OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+
+        if(orderInfo == null){
+            log.warn("解锁库存订单号: " + orderId + "，订单不存在，尝试解锁库存");
+            //解锁库存
+            unlockStockTask(orderId);
+            return;
+        }
+
+        //订单未取消，不解锁库存
+        if(!orderInfo.getStatus().equals(OrderStatus.CANCELED)){
+            throw new StockUnlockException("订单未取消，不解锁库存");
+        }
+
+        //解锁库存
+        unlockStockTask(orderId);
+    }
+
+    private void unlockStockTask(String orderId){
+        DiscountLockLog discountLockLog = discountLockLogService.getById(orderId);
+        if(discountLockLog == null){
+            log.warn("订单号: " + orderId + "对应库存锁定记录不存在");
+            return;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        //解锁库存
+        this.baseMapper.unlockStock(discountLockLog.getDiscountId(),
+                orderId,
+                now);
+
+        //修改库存锁定记录状态为已解锁
+        discountLockLogService.updateLockStatus(orderId, StockStatus.CANCEL_LOCK);
+
+        log.info("订单超时解锁库存完成，订单号: " + orderId);
     }
 }

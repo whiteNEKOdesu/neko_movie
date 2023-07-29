@@ -29,4 +29,11 @@ public class DiscountInfoMapperTest {
                 1,
                 LocalDateTime.now());
     }
+
+    @Test
+    public void unlockStock(){
+        discountInfoMapper.unlockStock("1684813417543634945",
+                "202307291554322811685197098011615234",
+                LocalDateTime.now());
+    }
 }
