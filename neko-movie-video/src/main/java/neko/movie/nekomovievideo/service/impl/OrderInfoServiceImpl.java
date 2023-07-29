@@ -277,6 +277,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 //修改订单状态信息
                 this.baseMapper.updateById(todoUpdate);
 
+                //折扣id不为空，则解锁库存并扣除库存
+                if(orderInfo.getDiscountId() != null){
+                    discountInfoService.confirmLockStockPay(orderId);
+                }
+
                 //组装修改会员等级队列消息to
                 UpdateMemberLevelTo updateMemberLevelTo = new UpdateMemberLevelTo();
                 updateMemberLevelTo.setUid(orderInfo.getUid())

@@ -3,6 +3,8 @@ package neko.movie.nekomovievideo.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import neko.movie.nekomoviecommonbase.utils.entity.StockStatus;
 import neko.movie.nekomoviecommonbase.utils.exception.StockNotEnoughException;
 import neko.movie.nekomovievideo.entity.DiscountInfo;
 import neko.movie.nekomovievideo.entity.DiscountLockLog;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
  * @since 2023-07-28
  */
 @Service
+@Slf4j
 public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, DiscountInfo> implements DiscountInfoService {
     @Resource
     private DiscountLockLogService discountLockLogService;
@@ -79,5 +82,26 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
 
         //添加库存锁定记录
         discountLockLogService.newDiscountLockLog(discountLockLog);
+    }
+
+    /**
+     * 解锁指定订单号库存并扣除库存，用于确认支付后扣除库存
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void confirmLockStockPay(String orderId) {
+        DiscountLockLog discountLockLog = discountLockLogService.getById(orderId);
+        if(discountLockLog == null){
+            log.warn("订单号: " + orderId + "对应库存锁定记录不存在");
+            return;
+        }
+
+        //修改库存锁定记录状态
+        discountLockLogService.updateLockStatus(orderId, StockStatus.PAY);
+
+        //解锁库存并扣除库存
+        this.baseMapper.decreaseStock(discountLockLog.getDiscountId(),
+                discountLockLog.getLockNumber(),
+                LocalDateTime.now());
     }
 }
