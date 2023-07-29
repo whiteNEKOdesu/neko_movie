@@ -1,9 +1,12 @@
 package neko.movie.nekomovievideo.service;
 
+import com.alipay.api.AlipayApiException;
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomovievideo.vo.AliPayAsyncVo;
 import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -20,4 +23,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     void newOrder(NewOrderInfoVo vo) throws ExecutionException, InterruptedException;
 
     String getAlipayPage(String orderId, String token);
+
+    String alipayTradeCheck(AliPayAsyncVo vo, HttpServletRequest request) throws AlipayApiException;
 }

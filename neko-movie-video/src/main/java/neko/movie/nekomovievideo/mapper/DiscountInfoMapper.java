@@ -22,4 +22,8 @@ public interface DiscountInfoMapper extends BaseMapper<DiscountInfo> {
     int lockStock(String discountId,
                   Integer lockNumber,
                   LocalDateTime updateTime);
+
+    void decreaseStock(String discountId,
+                       Integer lockNumber,
+                       LocalDateTime updateTime);
 }

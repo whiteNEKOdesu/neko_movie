@@ -22,4 +22,11 @@ public class DiscountInfoMapperTest {
                 1,
                 LocalDateTime.now());
     }
+
+    @Test
+    public void decreaseStock(){
+        discountInfoMapper.decreaseStock("1684813417543634945",
+                1,
+                LocalDateTime.now());
+    }
 }

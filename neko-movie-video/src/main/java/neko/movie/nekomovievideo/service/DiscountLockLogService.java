@@ -13,4 +13,6 @@ import neko.movie.nekomovievideo.entity.DiscountLockLog;
  */
 public interface DiscountLockLogService extends IService<DiscountLockLog> {
     void newDiscountLockLog(DiscountLockLog discountLockLog);
+
+    void updateLockStatus(String orderId, Byte status);
 }

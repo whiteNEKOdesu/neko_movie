@@ -3,7 +3,11 @@ package neko.movie.nekomovievideo.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.*;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
@@ -16,10 +20,11 @@ import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
 import neko.movie.nekomovievideo.mapper.OrderInfoMapper;
 import neko.movie.nekomovievideo.service.DiscountInfoService;
 import neko.movie.nekomovievideo.service.OrderInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomovievideo.to.AliPayTo;
 import neko.movie.nekomovievideo.to.MemberLevelDictTo;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
+import neko.movie.nekomovievideo.to.UpdateMemberLevelTo;
+import neko.movie.nekomovievideo.vo.AliPayAsyncVo;
 import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.ReturnedMessage;
@@ -31,9 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -48,6 +56,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2023-07-16
  */
 @Service
+@Slf4j
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> implements OrderInfoService {
     @Resource
     private DiscountInfoService discountInfoService;
@@ -221,5 +230,82 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }
 
         return alipayPayPage;
+    }
+
+    /**
+     * 支付宝异步支付通知处理
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String alipayTradeCheck(AliPayAsyncVo vo, HttpServletRequest request) throws AlipayApiException {
+        //验签
+        Map<String,String> params = new HashMap<>();
+        Map<String,String[]> requestParams = request.getParameterMap();
+        for (String name : requestParams.keySet()) {
+            String[] values = requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            //乱码解决，这段代码在出现乱码时使用valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+
+        //调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(params,
+                aliPayTemplate.getAlipayPublicKey(),
+                aliPayTemplate.getCharset(),
+                aliPayTemplate.getSignType());
+
+        if(signVerified){
+            if(vo.getTrade_status().equals("TRADE_SUCCESS") || vo.getTrade_status().equals("TRADE_FINISHED")){
+                String orderId = vo.getOut_trade_no();
+                OrderInfo orderInfo = this.baseMapper.selectById(orderId);
+                if(orderInfo == null){
+                    log.error("订单号: " + orderId + "，支付宝流水号: " + vo.getTrade_no() + "，订单不存在");
+                    return "error";
+                }
+
+                OrderInfo todoUpdate = new OrderInfo();
+                LocalDateTime now = LocalDateTime.now();
+                todoUpdate.setOrderId(orderId)
+                        .setAlipayTradeId(vo.getTrade_no())
+                        .setStatus(OrderStatus.PAID)
+                        .setUpdateTime(now);
+
+                //修改订单状态信息
+                this.baseMapper.updateById(todoUpdate);
+
+                //组装修改会员等级队列消息to
+                UpdateMemberLevelTo updateMemberLevelTo = new UpdateMemberLevelTo();
+                updateMemberLevelTo.setUid(orderInfo.getUid())
+                        .setMemberLevelId(orderInfo.getMemberLevelId())
+                        .setPayLevelMonths(orderInfo.getPayLevelMonths());
+
+                RabbitMQMessageTo<UpdateMemberLevelTo> rabbitMQMessageTo = RabbitMQMessageTo.generateMessage(updateMemberLevelTo,
+                        MQMessageType.MEMBER_LEVEL_UPDATE_TYPE);
+                //在CorrelationData中设置回退消息
+                CorrelationData correlationData = new CorrelationData(MQMessageType.MEMBER_LEVEL_UPDATE_TYPE.toString());
+                String jsonMessage = JSONUtil.toJsonStr(rabbitMQMessageTo);
+                String notAvailable = "not available";
+                correlationData.setReturned(new ReturnedMessage(new Message(jsonMessage.getBytes(StandardCharsets.UTF_8)),
+                        0,
+                        notAvailable,
+                        notAvailable,
+                        notAvailable));
+                //向修改会员等级队列发送消息
+                rabbitTemplate.convertAndSend(RabbitMqConstant.MEMBER_LEVEL_UPDATE_EXCHANGE_NAME,
+                        RabbitMqConstant.MEMBER_LEVEL_UPDATE_QUEUE_ROUTING_KEY_NAME,
+                        jsonMessage,
+                        correlationData);
+
+                log.info("订单号: " + orderId + "，支付宝流水号: " + vo.getTrade_no() + "，订单支付确认完成");
+            }
+
+            return "success";
+        }else{
+            return "error";
+        }
     }
 }

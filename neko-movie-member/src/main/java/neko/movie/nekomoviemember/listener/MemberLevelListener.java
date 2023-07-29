@@ -1,5 +1,7 @@
 package neko.movie.nekomoviemember.listener;
 
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
@@ -25,7 +27,10 @@ public class MemberLevelListener {
     private MemberInfoService memberInfoService;
 
     @RabbitHandler
-    public void memberLevelUpdate(RabbitMQMessageTo<UpdateMemberLevelTo> rabbitMQMessageTo, Message message, Channel channel) throws IOException {
+    public void memberLevelUpdate(String jsonMessage, Message message, Channel channel) throws IOException {
+        RabbitMQMessageTo<UpdateMemberLevelTo> rabbitMQMessageTo = JSONUtil.toBean(jsonMessage,
+                new TypeReference<RabbitMQMessageTo<UpdateMemberLevelTo>>() {},
+                true);
         UpdateMemberLevelTo updateMemberLevelTo = rabbitMQMessageTo.getMessage();
         try {
             log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级: " + updateMemberLevelTo.getMemberLevelId() + "，开始处理");

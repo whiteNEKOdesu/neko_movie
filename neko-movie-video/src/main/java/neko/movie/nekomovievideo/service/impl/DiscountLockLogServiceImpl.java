@@ -6,6 +6,8 @@ import neko.movie.nekomovievideo.mapper.DiscountLockLogMapper;
 import neko.movie.nekomovievideo.service.DiscountLockLogService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 会员限时折扣限制数量锁定日志表 服务实现类
@@ -23,5 +25,15 @@ public class DiscountLockLogServiceImpl extends ServiceImpl<DiscountLockLogMappe
     @Override
     public void newDiscountLockLog(DiscountLockLog discountLockLog) {
         this.baseMapper.insert(discountLockLog);
+    }
+
+    /**
+     * 修改库存锁定状态
+     */
+    @Override
+    public void updateLockStatus(String orderId, Byte status) {
+        this.baseMapper.updateStockLockLogStatus(orderId,
+                status,
+                LocalDateTime.now());
     }
 }
