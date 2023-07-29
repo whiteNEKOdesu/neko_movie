@@ -19,5 +19,5 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     void newOrder(NewOrderInfoVo vo) throws ExecutionException, InterruptedException;
 
-    String getAlipayPage(String orderId);
+    String getAlipayPage(String orderId, String token);
 }

@@ -2470,6 +2470,50 @@ $baseUrl/video/order_info/new_order
 
 
 
+##### 2.6.3 根据订单号获取支付宝支付页面
+
+- get请求，url传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/order_info/alipay_page
+```
+
+
+
+- 参数
+
+| 参数名  | 参数含义  |
+| ------- | --------- |
+| orderId | 订单号    |
+| token   | 用户token |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/order_info/alipay_page?orderId=202307290849512571685090222724939777&token=cec15363-7d2b-43e4-9239-2677b15730a2
+```
+
+
+
+- 响应结果
+- 结果为一个页面
+
+```bash
+<form name="punchout_form" method="post"
+	action="https://openapi-sandbox.dl.alipaydev.com/gateway.do?charset=utf-8&method=alipay.trade.page.pay&sign=LxxZasUoreyszVfOpYjMwCXfnV3ttgNj238Q57wzKxc1fGly%2Bfbmn73EMSv%2FCtMefwYlb4%2ByJiSIc%2B9h%2FhA8OUDQw959uSR0I014uwI5KMEvF%2BsOFPi9zhnmqjmv%2FnkxcCylMiNOB4QpBHBkXEaqRfp8Fs6J1mfQivnI%2B5PlGx1AC77h1rADeG4xCk47knURBN9xNy%2B3TNVzSEU58mGNAbaezxWmNqR42px8jBbi%2BY90ZwjpHpxTIpmln%2F5m%2F%2FgRzDLLQOuypUbq7JZEY6eN3aNuOr0OrX0fO2ajhkJvkRehcByvOcm5I%2BT7deXIr4shB7Txg%2BaakkcdKBGA4rDTig%3D%3D&return_url=http%3A%2F%2Flocalhost%3A8080%2F%23%2Forder_complete&notify_url=http%3A%2F%2Fxet6em.natappfree.cc%2Forder%2Forder_info%2Falipay_listener&version=1.0&app_id=2021000122638851&sign_type=RSA2&timestamp=2023-07-29+08%3A42%3A42&alipay_sdk=alipay-sdk-java-4.38.34.ALL&format=json">
+	<input type="hidden" name="biz_content" value="{&quot;out_trade_no&quot;:&quot;202307290842359721685088397175095298&quot;,&quot;total_amount&quot;:&quot;10.00&quot;,&quot;subject&quot;:&quot;NEKO_MOVIE&quot;,&quot;body&quot;:&quot;NEKO_MOVIE&quot;,&quot;timeout_express&quot;:&quot;2m&quot;,&quot;product_code&quot;:&quot;FAST_INSTANT_TRADE_PAY&quot;}">
+	<input type="submit" value="立即支付" style="display:none" >
+</form>
+	<script>
+		document.forms[0].submit();
+	</script>
+```
+
+
+
 #### 2.6 DiscountInfoController
 
 ##### 2.6.1 管理员添加折扣信息

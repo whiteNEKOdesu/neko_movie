@@ -208,13 +208,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
      * 根据订单号获取支付宝支付页面
      */
     @Override
-    public String getAlipayPage(String orderId) {
+    public String getAlipayPage(String orderId, String token) {
         OrderInfo orderInfo = this.baseMapper.selectById(orderId);
         if(orderInfo == null || !orderInfo.getStatus().equals(OrderStatus.UNPAID)){
             throw new OrderOverTimeException("订单超时");
         }
 
-        String key = Constant.VIDEO_REDIS_PREFIX + "order:" + StpUtil.getLoginId() + orderId + ":pay_page";
+        String key = Constant.VIDEO_REDIS_PREFIX + "order:" + StpUtil.getLoginIdByToken(token) + orderId + ":pay_page";
         String alipayPayPage = stringRedisTemplate.opsForValue().get(key);
         if(!StringUtils.hasText(alipayPayPage)){
             throw new OrderOverTimeException("订单超时");
