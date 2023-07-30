@@ -3,6 +3,6 @@
 <mapper namespace="neko.movie.nekomoviemember.mapper.UserRoleRelationMapper">
     <select id="getRoleIdsByUid" resultType="int">
         select role_id from user_role_relation
-        where uid = #{uid}
+        where uid = #{uid} and is_delete = 0
     </select>
 </mapper>

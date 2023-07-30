@@ -1510,10 +1510,11 @@ $baseUrl/member/member_level_dict/new_level
 
 - 参数
 
-| 参数名   | 参数含义    |
-| -------- | ----------- |
-| roleType | 角色名      |
-| price    | 开通价格/月 |
+| 参数名   | 参数含义        |
+| -------- | --------------- |
+| roleType | 角色名          |
+| price    | 开通价格/月     |
+| level    | 等级排序，最低0 |
 
 
 
@@ -1522,7 +1523,8 @@ $baseUrl/member/member_level_dict/new_level
 ```json
 {
     "roleType": "普通会员",
-    "price": 15
+    "price": 15,
+    "level": 3
 }
 ```
 

@@ -3,6 +3,7 @@ package neko.movie.nekomoviemember.vo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,4 +25,11 @@ public class NewMemberLevelDictVo implements Serializable {
      */
     @NotNull
     private BigDecimal price;
+
+    /**
+     * 等级排序，最低0
+     */
+    @NotNull
+    @Min(value = 0)
+    private Integer level;
 }

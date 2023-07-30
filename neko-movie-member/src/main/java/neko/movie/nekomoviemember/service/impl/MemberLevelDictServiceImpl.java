@@ -61,6 +61,7 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
         LocalDateTime now = LocalDateTime.now();
         memberLevelDict.setRoleId(userRole.getRoleId())
                 .setPrice(vo.getPrice().setScale(2, BigDecimal.ROUND_DOWN))
+                .setLevel(vo.getLevel())
                 .setCreateTime(now)
                 .setUpdateTime(now);
 

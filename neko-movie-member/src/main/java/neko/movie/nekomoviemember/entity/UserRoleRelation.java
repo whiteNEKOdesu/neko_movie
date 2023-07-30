@@ -31,6 +31,8 @@ public class UserRoleRelation implements Serializable {
 
     private Integer roleId;
 
+    private Boolean isDelete;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

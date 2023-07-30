@@ -38,6 +38,11 @@ public class MemberLevelDict implements Serializable {
      */
     private BigDecimal price;
 
+    /**
+     * 等级排序，最低0
+     */
+    private Integer level;
+
     private Boolean isDelete;
 
     private LocalDateTime createTime;
