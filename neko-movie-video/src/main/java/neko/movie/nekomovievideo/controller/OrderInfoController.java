@@ -3,6 +3,7 @@ package neko.movie.nekomovievideo.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.alipay.api.AlipayApiException;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
+import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.service.OrderInfoService;
 import neko.movie.nekomovievideo.vo.AliPayAsyncVo;
 import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
@@ -61,5 +62,13 @@ public class OrderInfoController {
     @PostMapping("alipay_listener")
     public String alipayListener(AliPayAsyncVo vo, HttpServletRequest request) throws AlipayApiException {
         return orderInfoService.alipayTradeCheck(vo, request);
+    }
+
+    /**
+     * 根据订单号获取未取消订单信息
+     */
+    @GetMapping("order_info_by_order_id")
+    public ResultObject<OrderInfo> orderInfoByOrderId(@RequestParam String orderId){
+        return ResultObject.ok(orderInfoService.getUncanceledOrderInfoByOrderId(orderId));
     }
 }

@@ -2551,6 +2551,60 @@ hbwmin1080@sandbox.com
 
 
 
+##### 2.6.4 根据订单号获取未取消订单信息
+
+- get请求，url传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/order_info/order_info_by_order_id
+```
+
+
+
+- 参数
+
+| 参数名  | 参数含义 |
+| ------- | -------- |
+| orderId | 订单号   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/order_info/order_info_by_order_id?orderId=202307311005427071685834088755286017
+```
+
+
+
+- 响应结果
+- status为订单状态，0->未支付，1->已支付
+
+```json
+{
+    "result": {
+        "orderId": "202307311005427071685834088755286017",
+        "alipayTradeId": "2023073122001436790500485807",
+        "uid": "1642067605873348610",
+        "discountId": "1684813417543634945",
+        "cost": 9.00,
+        "actualCost": 9.00,
+        "status": 1,
+        "memberLevelId": 4,
+        "roleType": "1级会员",
+        "payLevelMonths": 1,
+        "createTime": "2023-07-31T10:05:48",
+        "updateTime": "2023-07-31T10:06:30"
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.6 DiscountInfoController
 
 ##### 2.6.1 管理员添加折扣信息

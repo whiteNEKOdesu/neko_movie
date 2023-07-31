@@ -27,4 +27,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     String alipayTradeCheck(AliPayAsyncVo vo, HttpServletRequest request) throws AlipayApiException;
 
     void updateOrderInfoStatusToCancel(String orderId);
+
+    OrderInfo getUncanceledOrderInfoByOrderId(String orderId);
 }

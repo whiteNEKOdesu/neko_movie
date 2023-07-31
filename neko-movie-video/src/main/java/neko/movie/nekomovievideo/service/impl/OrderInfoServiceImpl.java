@@ -5,6 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -325,5 +326,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Override
     public void updateOrderInfoStatusToCancel(String orderId) {
         this.baseMapper.updateOrderInfoStatusToCancel(orderId, LocalDateTime.now());
+    }
+
+    /**
+     * 根据订单号获取未取消订单信息
+     */
+    @Override
+    public OrderInfo getUncanceledOrderInfoByOrderId(String orderId) {
+        return this.baseMapper.selectOne(new QueryWrapper<OrderInfo>().lambda()
+                .eq(OrderInfo::getOrderId, orderId)
+                .ne(OrderInfo::getStatus, OrderStatus.CANCELED));
     }
 }
