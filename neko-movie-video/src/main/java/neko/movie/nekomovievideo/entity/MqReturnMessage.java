@@ -13,16 +13,16 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 订单rabbitmq消息发送失败记录表
+ * rabbitmq消息发送失败记录表
  * </p>
  *
  * @author NEKO
- * @since 2023-07-28
+ * @since 2023-07-31
  */
 @Data
 @Accessors(chain = true)
-@TableName("mq_order_return_message")
-public class MqOrderReturnMessage implements Serializable {
+@TableName("mq_return_message")
+public class MqReturnMessage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,14 +33,19 @@ public class MqOrderReturnMessage implements Serializable {
     private String mqReturnId;
 
     /**
-     * 订单号
+     * 消息
      */
-    private String orderId;
+    private String message;
+
+    /**
+     * 消息类型，0->订单处理延迟队列消息，1->视频删除延迟队列消息，2->修改会员等级消息
+     */
+    private Byte type;
 
     /**
      * 是否删除
      */
-    private Boolean isDelete;
+    private Byte isDelete;
 
     /**
      * 创建时间
@@ -48,7 +53,7 @@ public class MqOrderReturnMessage implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 删除时间
+     * 修改时间
      */
     private LocalDateTime updateTime;
 }

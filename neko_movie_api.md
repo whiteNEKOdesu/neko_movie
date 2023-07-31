@@ -1484,8 +1484,27 @@ $baseUrl/member/member_level_dict/level_infos
             "roleId": 11,
             "roleType": "普通会员",
             "price": 0.00,
+            "level": 0,
             "createTime": "2023-05-02T14:22:53",
             "updateTime": "2023-05-02T14:22:57"
+        },
+        {
+            "memberLevelId": 4,
+            "roleId": 15,
+            "roleType": "1级会员",
+            "price": 10.00,
+            "level": 1,
+            "createTime": "2023-07-26T16:09:56",
+            "updateTime": "2023-07-26T16:09:56"
+        },
+        {
+            "memberLevelId": 5,
+            "roleId": 16,
+            "roleType": "2级会员",
+            "price": 15.00,
+            "level": 2,
+            "createTime": "2023-07-26T16:10:09",
+            "updateTime": "2023-07-26T16:10:09"
         }
     ],
     "responseStatus": "SUCCESS",
@@ -1618,6 +1637,7 @@ $baseUrl/member/member_level_dict/member_level_dict_by_member_level_id?memberLev
         "roleId": 11,
         "roleType": "普通会员",
         "price": 0.00,
+        "level": 0,
         "createTime": "2023-05-02T14:22:53",
         "updateTime": "2023-05-02T14:22:57"
     },

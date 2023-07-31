@@ -1,4 +1,4 @@
-package neko.movie.nekomovievideo.entity;
+package neko.movie.nekomoviemember.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,24 +13,24 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 修改会员等级rabbitmq消息发送失败记录表
+ * 用户，会员等级关系表
  * </p>
  *
  * @author NEKO
- * @since 2023-07-28
+ * @since 2023-07-31
  */
 @Data
 @Accessors(chain = true)
-@TableName("mq_level_return_message")
-public class MqLevelReturnMessage implements Serializable {
+@TableName("member_level_relation")
+public class MemberLevelRelation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * rabbitmq回退消息id
+     * 关系id
      */
     @TableId(type = IdType.ASSIGN_ID)
-    private String mqReturnId;
+    private String relationId;
 
     /**
      * 用户id
@@ -38,19 +38,24 @@ public class MqLevelReturnMessage implements Serializable {
     private String uid;
 
     /**
-     * 用户等级id
+     * 会员等级id，对应member_level_dict表member_level_id
      */
     private Integer memberLevelId;
 
     /**
-     * 开通月数
+     * 等级到期时间
      */
-    private Integer payLevelMonths;
+    private LocalDateTime levelExpireTime;
+
+    /**
+     * 乐观锁
+     */
+    private Integer updateVersion;
 
     /**
      * 是否删除
      */
-    private Boolean isDelete;
+    private Byte isDelete;
 
     /**
      * 创建时间
@@ -58,7 +63,7 @@ public class MqLevelReturnMessage implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 更新时间
+     * 修改时间
      */
     private LocalDateTime updateTime;
 }

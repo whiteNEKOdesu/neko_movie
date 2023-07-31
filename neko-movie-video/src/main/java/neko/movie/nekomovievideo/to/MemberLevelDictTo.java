@@ -29,6 +29,11 @@ public class MemberLevelDictTo implements Serializable {
      */
     private BigDecimal price;
 
+    /**
+     * 等级排序，最低0
+     */
+    private Integer level;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

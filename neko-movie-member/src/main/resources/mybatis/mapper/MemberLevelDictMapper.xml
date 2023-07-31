@@ -3,7 +3,7 @@
 <mapper namespace="neko.movie.nekomoviemember.mapper.MemberLevelDictMapper">
     <select id="getMemberLevelDictInfo" resultType="neko.movie.nekomoviemember.vo.MemberLevelDictVo">
         select member_level_dict.member_level_id, member_level_dict.role_id,
-               user_role.role_type, member_level_dict.price,
+               user_role.role_type, member_level_dict.price, member_level_dict.level,
                member_level_dict.create_time, member_level_dict.update_time from member_level_dict
         join user_role
         on member_level_dict.role_id = user_role.role_id
@@ -20,7 +20,7 @@
 
     <select id="getMemberLevelDictMemberLevelId" resultType="neko.movie.nekomoviemember.vo.MemberLevelDictVo">
         select member_level_dict.member_level_id, member_level_dict.role_id,
-               user_role.role_type, member_level_dict.price,
+               user_role.role_type, member_level_dict.price, member_level_dict.level,
                member_level_dict.create_time, member_level_dict.update_time from member_level_dict
         join user_role
         on member_level_dict.role_id = user_role.role_id
