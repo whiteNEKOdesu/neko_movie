@@ -26,4 +26,15 @@
         on member_level_dict.role_id = user_role.role_id
         where member_level_dict.member_level_id = #{memberLevelId} and member_level_dict.is_delete = 0
     </select>
+
+    <select id="getHighestMemberRoleTypeByUid" resultType="String">
+        select user_role.role_type from member_level_dict
+        join member_level_relation
+        on member_level_dict.member_level_id = member_level_relation.member_level_id
+        join user_role
+        on member_level_dict.role_id = user_role.role_id
+        where member_level_relation.uid = #{uid} and member_level_dict.is_delete = 0 and member_level_relation.is_delete = 0
+        order by member_level_dict.level desc
+        limit 1
+    </select>
 </mapper>

@@ -85,7 +85,7 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
                 StpUtil.login(memberInfo.getUid());
                 MemberInfoVo memberInfoVo = new MemberInfoVo();
                 BeanUtil.copyProperties(memberInfo, memberInfoVo);
-                memberInfoVo.setMemberLevelRoleType(memberLevelDictService.getRoleTypeByMemberLevelId(memberInfo.getMemberLevelId()))
+                memberInfoVo.setMemberLevelRoleType(memberLevelDictService.getHighestMemberRoleTypeByUid(memberInfo.getUid()))
                         .setToken(StpUtil.getTokenValue())
                         .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(memberInfo.getUid()))
                         .setRoleTypes(weightRoleRelationService.getRoleTypesByUid(memberInfo.getUid()));
@@ -126,7 +126,6 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
                 .setUserPassword(DigestUtils.md5DigestAsHex((userPassword + salt).getBytes()))
                 .setSalt(salt)
                 .setMail(email)
-                .setLevelExpireTime(LocalDateTime.now())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
 
@@ -226,23 +225,5 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         this.baseMapper.updateById(todoUpdateMemberInfo);
 
         return url;
-    }
-
-    /**
-     * 修改会员等级
-     */
-    @Override
-    public void updateMemberLevel(String uid, Integer payLevelMonths, Integer memberLevelId) {
-        MemberLevelDict memberLevelDict = memberLevelDictService.getById(memberLevelId);
-        if(memberLevelDict != null && !memberLevelDict.getIsDelete()){
-            LocalDateTime now = LocalDateTime.now();
-            MemberInfo memberInfo = new MemberInfo();
-            memberInfo.setUid(uid)
-                    .setMemberLevelId(memberLevelId)
-                    .setLevelExpireTime(now.plusMonths(payLevelMonths))
-                    .setUpdateTime(now);
-
-            this.baseMapper.updateById(memberInfo);
-        }
     }
 }

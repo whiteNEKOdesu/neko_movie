@@ -12,5 +12,5 @@ import neko.movie.nekomoviemember.entity.MemberLevelRelation;
  * @since 2023-07-31
  */
 public interface MemberLevelRelationService extends IService<MemberLevelRelation> {
-
+    void newMemberLevelRelation(String uid, Integer memberLevelId, Integer payLevelMonths);
 }

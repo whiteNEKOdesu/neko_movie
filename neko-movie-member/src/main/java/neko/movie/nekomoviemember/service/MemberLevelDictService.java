@@ -23,4 +23,6 @@ public interface MemberLevelDictService extends IService<MemberLevelDict> {
     String getRoleTypeByMemberLevelId(Integer memberLevelId);
 
     MemberLevelDictVo getMemberLevelDictMemberLevelId(Integer memberLevelId);
+
+    String getHighestMemberRoleTypeByUid(String uid);
 }

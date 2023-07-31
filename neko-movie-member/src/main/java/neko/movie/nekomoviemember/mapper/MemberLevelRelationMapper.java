@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 用户，会员等级关系表 Mapper 接口
@@ -14,5 +16,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface MemberLevelRelationMapper extends BaseMapper<MemberLevelRelation> {
-
+    int updateExistMemberLevelRelation(String relationId,
+                                        LocalDateTime levelExpireTime,
+                                        Integer updateVersion,
+                                        LocalDateTime updateTime);
 }

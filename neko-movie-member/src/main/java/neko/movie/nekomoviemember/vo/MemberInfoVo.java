@@ -51,16 +51,6 @@ public class MemberInfoVo implements Serializable {
 
     private String mail;
 
-    /**
-     * 用户等级
-     */
-    private Integer level;
-
-    /**
-     * 用户积分
-     */
-    private Integer point;
-
     private Boolean isBan;
 
     private Boolean isDelete;

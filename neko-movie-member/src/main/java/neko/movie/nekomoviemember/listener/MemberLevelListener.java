@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
-import neko.movie.nekomoviemember.service.MemberInfoService;
+import neko.movie.nekomoviemember.service.MemberLevelRelationService;
 import neko.movie.nekomoviemember.to.RabbitMQMessageTo;
 import neko.movie.nekomoviemember.to.UpdateMemberLevelTo;
 import org.springframework.amqp.core.Message;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 public class MemberLevelListener {
     @Resource
-    private MemberInfoService memberInfoService;
+    private MemberLevelRelationService memberLevelRelationService;
 
     @RabbitHandler
     public void memberLevelUpdate(String jsonMessage, Message message, Channel channel) throws IOException {
@@ -35,9 +35,9 @@ public class MemberLevelListener {
         try {
             log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId() + "，开始处理");
             //修改用户等级信息
-            memberInfoService.updateMemberLevel(updateMemberLevelTo.getUid(),
-                    updateMemberLevelTo.getPayLevelMonths(),
-                    updateMemberLevelTo.getMemberLevelId());
+            memberLevelRelationService.newMemberLevelRelation(updateMemberLevelTo.getUid(),
+                    updateMemberLevelTo.getMemberLevelId(),
+                    updateMemberLevelTo.getPayLevelMonths());
 
             log.info("uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId() + "，开通成功");
             //单个确认消费消息

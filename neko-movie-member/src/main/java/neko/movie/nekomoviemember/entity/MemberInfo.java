@@ -62,16 +62,6 @@ public class MemberInfo implements Serializable {
 
     private String mail;
 
-    /**
-     * 用户等级id
-     */
-    private Integer memberLevelId;
-
-    /**
-     * 等级到期时间
-     */
-    private LocalDateTime levelExpireTime;
-
     private Boolean isBan;
 
     private Boolean isDelete;

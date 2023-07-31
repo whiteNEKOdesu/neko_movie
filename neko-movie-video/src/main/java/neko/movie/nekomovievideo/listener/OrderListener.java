@@ -60,8 +60,10 @@ public class OrderListener {
             //修改订单状态为取消状态
             orderInfoService.updateOrderInfoStatusToCancel(orderId);
 
-            //解锁库存
-            discountInfoService.unlockStock(orderId);
+            if(orderInfo.getDiscountId() != null){
+                //解锁库存
+                discountInfoService.unlockStock(orderId);
+            }
 
             //单个确认消费消息
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

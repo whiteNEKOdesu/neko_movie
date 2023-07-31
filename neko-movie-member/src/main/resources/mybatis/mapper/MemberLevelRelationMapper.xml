@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="neko.movie.nekomoviemember.mapper.MemberLevelRelationMapper">
-
+    <update id="updateExistMemberLevelRelation">
+        update member_level_relation
+        set level_expire_time = #{levelExpireTime}, update_version = update_version + 1, update_time = #{updateTime}
+        where relation_id = #{relationId} and update_version = #{updateVersion}
+    </update>
 </mapper>

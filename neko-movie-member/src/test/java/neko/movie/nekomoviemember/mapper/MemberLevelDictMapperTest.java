@@ -24,4 +24,9 @@ public class MemberLevelDictMapperTest {
     public void getMemberLevelDictMemberLevelId(){
         System.out.println(memberLevelDictMapper.getMemberLevelDictMemberLevelId(1));
     }
+
+    @Test
+    public void getHighestMemberRoleTypeByUid(){
+        System.out.println(memberLevelDictMapper.getHighestMemberRoleTypeByUid("1642067605873348610"));
+    }
 }

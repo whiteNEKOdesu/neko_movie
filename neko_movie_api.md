@@ -62,7 +62,7 @@ $baseUrl/member/member_info/log_in
             "普通会员"
         ],
         "memberLevelRoleType": "普通会员",
-        "token": "d393fdb3-3441-46a2-af15-04533b1b89bd",
+        "token": "cec15363-7d2b-43e4-9239-2677b15730a2",
         "gender": null,
         "source": null,
         "sourceUid": null,
@@ -70,12 +70,10 @@ $baseUrl/member/member_info/log_in
         "idCardNumber": "420881200101184053",
         "phone": null,
         "mail": "NEKO@NEKO.com",
-        "level": null,
-        "point": null,
         "isBan": false,
         "isDelete": false,
         "createTime": "2023-04-01T15:33:20",
-        "updateTime": "2023-07-25T17:12:07"
+        "updateTime": "2023-07-29T17:40:33"
     },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
@@ -2423,6 +2421,7 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
 ##### 2.5.1 获取预生成订单token，保证预生成订单接口幂等性
 
 - get请求
+- 需要登录状态
 - 此接口获取的token用于提交订单接口处参数使用，保证提交订单接口幂等性
 
 ```bash

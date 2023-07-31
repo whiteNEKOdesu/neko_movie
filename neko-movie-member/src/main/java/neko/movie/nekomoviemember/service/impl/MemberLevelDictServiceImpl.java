@@ -2,6 +2,7 @@ package neko.movie.nekomoviemember.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import neko.movie.nekomoviecommonbase.utils.entity.BaseRoleId;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import neko.movie.nekomoviemember.entity.UserRole;
@@ -87,5 +88,16 @@ public class MemberLevelDictServiceImpl extends ServiceImpl<MemberLevelDictMappe
     @Override
     public MemberLevelDictVo getMemberLevelDictMemberLevelId(Integer memberLevelId) {
         return this.baseMapper.getMemberLevelDictMemberLevelId(memberLevelId);
+    }
+
+    /**
+     * 根据uid获取用户最高会员等级角色名
+     */
+    @Override
+    public String getHighestMemberRoleTypeByUid(String uid) {
+        String roleType = this.baseMapper.getHighestMemberRoleTypeByUid(uid);
+
+        //roleType为空，则返回普通会员等级角色
+        return roleType != null ? roleType : userRoleService.getById(BaseRoleId.BASE_MEMBER_LEVEL_TYPE_ROLE_ID).getRoleType();
     }
 }

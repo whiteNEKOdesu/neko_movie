@@ -137,27 +137,32 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 jsonMessage,
                 correlationData);
 
+        //获取折扣信息
+        DiscountInfo discountInfo = discountInfoService.getById(vo.getDiscountId());
+        //判断折扣活动是否有效
+        if (discountInfo == null || discountInfo.getIsDelete() || discountInfo.getIsEnd() ||
+                now.isBefore(discountInfo.getStartTime()) || now.isAfter(discountInfo.getEndTime())) {
+            discountInfo = null;
+            vo.setDiscountId(null);
+        }
+
+        DiscountInfo finalDiscountInfo = discountInfo;
         CompletableFuture<BigDecimal> totalPriceTask = CompletableFuture.supplyAsync(() -> {
             //计算总价
             BigDecimal cost = memberLevelDictTo.getPrice()
                     .multiply(new BigDecimal(vo.getPayLevelMonths().toString()))
                     .setScale(2, BigDecimal.ROUND_DOWN);
 
-            if (vo.getDiscountId() != null) {
-                //获取折扣信息
-                DiscountInfo discountInfo = discountInfoService.getById(vo.getDiscountId());
-                if (!discountInfo.getIsDelete() && !discountInfo.getIsEnd() &&
-                        now.isAfter(discountInfo.getStartTime()) && now.isBefore(discountInfo.getEndTime())) {
-                    //锁定库存
-                    try {
-                        discountInfoService.lockStock(discountInfo.getDiscountId(), orderId, 1);
-                    }catch (StockNotEnoughException e){
-                        return null;
-                    }
-
-                    cost = cost.multiply(new BigDecimal(discountInfo.getDiscountRate() * 0.01 + ""))
-                            .setScale(2, BigDecimal.ROUND_DOWN);
+            if (finalDiscountInfo != null) {
+                //锁定库存
+                try {
+                    discountInfoService.lockStock(finalDiscountInfo.getDiscountId(), orderId, 1);
+                }catch (StockNotEnoughException e){
+                    return null;
                 }
+
+                cost = cost.multiply(new BigDecimal(finalDiscountInfo.getDiscountRate() * 0.01 + ""))
+                        .setScale(2, BigDecimal.ROUND_DOWN);
             }
 
             return cost;
