@@ -51,4 +51,20 @@ public class RabbitMqConstant {
 
     //修改会员等级队列routingKey名
     public static final String MEMBER_LEVEL_UPDATE_QUEUE_ROUTING_KEY_NAME = "neko.movie.member.level.update.#";
+
+    //---------------------------------------------------------------------------------------------------
+    /**
+     * 会员等级过期插件延迟队列常量配置
+     */
+    //会员等级过期交换机名
+    public static final String MEMBER_LEVEL_EXPIRE_EXCHANGE_NAME = "neko-movie-member-level-expire-exchange";
+
+    //会员等级过期交换机类型
+    public static final String MEMBER_LEVEL_EXPIRE_EXCHANGE_TYPE = "x-delayed-message";
+
+    //会员等级过期插件延迟队列名
+    public static final String MEMBER_LEVEL_EXPIRE_QUEUE_NAME = "neko.movie.member.level.expire.queue";
+
+    //会员等级过期插件延迟队列routingKey名
+    public static final String MEMBER_LEVEL_EXPIRE_QUEUE_ROUTING_KEY_NAME = "neko.movie.member.level.expire";
 }

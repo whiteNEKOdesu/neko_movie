@@ -7,6 +7,9 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 public class RabbitMqConfig {
     /**
@@ -110,7 +113,7 @@ public class RabbitMqConfig {
         return QueueBuilder.durable(RabbitMqConstant.VIDEO_DELETE_DELAY_QUEUE_NAME)
                 .deadLetterExchange(RabbitMqConstant.VIDEO_DELETE_EXCHANGE_NAME)
                 .deadLetterRoutingKey(RabbitMqConstant.VIDEO_DELETE_QUEUE_ROUTING_KEY_NAME)
-                .ttl(1000 * 60 * 60 * 24 * 15)
+                .withArgument("x-message-ttl", 1000 * 60 * 60 * 24 * 15)
                 .build();
     }
 
@@ -169,5 +172,51 @@ public class RabbitMqConfig {
         return BindingBuilder.bind(memberLevelUpdateQueue)
                 .to(memberLevelUpdateExchange)
                 .with(RabbitMqConstant.MEMBER_LEVEL_UPDATE_QUEUE_ROUTING_KEY_NAME);
+    }
+
+    //---------------------------------------------------------------------------------------------------
+    /**
+     * 会员等级过期插件延迟队列配置
+     * <br/>
+     * ---------------------------------------------------------------------------------------------------
+     * <br/>
+     * <br/>
+     * <br/>
+     * 会员等级过期交换机
+     */
+    @Bean
+    public CustomExchange memberLevelExpireExchange(){
+        Map<String,Object> map = new HashMap<>();
+        //设置延迟类型为direct
+        map.put("x-delayed-type", "direct");
+
+        //自定义类型交换机，1 交换机名，2 交换机类型，3 是否持久化，4 是否自动删除，5 其他参数
+        return new CustomExchange(RabbitMqConstant.MEMBER_LEVEL_EXPIRE_EXCHANGE_NAME,
+                RabbitMqConstant.MEMBER_LEVEL_EXPIRE_EXCHANGE_TYPE,
+                true,
+                false,
+                map);
+    }
+
+    /**
+     * 会员等级过期插件延迟队列
+     */
+    @Bean
+    public Queue memberLevelExpireQueue(){
+        return QueueBuilder.durable(RabbitMqConstant.MEMBER_LEVEL_EXPIRE_QUEUE_NAME)
+                .build();
+    }
+
+    /**
+     * 会员等级过期插件延迟队列跟会员等级过期交换机绑定
+     */
+    @Bean
+    public Binding memberLevelExpireBinding(Queue memberLevelExpireQueue, CustomExchange memberLevelExpireExchange){
+        return BindingBuilder.bind(memberLevelExpireQueue)
+                .to(memberLevelExpireExchange)
+                //绑定routingKey
+                .with(RabbitMqConstant.MEMBER_LEVEL_EXPIRE_QUEUE_ROUTING_KEY_NAME)
+                //自定义类型交换机绑定跟自带类型交换机不同，需要再使用noargs()构建
+                .noargs();
     }
 }
