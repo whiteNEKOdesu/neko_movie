@@ -15,4 +15,9 @@ public class MQMessageType {
      * 修改会员等级队列消息
      */
     public static final Byte MEMBER_LEVEL_UPDATE_TYPE = 2;
+
+    /**
+     * 会员等级过期插件延迟队列消息
+     */
+    public static final Byte MEMBER_LEVEL_EXPIRE_TYPE = 3;
 }

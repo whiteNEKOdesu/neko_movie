@@ -38,7 +38,7 @@ public class MqReturnMessage implements Serializable {
     private String message;
 
     /**
-     * 消息类型，0->订单处理延迟队列消息，1->视频删除延迟队列消息，2->修改会员等级消息
+     * 消息类型，0->订单处理延迟队列消息，1->视频删除延迟队列消息，2->修改会员等级消息，3->会员等级过期插件延迟队列消息
      */
     private Byte type;
 

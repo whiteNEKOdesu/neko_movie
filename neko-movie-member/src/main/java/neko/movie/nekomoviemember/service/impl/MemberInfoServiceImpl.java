@@ -82,10 +82,12 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         }else{
             String userPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getUserPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
             if(DigestUtils.md5DigestAsHex((userPassword + memberInfo.getSalt()).getBytes()).equals(memberInfo.getUserPassword())){
+                //登录传uid
                 StpUtil.login(memberInfo.getUid());
                 MemberInfoVo memberInfoVo = new MemberInfoVo();
                 BeanUtil.copyProperties(memberInfo, memberInfoVo);
                 memberInfoVo.setMemberLevelRoleType(memberLevelDictService.getHighestMemberRoleTypeByUid(memberInfo.getUid()))
+                        //StpUtil.getTokenValue()方法获取token
                         .setToken(StpUtil.getTokenValue())
                         .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(memberInfo.getUid()))
                         .setRoleTypes(weightRoleRelationService.getRoleTypesByUid(memberInfo.getUid()));
