@@ -26,4 +26,18 @@
         where is_delete = 0 and video_info_id = #{videoInfoId}
         order by series_number
     </select>
+
+    <select id="getVideoSeriesInfoByVideoInfoIds" resultType="neko.movie.nekomovievideo.vo.VideoWatchHistoryVo">
+        select video_series_info.video_series_id, video_series_info.video_info_id,
+               video_series_info.series_number, video_info.video_name,
+               video_info.video_description, video_info.video_image from video_series_info
+        join video_info
+        on video_series_info.video_info_id = video_info.video_info_id
+        where video_series_info.video_series_id in
+        <foreach collection="videoInfoIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        and video_info.status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@UP}
+        and video_series_info.is_delete = 0
+    </select>
 </mapper>

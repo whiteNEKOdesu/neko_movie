@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @SpringBootTest
 public class VideoSeriesInfoMapperTest {
@@ -27,5 +28,11 @@ public class VideoSeriesInfoMapperTest {
     @Test
     public void getVideoSeriesInfosByVideoInfoId(){
         System.out.println(videoSeriesInfoMapper.getVideoSeriesInfosByVideoInfoId("1683373796746121218"));
+    }
+
+    @Test
+    public void getVideoSeriesInfoByVideoInfoIds(){
+        System.out.println(videoSeriesInfoMapper.getVideoSeriesInfoByVideoInfoIds(Arrays.asList("1683373881982767105",
+                "1683374990189187074")));
     }
 }
