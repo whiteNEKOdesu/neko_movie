@@ -55,7 +55,7 @@ public class MemberLevelRelation implements Serializable {
     /**
      * 是否删除
      */
-    private Byte isDelete;
+    private Boolean isDelete;
 
     /**
      * 创建时间

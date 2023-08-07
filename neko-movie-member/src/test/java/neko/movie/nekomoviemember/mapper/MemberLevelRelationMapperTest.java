@@ -18,4 +18,9 @@ public class MemberLevelRelationMapperTest {
                 0,
                 LocalDateTime.now());
     }
+
+    @Test
+    public void getUserRoleRelationByRelationId(){
+        System.out.println(memberLevelRelationMapper.getUserRoleRelationByRelationId("1688370680602644482"));
+    }
 }

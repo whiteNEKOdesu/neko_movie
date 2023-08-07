@@ -61,4 +61,16 @@ public class UserRoleRelationServiceImpl extends ServiceImpl<UserRoleRelationMap
 
         this.saveBatch(relations);
     }
+
+    /**
+     * 根据relationId删除用户，角色关系
+     */
+    @Override
+    public void deleteUserRoleRelationByRelationId(String relationId) {
+        UserRoleRelation userRoleRelation = new UserRoleRelation();
+        userRoleRelation.setRelationId(relationId)
+                .setIsDelete(true);
+
+        this.baseMapper.updateById(userRoleRelation);
+    }
 }

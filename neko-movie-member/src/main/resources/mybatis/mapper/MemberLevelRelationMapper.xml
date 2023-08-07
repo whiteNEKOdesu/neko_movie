@@ -6,4 +6,15 @@
         set level_expire_time = #{levelExpireTime}, update_version = update_version + 1, update_time = #{updateTime}
         where relation_id = #{relationId} and update_version = #{updateVersion}
     </update>
+
+    <select id="getUserRoleRelationByRelationId" resultType="neko.movie.nekomoviemember.entity.UserRoleRelation">
+        select user_role_relation.relation_id, user_role_relation.uid, user_role_relation.role_id,
+               user_role_relation.is_delete, user_role_relation.create_time,
+               user_role_relation.update_time from member_level_relation
+        join member_level_dict
+        on member_level_relation.member_level_id = member_level_dict.member_level_id
+        join user_role_relation
+        on member_level_relation.uid = user_role_relation.uid and member_level_dict.role_id = user_role_relation.role_id
+        where member_level_relation.relation_id = #{relationId} and user_role_relation.is_delete = 0
+    </select>
 </mapper>

@@ -2,6 +2,8 @@ package neko.movie.nekomoviemember.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
+import neko.movie.nekomoviemember.entity.UserRoleRelation;
+import neko.movie.nekomoviemember.to.MemberLevelExpireTo;
 
 /**
  * <p>
@@ -12,5 +14,9 @@ import neko.movie.nekomoviemember.entity.MemberLevelRelation;
  * @since 2023-07-31
  */
 public interface MemberLevelRelationService extends IService<MemberLevelRelation> {
-    void newMemberLevelRelation(String uid, Integer memberLevelId, Integer payLevelMonths);
+    MemberLevelRelation newMemberLevelRelation(String uid, Integer memberLevelId, Integer payLevelMonths);
+
+    void expireMemberLevel(MemberLevelExpireTo to);
+
+    UserRoleRelation getUserRoleRelationByRelationId(String relationId);
 }

@@ -2,6 +2,7 @@ package neko.movie.nekomoviemember.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
+import neko.movie.nekomoviemember.entity.UserRoleRelation;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,6 @@ public interface MemberLevelRelationMapper extends BaseMapper<MemberLevelRelatio
                                         LocalDateTime levelExpireTime,
                                         Integer updateVersion,
                                         LocalDateTime updateTime);
+
+    UserRoleRelation getUserRoleRelationByRelationId(String relationId);
 }

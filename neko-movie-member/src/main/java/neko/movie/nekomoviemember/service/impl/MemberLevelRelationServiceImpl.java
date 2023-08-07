@@ -1,14 +1,18 @@
 package neko.movie.nekomoviemember.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberLevelUpdateException;
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
+import neko.movie.nekomoviemember.entity.UserRoleRelation;
 import neko.movie.nekomoviemember.mapper.MemberLevelRelationMapper;
 import neko.movie.nekomoviemember.service.MemberLevelDictService;
 import neko.movie.nekomoviemember.service.MemberLevelRelationService;
 import neko.movie.nekomoviemember.service.UserRoleRelationService;
+import neko.movie.nekomoviemember.to.MemberLevelExpireTo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ import java.time.LocalDateTime;
  * @since 2023-07-31
  */
 @Service
+@Slf4j
 public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelationMapper, MemberLevelRelation> implements MemberLevelRelationService {
     @Resource
     private MemberLevelDictService memberLevelDictService;
@@ -36,10 +41,10 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void newMemberLevelRelation(String uid, Integer memberLevelId, Integer payLevelMonths) {
+    public MemberLevelRelation newMemberLevelRelation(String uid, Integer memberLevelId, Integer payLevelMonths) {
         MemberLevelDict memberLevelDict = memberLevelDictService.getById(memberLevelId);
         if(memberLevelDict == null || memberLevelDict.getIsDelete()){
-            return;
+            return null;
         }
 
         MemberLevelRelation memberLevelRelation = this.baseMapper.selectOne(new QueryWrapper<MemberLevelRelation>().lambda()
@@ -62,6 +67,8 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
 
             //添加用户，会员角色关系
             userRoleRelationService.newRelation(uid, memberLevelDict.getRoleId());
+
+            return memberLevelRelation.setUpdateVersion(0);
         }else{
             int retryCount = 0;
             //乐观锁自旋
@@ -74,7 +81,7 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
                     //添加用户，会员角色关系
                     userRoleRelationService.newRelation(uid, memberLevelDict.getRoleId());
 
-                    return;
+                    return memberLevelRelation.setUpdateVersion(memberLevelRelation.getUpdateVersion() + 1);
                 }
 
                 memberLevelRelation = this.baseMapper.selectOne(new QueryWrapper<MemberLevelRelation>().lambda()
@@ -86,5 +93,35 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
 
             throw new MemberLevelUpdateException("会员等级更新异常");
         }
+    }
+
+    /**
+     * 用户会员过期删除相关会员权益
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void expireMemberLevel(MemberLevelExpireTo to) {
+        MemberLevelRelation memberLevelRelation = new MemberLevelRelation();
+        memberLevelRelation.setIsDelete(true);
+        //比较乐观锁版本号删除用户，会员等级关系
+        if(this.baseMapper.update(memberLevelRelation, new UpdateWrapper<MemberLevelRelation>().lambda()
+                .eq(MemberLevelRelation::getRelationId, to.getRelationId())
+                .eq(MemberLevelRelation::getUpdateVersion, to.getUpdateVersion())) == 1){
+            UserRoleRelation userRoleRelation = this.baseMapper.getUserRoleRelationByRelationId(to.getRelationId());
+            //根据relationId删除用户，角色关系
+            userRoleRelationService.deleteUserRoleRelationByRelationId(userRoleRelation.getRelationId());
+
+            log.info("uid: " + userRoleRelation.getUid() + "，会员等级角色id: " + userRoleRelation.getRoleId() + "，过期");
+        }else{
+            log.info("relationId: " + to.getRelationId() + "，乐观锁版本号不一致，不删除相关会员权益");
+        }
+    }
+
+    /**
+     * 根据user_role_relation表relationId获取user_role_relation表信息
+     */
+    @Override
+    public UserRoleRelation getUserRoleRelationByRelationId(String relationId) {
+        return this.baseMapper.getUserRoleRelationByRelationId(relationId);
     }
 }
