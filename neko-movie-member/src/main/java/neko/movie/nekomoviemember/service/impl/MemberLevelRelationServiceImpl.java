@@ -102,14 +102,15 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
     @Transactional(rollbackFor = Exception.class)
     public void expireMemberLevel(MemberLevelExpireTo to) {
         MemberLevelRelation memberLevelRelation = new MemberLevelRelation();
-        memberLevelRelation.setIsDelete(true);
+        memberLevelRelation.setUpdateVersion(to.getUpdateVersion() + 1)
+                .setIsDelete(true);
         //比较乐观锁版本号删除用户，会员等级关系
         if(this.baseMapper.update(memberLevelRelation, new UpdateWrapper<MemberLevelRelation>().lambda()
                 .eq(MemberLevelRelation::getRelationId, to.getRelationId())
                 .eq(MemberLevelRelation::getUpdateVersion, to.getUpdateVersion())) == 1){
             UserRoleRelation userRoleRelation = this.baseMapper.getUserRoleRelationByRelationId(to.getRelationId());
             //根据relationId删除用户，角色关系
-            userRoleRelationService.deleteUserRoleRelationByRelationId(userRoleRelation.getRelationId());
+            userRoleRelationService.deleteUserRoleRelationByRelationId(userRoleRelation.getRelationId(), userRoleRelation.getUpdateVersion());
 
             log.info("uid: " + userRoleRelation.getUid() + "，会员等级角色id: " + userRoleRelation.getRoleId() + "，过期");
         }else{

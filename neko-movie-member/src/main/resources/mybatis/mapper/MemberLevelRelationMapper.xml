@@ -9,7 +9,7 @@
 
     <select id="getUserRoleRelationByRelationId" resultType="neko.movie.nekomoviemember.entity.UserRoleRelation">
         select user_role_relation.relation_id, user_role_relation.uid, user_role_relation.role_id,
-               user_role_relation.is_delete, user_role_relation.create_time,
+               user_role_relation.update_version, user_role_relation.is_delete, user_role_relation.create_time,
                user_role_relation.update_time from member_level_relation
         join member_level_dict
         on member_level_relation.member_level_id = member_level_dict.member_level_id

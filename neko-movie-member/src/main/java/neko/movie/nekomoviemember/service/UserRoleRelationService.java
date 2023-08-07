@@ -20,5 +20,5 @@ public interface UserRoleRelationService extends IService<UserRoleRelation> {
 
     void newRelations(String uid, List<Integer> roleIds);
 
-    void deleteUserRoleRelationByRelationId(String relationId);
+    void deleteUserRoleRelationByRelationId(String relationId, Integer updateVersion);
 }

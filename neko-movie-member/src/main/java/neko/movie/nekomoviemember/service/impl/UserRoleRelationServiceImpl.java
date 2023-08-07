@@ -1,5 +1,6 @@
 package neko.movie.nekomoviemember.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import neko.movie.nekomoviemember.entity.UserRoleRelation;
 import neko.movie.nekomoviemember.mapper.UserRoleRelationMapper;
 import neko.movie.nekomoviemember.service.UserRoleRelationService;
@@ -66,11 +67,13 @@ public class UserRoleRelationServiceImpl extends ServiceImpl<UserRoleRelationMap
      * 根据relationId删除用户，角色关系
      */
     @Override
-    public void deleteUserRoleRelationByRelationId(String relationId) {
+    public void deleteUserRoleRelationByRelationId(String relationId, Integer updateVersion) {
         UserRoleRelation userRoleRelation = new UserRoleRelation();
-        userRoleRelation.setRelationId(relationId)
+        userRoleRelation.setUpdateVersion(updateVersion + 1)
                 .setIsDelete(true);
 
-        this.baseMapper.updateById(userRoleRelation);
+        this.baseMapper.update(userRoleRelation, new UpdateWrapper<UserRoleRelation>().lambda()
+                .eq(UserRoleRelation::getRelationId, relationId)
+                .eq(UserRoleRelation::getUpdateVersion, updateVersion));
     }
 }
