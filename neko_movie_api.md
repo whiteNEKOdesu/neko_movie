@@ -2692,6 +2692,156 @@ $baseUrl/video/discount_info/two_days_or_available_discount_info
 
 
 
+#### 2.7 VideoCollectionController
+
+##### 2.7.1 添加影视收藏
+
+- put请求，url传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_collection/new_collection
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_collection/new_collection?videoInfoId=1683373796746121218
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.7.2 删除指定collectionId影视收藏
+
+- delete请求，url传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_collection/delete_collection
+```
+
+
+
+- 参数
+
+| 参数名       | 参数含义 |
+| ------------ | -------- |
+| collectionId | 收藏id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_collection/delete_collection?collectionId=1688452144841166850
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.7.3 分页查询用户自身收藏信息
+
+- post请求，请求体传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_collection/user_self_collection_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义         |
+| ----------- | ---------------- |
+| queryWords  | 查询关键字，可选 |
+| currentPage | 当前页数         |
+| limited     | 每页数量         |
+
+
+
+- 示例
+
+```json
+{
+    "queryWords": "鬼灭之刃 锻刀村篇",
+    "currentPage": 1,
+    "limited": 8
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "collectionId": "1688453333381070849",
+                "uid": "1642067605873348610",
+                "videoInfoId": "1683373796746121218",
+                "videoName": "鬼灭之刃 锻刀村篇",
+                "videoDescription": "卖炭维生的善良少年炭治郎，某天家人惨遭鬼杀害。而唯一幸存的妹妹祢豆子，却变化成鬼。遭到绝望现实打击的炭治郎，为了让妹妹恢复回人类，为了被杀害的家人向鬼报仇，决定踏上”猎鬼”之路。",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-24/99460edc-3409-4973-97a8-5302e45b2cad_捕获.PNG",
+                "createTime": "2023-08-07T15:33:39",
+                "updateTime": "2023-08-07T15:33:39"
+            }
+        ],
+        "total": 1,
+        "size": 8,
+        "current": 1,
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": 1
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 3 third_party第三方微服务
 
 #### 3.1 MailController

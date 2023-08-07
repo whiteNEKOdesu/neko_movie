@@ -2,7 +2,10 @@ package neko.movie.nekomovievideo.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import neko.movie.nekomovievideo.entity.VideoCollection;
+import neko.movie.nekomovievideo.vo.VideoCollectionVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface VideoCollectionMapper extends BaseMapper<VideoCollection> {
+    List<VideoCollectionVo> getUserSelfVideoCollectionByQueryLimitedPage(Integer limited,
+                                                                         Integer start,
+                                                                         String queryWords,
+                                                                         String uid);
 
+    int getUserSelfVideoCollectionByQueryLimitedPageNumber(String queryWords,
+                                                           String uid);
 }

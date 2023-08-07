@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="neko.movie.nekomovievideo.mapper.VideoCollectionMapper">
+    <select id="getUserSelfVideoCollectionByQueryLimitedPage" resultType="neko.movie.nekomovievideo.vo.VideoCollectionVo">
+        select video_collection.collection_id, video_collection.uid, video_collection.video_info_id,
+            video_collection.create_time, video_collection.update_time,
+            video_info.video_name, video_info.video_description, video_info.video_image from video_collection
+        join video_info
+        on video_collection.video_info_id = video_info.video_info_id
+        where video_collection.uid = #{uid} and video_collection.is_delete = 0 and
+        video_info.status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@UP}
+        <if test="@org.springframework.util.StringUtils@hasText(queryWords)">
+            and video_info.video_name = #{queryWords}
+        </if>
+        order by collection_id desc
+        limit #{start}, #{limited}
+    </select>
 
+    <select id="getUserSelfVideoCollectionByQueryLimitedPageNumber" resultType="int">
+        select count(video_collection.collection_id) from video_collection
+        join video_info
+        on video_collection.video_info_id = video_info.video_info_id
+        where video_collection.uid = #{uid} and video_collection.is_delete = 0 and
+        video_info.status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@UP}
+        <if test="@org.springframework.util.StringUtils@hasText(queryWords)">
+            and video_info.video_name = #{queryWords}
+        </if>
+    </select>
 </mapper>
