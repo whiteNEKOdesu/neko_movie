@@ -5,13 +5,15 @@ import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
 import co.elastic.clients.elasticsearch.core.DeleteResponse;
+import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
+import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,5 +70,30 @@ public class ESClientTest {
                                         t.field("videoInfoId")
                                                 .value(5))));
         System.out.println(response.deleted());
+    }
+
+    @Test
+    public void getIndex() throws IOException {
+        BooleanResponse response = elasticsearchClient.indices().exists(query -> query.index(Constant.ELASTIC_SEARCH_INDEX));
+        System.out.println(response.value());
+    }
+
+    @Test
+    public void createIndex() throws IOException {
+        CreateIndexResponse response = elasticsearchClient.indices().create(builder -> builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                .mappings(map -> map
+                        .properties("videoInfoId", propertyBuilder -> propertyBuilder.long_(longProperty -> longProperty))
+                        .properties("videoName", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
+                        .properties("videoDescription", propertyBuilder -> propertyBuilder.text(textProperty ->
+                                textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
+                        .properties("videoImage", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
+                        .properties("categoryId", propertyBuilder -> propertyBuilder.long_(longProperty -> longProperty))
+                        .properties("categoryName", propertyBuilder -> propertyBuilder.text(textProperty ->
+                                textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
+                        .properties("videoProducer", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
+                        .properties("videoActors", propertyBuilder -> propertyBuilder.text(textProperty ->
+                                textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
+                        .properties("upTime", propertyBuilder -> propertyBuilder.date(dateProperty -> dateProperty.format("yyyy-MM-dd HH:mm:ss")))));
+        System.out.println(response.acknowledged());
     }
 }
