@@ -32,4 +32,6 @@ public interface MemberInfoService extends IService<MemberInfo> {
     void updateUserName(String userName);
 
     String updateUserImagePath(MultipartFile file);
+
+    MemberInfoVo getUserInfo();
 }

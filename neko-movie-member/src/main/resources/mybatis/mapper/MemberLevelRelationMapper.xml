@@ -17,4 +17,13 @@
         on member_level_relation.uid = user_role_relation.uid and member_level_dict.role_id = user_role_relation.role_id
         where member_level_relation.relation_id = #{relationId} and user_role_relation.is_delete = 0
     </select>
+
+    <select id="getMemberLevelRoleTypesByUid" resultType="String">
+        select user_role.role_type from member_level_relation
+        join member_level_dict
+        on member_level_relation.member_level_id = member_level_dict.member_level_id
+        join user_role
+        on member_level_dict.role_id = user_role.role_id
+        where member_level_relation.uid = #{uid}
+    </select>
 </mapper>

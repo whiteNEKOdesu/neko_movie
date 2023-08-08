@@ -49,19 +49,22 @@ $baseUrl/member/member_info/log_in
         "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg",
         "weightTypes": [
             "base",
-            "courier_read",
-            "courier_write",
             "market_read",
             "market_write",
+            "courier_read",
+            "courier_write",
             "基本视频观看"
         ],
         "roleTypes": [
-            "courier",
-            "market",
             "user",
+            "market",
+            "courier",
             "普通会员"
         ],
-        "memberLevelRoleType": "普通会员",
+        "memberLevelRoleTypes": [
+            "1级会员",
+            "2级会员"
+        ],
         "token": "cec15363-7d2b-43e4-9239-2677b15730a2",
         "gender": null,
         "source": null,
@@ -395,6 +398,65 @@ $baseUrl/member/member_info/update_user_image_path
 ```json
 {
     "result": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_convenient/2023-06-25/cdacafeb-8a7a-4c79-b3b3-145520c9d097.png",
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.1.10 获取用户基本信息
+
+- get请求
+- 需要登录状态
+
+```bash
+$baseUrl/member/member_info/user_info
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "uid": "1642067605873348610",
+        "userName": "NEKO",
+        "sourceName": null,
+        "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg",
+        "weightTypes": [
+            "base",
+            "market_read",
+            "market_write",
+            "courier_read",
+            "courier_write",
+            "基本视频观看"
+        ],
+        "roleTypes": [
+            "user",
+            "market",
+            "courier",
+            "普通会员"
+        ],
+        "memberLevelRoleTypes": [
+            "1级会员",
+            "2级会员"
+        ],
+        "token": null,
+        "gender": null,
+        "source": null,
+        "sourceUid": null,
+        "realName": "NEKO",
+        "idCardNumber": "420881200101184053",
+        "phone": null,
+        "mail": "NEKO@NEKO.com",
+        "isBan": false,
+        "isDelete": false,
+        "createTime": "2023-04-01T15:33:20",
+        "updateTime": "2023-07-29T17:40:33"
+    },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"
@@ -2834,6 +2896,57 @@ $baseUrl/video/video_collection/user_self_collection_infos
         "countId": null,
         "pages": 1
     },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+#### 2.8 VideoWatchHistoryController
+
+##### 2.8.1 获取用户观看记录
+
+- get请求
+- 需要登录状态
+
+```bash
+$baseUrl/video/video_watch_history/watch_history_infos
+```
+
+
+
+- 响应结果
+
+```js
+{
+    "result": [
+        {
+            "videoInfoId": "1683373796746121218",
+            "videoSeriesId": "1683373881982767105",
+            "videoName": "鬼灭之刃 锻刀村篇",
+            "videoDescription": "卖炭维生的善良少年炭治郎，某天家人惨遭鬼杀害。而唯一幸存的妹妹祢豆子，却变化成鬼。遭到绝望现实打击的炭治郎，为了让妹妹恢复回人类，为了被杀害的家人向鬼报仇，决定踏上”猎鬼”之路。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-24/99460edc-3409-4973-97a8-5302e45b2cad_捕获.PNG",
+            "seriesNumber": 5
+        },
+        {
+            "videoInfoId": "1682551371754180610",
+            "videoSeriesId": "1682564048132014082",
+            "videoName": "花神之舞",
+            "videoDescription": "妮露 花神之舞",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/62286bc7-6c92-4dc1-80e4-71c2fefca495_捕获.PNG",
+            "seriesNumber": 1
+        },
+        {
+            "videoInfoId": "1683373796746121218",
+            "videoSeriesId": "1683374990189187074",
+            "videoName": "鬼灭之刃 锻刀村篇",
+            "videoDescription": "卖炭维生的善良少年炭治郎，某天家人惨遭鬼杀害。而唯一幸存的妹妹祢豆子，却变化成鬼。遭到绝望现实打击的炭治郎，为了让妹妹恢复回人类，为了被杀害的家人向鬼报仇，决定踏上”猎鬼”之路。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-24/99460edc-3409-4973-97a8-5302e45b2cad_捕获.PNG",
+            "seriesNumber": 6
+        }
+    ],
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

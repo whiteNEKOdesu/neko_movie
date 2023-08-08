@@ -6,6 +6,7 @@ import neko.movie.nekomoviemember.entity.UserRoleRelation;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -23,4 +24,9 @@ public interface MemberLevelRelationMapper extends BaseMapper<MemberLevelRelatio
                                         LocalDateTime updateTime);
 
     UserRoleRelation getUserRoleRelationByRelationId(String relationId);
+
+    /**
+     * 根据uid获取用户会员类型角色名
+     */
+    List<String> getMemberLevelRoleTypesByUid(String uid);
 }

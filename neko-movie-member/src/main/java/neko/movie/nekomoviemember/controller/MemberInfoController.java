@@ -74,4 +74,13 @@ public class MemberInfoController {
     public ResultObject<String> updateUserImagePath(@RequestPart MultipartFile file){
         return ResultObject.ok(memberInfoService.updateUserImagePath(file));
     }
+
+    /**
+     * 获取用户基本信息
+     */
+    @SaCheckLogin
+    @GetMapping("user_info")
+    public ResultObject<MemberInfoVo> userInfo(){
+        return ResultObject.ok(memberInfoService.getUserInfo());
+    }
 }

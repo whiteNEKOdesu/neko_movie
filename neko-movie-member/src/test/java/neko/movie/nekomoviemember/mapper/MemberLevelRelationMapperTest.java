@@ -23,4 +23,9 @@ public class MemberLevelRelationMapperTest {
     public void getUserRoleRelationByRelationId(){
         System.out.println(memberLevelRelationMapper.getUserRoleRelationByRelationId("1688370680602644482"));
     }
+
+    @Test
+    public void getMemberLevelRoleTypesByUid(){
+        System.out.println(memberLevelRelationMapper.getMemberLevelRoleTypesByUid("1642067605873348610"));
+    }
 }

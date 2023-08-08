@@ -78,9 +78,6 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
                         memberLevelRelation.getLevelExpireTime().plusMonths(payLevelMonths),
                         memberLevelRelation.getUpdateVersion(),
                         now) == 1){
-                    //添加用户，会员角色关系
-                    userRoleRelationService.newRelation(uid, memberLevelDict.getRoleId());
-
                     return memberLevelRelation.setUpdateVersion(memberLevelRelation.getUpdateVersion() + 1);
                 }
 

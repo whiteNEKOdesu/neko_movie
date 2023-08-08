@@ -20,6 +20,7 @@ import neko.movie.nekomoviemember.feign.thirdparty.MailFeignService;
 import neko.movie.nekomoviemember.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomoviemember.ip.IPHandler;
 import neko.movie.nekomoviemember.mapper.MemberInfoMapper;
+import neko.movie.nekomoviemember.mapper.MemberLevelRelationMapper;
 import neko.movie.nekomoviemember.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomoviemember.vo.LogInVo;
@@ -61,6 +62,9 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
     private MemberLevelDictService memberLevelDictService;
 
     @Resource
+    private MemberLevelRelationMapper memberLevelRelationMapper;
+
+    @Resource
     private MailFeignService mailFeignService;
 
     @Resource
@@ -86,7 +90,7 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
                 StpUtil.login(memberInfo.getUid());
                 MemberInfoVo memberInfoVo = new MemberInfoVo();
                 BeanUtil.copyProperties(memberInfo, memberInfoVo);
-                memberInfoVo.setMemberLevelRoleType(memberLevelDictService.getHighestMemberRoleTypeByUid(memberInfo.getUid()))
+                memberInfoVo.setMemberLevelRoleTypes(memberLevelRelationMapper.getMemberLevelRoleTypesByUid(memberInfo.getUid()))
                         //StpUtil.getTokenValue()方法获取token
                         .setToken(StpUtil.getTokenValue())
                         .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(memberInfo.getUid()))
@@ -227,5 +231,24 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         this.baseMapper.updateById(todoUpdateMemberInfo);
 
         return url;
+    }
+
+    /**
+     * 获取用户基本信息
+     */
+    @Override
+    public MemberInfoVo getUserInfo() {
+        String uid = StpUtil.getLoginId().toString();
+        MemberInfo memberInfo = this.baseMapper.selectById(uid);
+        if(memberInfo == null){
+            return null;
+        }
+
+        MemberInfoVo memberInfoVo = new MemberInfoVo();
+        BeanUtil.copyProperties(memberInfo, memberInfoVo);
+
+        return memberInfoVo.setMemberLevelRoleTypes(memberLevelRelationMapper.getMemberLevelRoleTypesByUid(uid))
+                .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(uid))
+                .setRoleTypes(weightRoleRelationService.getRoleTypesByUid(uid));
     }
 }
