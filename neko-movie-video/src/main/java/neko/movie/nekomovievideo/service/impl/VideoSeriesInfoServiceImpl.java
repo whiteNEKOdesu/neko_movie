@@ -17,6 +17,7 @@ import neko.movie.nekomovievideo.feign.member.UserWeightFeignService;
 import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
+import neko.movie.nekomovievideo.service.VideoWatchHistoryService;
 import neko.movie.nekomovievideo.to.MemberLevelDictTo;
 import neko.movie.nekomovievideo.to.UserWeightTo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
@@ -59,6 +60,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
     @Resource
     private UserWeightFeignService userWeightFeignService;
+
+    @Resource
+    private VideoWatchHistoryService videoWatchHistoryService;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -166,6 +170,8 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             throw new NoSuchResultException("无此影视集数信息");
         }
 
+        //添加观看记录
+        videoWatchHistoryService.newVideoWatchHistory(videoSeriesId);
         //远程调用member微服务获取影视集数观看要求权限名
         ResultObject<String> r = userWeightFeignService.memberLevelWeightNameByWeightId(videoSeriesInfo.getWeightId());
         if(!r.getResponseCode().equals(200)){

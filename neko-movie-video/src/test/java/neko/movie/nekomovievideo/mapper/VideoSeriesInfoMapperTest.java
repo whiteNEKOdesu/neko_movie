@@ -31,8 +31,13 @@ public class VideoSeriesInfoMapperTest {
     }
 
     @Test
-    public void getVideoSeriesInfoByVideoInfoIds(){
-        System.out.println(videoSeriesInfoMapper.getVideoSeriesInfoByVideoInfoIds(Arrays.asList("1683373881982767105",
+    public void getVideoWatchHistoryVosByVideoInfoIds(){
+        System.out.println(videoSeriesInfoMapper.getVideoWatchHistoryVosByVideoInfoIds(Arrays.asList("1683373881982767105",
                 "1683374990189187074")));
+    }
+
+    @Test
+    public void getVideoWatchHistoryVoByVideoInfoId(){
+        System.out.println(videoSeriesInfoMapper.getVideoWatchHistoryVoByVideoInfoId("1683373881982767105"));
     }
 }

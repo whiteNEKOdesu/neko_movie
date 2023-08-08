@@ -8,4 +8,6 @@ public class Constant {
     public static final String VIDEO_REDIS_PREFIX = REDIS_PREFIX + "video:";
 
     public static final String ELASTIC_SEARCH_INDEX = "neko_movie";
+
+    public static final int VIDEO_WATCH_HISTORY_SIZE = 15;
 }

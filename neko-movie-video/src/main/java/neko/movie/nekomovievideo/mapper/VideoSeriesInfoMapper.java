@@ -28,5 +28,7 @@ public interface VideoSeriesInfoMapper extends BaseMapper<VideoSeriesInfo> {
 
     List<VideoSeriesInfoUserVo> getVideoSeriesInfosByVideoInfoId(String videoInfoId);
 
-    List<VideoWatchHistoryVo> getVideoSeriesInfoByVideoInfoIds(List<String> videoInfoIds);
+    List<VideoWatchHistoryVo> getVideoWatchHistoryVosByVideoInfoIds(List<String> videoInfoIds);
+
+    VideoWatchHistoryVo getVideoWatchHistoryVoByVideoInfoId(String videoInfoId);
 }
