@@ -24,6 +24,6 @@
         on member_level_relation.member_level_id = member_level_dict.member_level_id
         join user_role
         on member_level_dict.role_id = user_role.role_id
-        where member_level_relation.uid = #{uid}
+        where member_level_relation.uid = #{uid} and member_level_relation.is_delete = 0
     </select>
 </mapper>
