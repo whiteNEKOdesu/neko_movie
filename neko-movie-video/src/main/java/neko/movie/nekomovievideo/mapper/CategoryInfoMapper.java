@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 商品分类表 Mapper 接口
+ * 影视分类表 Mapper 接口
  * </p>
  *
  * @author NEKO
@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CategoryInfoMapper extends BaseMapper<CategoryInfo> {
-
+    int deleteLeafCategoryInfo(Integer categoryId);
 }

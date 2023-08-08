@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * <p>
- * 商品分类表
+ * 影视分类表
  * </p>
  *
  * @author NEKO

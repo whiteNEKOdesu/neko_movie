@@ -44,7 +44,7 @@ public class VideoInfoController {
                                              @RequestParam String videoActors,
                                              @RequestParam Integer categoryId,
                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam LocalDateTime upTime,
-                                             @RequestPart MultipartFile file){
+                                             @RequestPart MultipartFile file) throws InterruptedException {
         videoInfoService.newVideoInfo(videoName,
                 videoDescription,
                 videoProducer,

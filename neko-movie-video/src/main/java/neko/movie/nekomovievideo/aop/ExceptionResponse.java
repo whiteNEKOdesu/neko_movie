@@ -357,4 +357,13 @@ public class ExceptionResponse {
                 .setResponseStatus(Response.ELASTIC_SEARCH_UPDATE_ERROR)
                 .compact();
     }
+
+    //对象仍被使用异常
+    @ExceptionHandler(value = ObjectStillUsingException.class)
+    public ResultObject<Object> objectStillUsingExceptionHandler(ObjectStillUsingException e){
+        exceptionLogger(e);
+        return new ResultObject<>()
+                .setResponseStatus(Response.OBJECT_STILL_USING_ERROR)
+                .compact();
+    }
 }

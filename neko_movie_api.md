@@ -1877,6 +1877,95 @@ $baseUrl/video/category_Info/level_category_info
 
 
 
+##### 2.1.2 新增影视分类信息
+
+- put请求，请求体传参
+- 需要admin权限
+- 需要登录状态
+
+```bash
+$baseUrl/video/category_Info/new_category_info
+```
+
+
+
+- 参数
+
+| 参数名       | 参数含义                           |
+| ------------ | ---------------------------------- |
+| parentId     | 父分类id，如果是根节点则不传此参数 |
+| level        | 分类层级，0，1，最大为1            |
+| categoryName | 分类名                             |
+
+
+
+- 示例
+
+```json
+{
+    "parentId": 1,
+    "level": 0,
+    "categoryName": "喜剧"
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.1.3 删除叶节点商品分类信息
+
+- delete请求，url传参
+- 需要admin权限
+- 需要登录状态
+- 只能删除叶节点
+
+```bash
+$category/video/category_Info/delete_leaf_category_info
+```
+
+
+
+- 参数
+
+| 参数名     | 参数含义 |
+| ---------- | -------- |
+| categoryId | 分类id   |
+
+
+
+- 示例
+
+```bash
+$category/video/category_Info/delete_leaf_category_info?categoryId=28
+```
+
+
+
+- 响应格式
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.2 VideoInfoController
 
 ##### 2.2.1 管理员添加影视信息

@@ -24,6 +24,8 @@ import neko.movie.nekomovievideo.service.CategoryInfoService;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -55,6 +58,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     @Resource
     private ElasticsearchClient elasticsearchClient;
 
+    @Resource
+    private RedissonClient redissonClient;
+
     /**
      * 添加影视信息
      */
@@ -65,27 +71,45 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                              String videoActors,
                              Integer categoryId,
                              LocalDateTime upTime,
-                             MultipartFile file) {
-        //上传图片到oss
-        ResultObject<String> r = ossFeignService.uploadImage(file);
-        if(!r.getResponseCode().equals(200)){
-            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+                             MultipartFile file) throws InterruptedException {
+        //获取分布式锁
+        RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:level_category:" + categoryId);
+        //尝试加锁，最多等待100秒，上锁以后1分钟自动解锁
+        boolean isLock = lock.tryLock(100, 1, TimeUnit.SECONDS);
+
+        if(isLock){
+            try {
+                //分类id不存在
+                if(categoryInfoService.getById(categoryId) == null){
+                    return;
+                }
+
+                //上传图片到oss
+                ResultObject<String> r = ossFeignService.uploadImage(file);
+                if(!r.getResponseCode().equals(200)){
+                    throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+                }
+
+                String videoImage = r.getResult();
+                VideoInfo videoInfo = new VideoInfo();
+                LocalDateTime now = LocalDateTime.now();
+                videoInfo.setVideoName(videoName)
+                        .setVideoDescription(videoDescription)
+                        .setVideoImage(videoImage)
+                        .setVideoProducer(videoProducer)
+                        .setVideoActors(videoActors)
+                        .setCategoryId(categoryId)
+                        .setUpTime(upTime)
+                        .setCreateTime(now)
+                        .setUpdateTime(now);
+
+                this.baseMapper.insert(videoInfo);
+            }finally {
+                lock.unlock();
+            }
+        }else{
+            throw new InterruptedException("获取分布式锁失败");
         }
-
-        String videoImage = r.getResult();
-        VideoInfo videoInfo = new VideoInfo();
-        LocalDateTime now = LocalDateTime.now();
-        videoInfo.setVideoName(videoName)
-                .setVideoDescription(videoDescription)
-                .setVideoImage(videoImage)
-                .setVideoProducer(videoProducer)
-                .setVideoActors(videoActors)
-                .setCategoryId(categoryId)
-                .setUpTime(upTime)
-                .setCreateTime(now)
-                .setUpdateTime(now);
-
-        this.baseMapper.insert(videoInfo);
     }
 
     /**

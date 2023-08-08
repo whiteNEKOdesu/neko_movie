@@ -348,4 +348,13 @@ public class ExceptionResponse {
                 .setResponseStatus(Response.FILE_TYPE_NOT_SUPPORT_ERROR)
                 .compact();
     }
+
+    //对象仍被使用异常
+    @ExceptionHandler(value = ObjectStillUsingException.class)
+    public ResultObject<Object> objectStillUsingExceptionHandler(ObjectStillUsingException e){
+        exceptionLogger(e);
+        return new ResultObject<>()
+                .setResponseStatus(Response.OBJECT_STILL_USING_ERROR)
+                .compact();
+    }
 }

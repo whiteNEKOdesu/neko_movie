@@ -1,15 +1,25 @@
 package neko.movie.nekomovievideo.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
+import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
+import neko.movie.nekomoviecommonbase.utils.exception.ObjectStillUsingException;
 import neko.movie.nekomovievideo.entity.CategoryInfo;
+import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.mapper.CategoryInfoMapper;
+import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomovievideo.vo.NewCategoryInfoVo;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +27,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 商品分类表 服务实现类
+ * 影视分类表 服务实现类
  * </p>
  *
  * @author NEKO
@@ -26,10 +36,16 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, CategoryInfo> implements CategoryInfoService {
     @Resource
+    private VideoInfoMapper videoInfoMapper;
+
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    private RedissonClient redissonClient;
+
     /**
-     * 获取层级商品分类信息
+     * 获取层级影视分类信息
      */
     @Override
     public List<CategoryInfo> getLevelCategory() {
@@ -57,6 +73,56 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
                 TimeUnit.MILLISECONDS);
 
         return result;
+    }
+
+    /**
+     * 新增影视分类信息
+     */
+    @Override
+    public void newCategoryInfo(NewCategoryInfoVo vo) {
+        if(vo.getParentId() != null && this.baseMapper.selectById(vo.getParentId()) == null){
+            throw new NoSuchResultException("无此分类id");
+        }
+
+        CategoryInfo categoryInfo = new CategoryInfo();
+        BeanUtil.copyProperties(vo, categoryInfo);
+        LocalDateTime now = LocalDateTime.now();
+        categoryInfo.setCreateTime(now)
+                .setUpdateTime(now);
+
+        this.baseMapper.insert(categoryInfo);
+
+        String key = Constant.VIDEO_REDIS_PREFIX + "level_category";
+        //删除缓存
+        stringRedisTemplate.delete(key);
+    }
+
+    /**
+     * 删除叶节点影视分类信息
+     */
+    @Override
+    public void deleteLeafCategoryInfo(Integer categoryId) throws InterruptedException {
+        //获取分布式锁
+        RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:level_category:" + categoryId);
+        //尝试加锁，最多等待100秒，上锁以后1分钟自动解锁
+        boolean isLock = lock.tryLock(100, 1, TimeUnit.SECONDS);
+
+        if(isLock){
+            try {
+                if(videoInfoMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
+                        .eq(VideoInfo::getCategoryId, categoryId)) != null || this.baseMapper.deleteLeafCategoryInfo(categoryId) != 1){
+                    throw new ObjectStillUsingException("节点仍被引用");
+                }
+
+                String key = Constant.VIDEO_REDIS_PREFIX + "level_category";
+                //删除缓存
+                stringRedisTemplate.delete(key);
+            }finally {
+                lock.unlock();
+            }
+        }else{
+            throw new InterruptedException("获取分布式锁失败");
+        }
     }
 
     /**

@@ -36,6 +36,7 @@ public enum Response {
     OUT_OF_LIMITATION_ERROR(23, "超出数量限制错误"),
     FILE_TYPE_NOT_SUPPORT_ERROR(24, "文件类型不支持错误"),
     ELASTIC_SEARCH_UPDATE_ERROR(25, "elasticsearch更新错误"),
+    OBJECT_STILL_USING_ERROR(26, "对象仍被使用错误"),
 
     MEMBER_SERVICE_ERROR(1000, "member微服务远程调用错误"),
     PRODUCT_SERVICE_ERROR(1001, "product微服务远程调用错误"),

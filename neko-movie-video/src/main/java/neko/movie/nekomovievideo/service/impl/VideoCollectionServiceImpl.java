@@ -32,7 +32,8 @@ public class VideoCollectionServiceImpl extends ServiceImpl<VideoCollectionMappe
     public void newVideoCollection(String videoInfoId) {
         //判断是否已经收藏
         if(this.baseMapper.selectOne(new QueryWrapper<VideoCollection>().lambda()
-                .eq(VideoCollection::getVideoInfoId, videoInfoId)) != null){
+                .eq(VideoCollection::getVideoInfoId, videoInfoId)
+                .eq(VideoCollection::getUid, StpUtil.getLoginId())) != null){
             return;
         }
 

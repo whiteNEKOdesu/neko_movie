@@ -2,12 +2,13 @@ package neko.movie.nekomovievideo.service;
 
 import neko.movie.nekomovievideo.entity.CategoryInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomovievideo.vo.NewCategoryInfoVo;
 
 import java.util.List;
 
 /**
  * <p>
- * 商品分类表 服务类
+ * 影视分类表 服务类
  * </p>
  *
  * @author NEKO
@@ -15,4 +16,8 @@ import java.util.List;
  */
 public interface CategoryInfoService extends IService<CategoryInfo> {
     List<CategoryInfo> getLevelCategory();
+
+    void newCategoryInfo(NewCategoryInfoVo vo);
+
+    void deleteLeafCategoryInfo(Integer categoryId) throws InterruptedException;
 }
