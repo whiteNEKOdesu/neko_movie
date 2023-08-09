@@ -138,6 +138,27 @@ public class OSSServiceImpl implements OSSService {
         return uploadFile(file);
     }
 
+    /**
+     * 批量删除oss文件
+     */
+    @Override
+    public void deleteFileBatch(List<String> ossFilePaths) {
+        if(ossFilePaths.isEmpty()){
+            return;
+        }
+
+        // 填写Bucket名称，例如examplebucket。
+        String bucketName = ossConfigProperties.getBucket();
+
+        for(String ossFilePath : ossFilePaths){
+            String objectName = ossFilePath.replace("https://" + bucketName + "." + endpoint + "/", "");
+
+            // 删除文件。
+            ossClient.deleteObject(bucketName, objectName);
+            log.info("文件删除成功，url: " + ossFilePath);
+        }
+    }
+
     private String uploadFile(MultipartFile file) throws IOException {
         // 填写Bucket名称，例如examplebucket。
         String bucket = ossConfigProperties.getBucket();

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("oss")
@@ -61,5 +62,15 @@ public class OOSController {
     @PostMapping("upload_video")
     public ResultObject<String> uploadVideo(@RequestPart MultipartFile file) throws IOException {
         return ResultObject.ok(ossService.uploadVideo(file));
+    }
+
+    /**
+     * 批量删除oss文件，建议只提供给微服务远程调用
+     */
+    @DeleteMapping("delete_file_batch")
+    public ResultObject<Object> deleteFileBatch(@RequestBody List<String> ossFilePaths){
+        ossService.deleteFileBatch(ossFilePaths);
+
+        return ResultObject.ok();
     }
 }

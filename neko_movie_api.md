@@ -3317,3 +3317,46 @@ $baseUrl/third_party/oss/upload_video
 }
 ```
 
+
+
+##### 3.2.5 批量删除oss文件
+
+- delete请求，url传参
+- 建议只提供给微服务远程调用
+
+```bash
+$baseUrl/third_party/oss/delete_file_batch
+```
+
+
+
+- 参数
+
+| 参数名       | 参数含义         |
+| ------------ | ---------------- |
+| ossFilePaths | 数组，oss文件url |
+
+
+
+- 示例
+
+```json
+[
+    "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-09/1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+    "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-09/1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795_bak.jpeg"
+]
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
