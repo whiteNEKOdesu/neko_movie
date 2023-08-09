@@ -103,7 +103,7 @@ public class VideoInfoController {
      * 管理员修改影视信息
      */
     @PostMapping("update_video_info")
-    public ResultObject<Object> updateVideoInfo(@Validated UpdateVideoInfoVo vo){
+    public ResultObject<Object> updateVideoInfo(@Validated UpdateVideoInfoVo vo) throws IOException {
         videoInfoService.updateVideoInfo(vo);
 
         return ResultObject.ok();

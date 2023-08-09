@@ -36,5 +36,5 @@ public interface VideoInfoService extends IService<VideoInfo> {
 
     void downVideo(String videoInfoId) throws IOException;
 
-    void updateVideoInfo(UpdateVideoInfoVo vo);
+    void updateVideoInfo(UpdateVideoInfoVo vo) throws IOException;
 }

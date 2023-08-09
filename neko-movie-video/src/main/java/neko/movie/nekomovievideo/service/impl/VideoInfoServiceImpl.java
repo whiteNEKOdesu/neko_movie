@@ -5,6 +5,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -235,13 +236,23 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      * 修改影视信息
      */
     @Override
-    public void updateVideoInfo(UpdateVideoInfoVo vo) {
+    @Transactional(rollbackFor = Exception.class)
+    public void updateVideoInfo(UpdateVideoInfoVo vo) throws IOException {
         VideoInfo videoInfo = this.baseMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
                 .eq(VideoInfo::getVideoInfoId, vo.getVideoInfoId())
                 .ne(VideoInfo::getStatus, VideoStatus.DELETED)
                 .ne(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE));
         if(videoInfo == null){
             return;
+        }
+        VideoInfoES videoInfoES = new VideoInfoES();
+        if(vo.getCategoryId() != null){
+            //获取分类信息
+            CategoryInfo categoryInfo = categoryInfoService.getById(vo.getCategoryId());
+            if(categoryInfo == null){
+                return;
+            }
+            videoInfoES.setCategoryName(categoryInfo.getCategoryName());
         }
 
         VideoInfo todoUpdate = new VideoInfo();
@@ -257,5 +268,24 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         todoUpdate.setUpdateTime(LocalDateTime.now());
 
         this.baseMapper.updateById(todoUpdate);
+
+        //影视视频处于上架状态
+        if(videoInfo.getStatus().equals(VideoStatus.UP)){
+            //将影视视频信息收集为elasticsearch形式
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            BeanUtil.copyProperties(todoUpdate, videoInfoES);
+            if(vo.getUpTime() != null){
+                videoInfoES.setUpTime(vo.getUpTime().format(dateTimeFormatter));
+            }
+
+            //修改elasticsearch中影视信息数据
+            UpdateResponse<VideoInfoES> response = elasticsearchClient.update(builder ->
+                    builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                            .id(vo.getVideoInfoId())
+                            .doc(videoInfoES)
+                            //表示修改而不是覆盖
+                            .docAsUpsert(true), VideoInfoES.class);
+            log.info("修改elasticsearch中影视数据，videoInfoId: " + vo.getVideoInfoId() + "，修改数量: " + response.shards().successful().intValue());
+        }
     }
 }
