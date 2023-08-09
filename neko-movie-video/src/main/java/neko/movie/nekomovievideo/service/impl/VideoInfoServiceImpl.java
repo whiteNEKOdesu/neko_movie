@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
 import neko.movie.nekomovievideo.service.VideoInfoService;
+import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
@@ -59,6 +61,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
     @Resource
     private CategoryInfoService categoryInfoService;
+
+    @Resource
+    private VideoSeriesInfoService videoSeriesInfoService;
 
     @Resource
     private ElasticsearchClient elasticsearchClient;
@@ -332,5 +337,26 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         //修改影视信息状态为 回收站 状态
         this.baseMapper.updateById(todoUpdate);
+    }
+
+    /**
+     * 将指定影视信息删除
+     */
+    @Override
+    public void deleteVideoInfo(String videoInfoId) {
+        VideoInfo videoInfo = new VideoInfo();
+        LocalDateTime now = LocalDateTime.now();
+        videoInfo.setStatus(VideoStatus.DELETED)
+                .setUpdateTime(now);
+
+        //修改影视信息状态为删除状态
+        if(this.baseMapper.update(videoInfo, new UpdateWrapper<VideoInfo>().lambda()
+                .eq(VideoInfo::getVideoInfoId, videoInfo)
+                .eq(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)) != 1){
+            return;
+        }
+
+        //删除全部视频分集信息
+        videoSeriesInfoService.deleteVideoSeriesInfosByVideoInfoId(videoInfoId);
     }
 }

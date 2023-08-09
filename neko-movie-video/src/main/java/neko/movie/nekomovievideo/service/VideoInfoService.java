@@ -39,4 +39,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     void updateVideoInfo(UpdateVideoInfoVo vo) throws IOException;
 
     void sendDeleteVideoInfoMessage(String videoInfoId);
+
+    void deleteVideoInfo(String videoInfoId);
 }

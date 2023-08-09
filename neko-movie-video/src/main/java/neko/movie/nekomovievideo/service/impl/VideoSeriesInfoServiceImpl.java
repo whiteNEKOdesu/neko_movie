@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomoviecommonbase.utils.entity.*;
@@ -27,6 +28,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -38,6 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -243,6 +246,33 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
                 .setIsDelete(true);
 
         this.baseMapper.updateById(todoUpdate);
+    }
+
+    /**
+     * 删除指定所属videoInfoId全部视频分集信息
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteVideoSeriesInfosByVideoInfoId(String videoInfoId) {
+        VideoSeriesInfo videoSeriesInfo = new VideoSeriesInfo();
+        videoSeriesInfo.setIsDelete(true)
+                .setUpdateTime(LocalDateTime.now());
+
+        //修改视频分集信息为删除状态
+        this.baseMapper.update(videoSeriesInfo, new UpdateWrapper<VideoSeriesInfo>().lambda()
+                .eq(VideoSeriesInfo::getVideoInfoId, videoInfoId));
+
+        //获取全部视频分集信息
+        List<VideoSeriesInfo> videoSeriesInfos = this.baseMapper.selectList(new QueryWrapper<VideoSeriesInfo>().lambda()
+                .eq(VideoSeriesInfo::getVideoInfoId, videoInfoId));
+        //将全部视频分集信息视频地址收集为list
+        List<String> videoUrls = videoSeriesInfos.stream().map(VideoSeriesInfo::getVideoUrl)
+                .collect(Collectors.toList());
+        //远程调用thirdparty微服务批量删除视频
+        ResultObject<Object> r = ossFeignService.deleteFileBatch(videoUrls);
+        if(!r.getResponseCode().equals(200)){
+            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+        }
     }
 
     /**
