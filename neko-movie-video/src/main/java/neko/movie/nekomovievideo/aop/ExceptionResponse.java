@@ -11,6 +11,7 @@ import neko.movie.nekomoviecommonbase.utils.exception.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -364,6 +365,15 @@ public class ExceptionResponse {
         exceptionLogger(e);
         return new ResultObject<>()
                 .setResponseStatus(Response.OBJECT_STILL_USING_ERROR)
+                .compact();
+    }
+
+    //参数格式错误异常
+    @ExceptionHandler(value = BindException.class)
+    public ResultObject<Object> bindExceptionHandler(BindException e){
+        exceptionLogger(e);
+        return new ResultObject<>()
+                .setResponseStatus(Response.ARGUMENT_ILLEGAL_FORMAT_ERROR)
                 .compact();
     }
 }

@@ -36,7 +36,7 @@ public class CategoryInfoController {
     }
 
     /**
-     * 新增影视分类信息
+     * 管理员新增影视分类信息
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
@@ -48,7 +48,7 @@ public class CategoryInfoController {
     }
 
     /**
-     * 删除叶节点影视分类信息
+     * 管理员删除叶节点影视分类信息
      */
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin

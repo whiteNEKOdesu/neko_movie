@@ -23,6 +23,7 @@ import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -228,5 +229,33 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                                         t.field("videoInfoId")
                                                 .value(videoInfoId))));
         log.info("影视视频下架videoInfoId: " + videoInfoId + "，下架数量" + response.deleted());
+    }
+
+    /**
+     * 修改影视信息
+     */
+    @Override
+    public void updateVideoInfo(UpdateVideoInfoVo vo) {
+        VideoInfo videoInfo = this.baseMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
+                .eq(VideoInfo::getVideoInfoId, vo.getVideoInfoId())
+                .ne(VideoInfo::getStatus, VideoStatus.DELETED)
+                .ne(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE));
+        if(videoInfo == null){
+            return;
+        }
+
+        VideoInfo todoUpdate = new VideoInfo();
+        BeanUtil.copyProperties(vo, todoUpdate);
+        if(vo.getFile() != null){
+            //远程调用thirdparty微服务上传新封面图
+            ResultObject<String> r = ossFeignService.uploadImage(vo.getFile());
+            if(!r.getResponseCode().equals(200)){
+                throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+            }
+            todoUpdate.setVideoImage(r.getResult());
+        }
+        todoUpdate.setUpdateTime(LocalDateTime.now());
+
+        this.baseMapper.updateById(todoUpdate);
     }
 }

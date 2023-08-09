@@ -1713,7 +1713,7 @@ $baseUrl/member/member_level_dict/member_level_dict_by_member_level_id?memberLev
 
 #### 2.1 CategoryInfoController
 
-##### 2.1.1 获取层级商品分类信息
+##### 2.1.1 获取层级影视分类信息
 
 - get请求
 
@@ -1877,7 +1877,7 @@ $baseUrl/video/category_Info/level_category_info
 
 
 
-##### 2.1.2 新增影视分类信息
+##### 2.1.2 管理员新增影视分类信息
 
 - put请求，请求体传参
 - 需要admin权限
@@ -1924,7 +1924,7 @@ $baseUrl/video/category_Info/new_category_info
 
 
 
-##### 2.1.3 删除叶节点商品分类信息
+##### 2.1.3 管理员删除叶节点影视分类信息
 
 - delete请求，url传参
 - 需要admin权限
@@ -2279,6 +2279,46 @@ $baseUrl/video/video_info/down_video?videoInfoId=1683373796746121218
 
 
 
+##### 2.2.6 管理员修改影视信息
+
+- post请求，form-data上传文件
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_info/update_video_info
+```
+
+
+
+- 参数
+
+| 参数名           | 参数含义     |
+| ---------------- | ------------ |
+| videoInfoId      | 影视信息id   |
+| file             | 封面图，可选 |
+| videoName        | 影视名，可选 |
+| videoDescription | 影视描述     |
+| videoProducer    | 制作人       |
+| videoActors      | 演员信息     |
+| categoryId       | 分类id       |
+| upTime           | 上映时间     |
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息
@@ -2559,6 +2599,47 @@ $baseUrl/video/video_series_info/video_series_infos?videoInfoId=1683373796746121
             "updateTime": "2023-07-24T15:14:08"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.4.5 管理员删除指定videoSeriesId视频分集信息
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_series_info/delete_video_series_info
+```
+
+
+
+- 参数
+
+| 参数名        | 参数含义   |
+| ------------- | ---------- |
+| videoSeriesId | 影视集数id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_series_info/delete_video_series_info?videoSeriesId=1689074341590896642
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

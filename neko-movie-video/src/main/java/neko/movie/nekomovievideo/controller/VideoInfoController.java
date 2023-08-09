@@ -8,6 +8,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.service.VideoInfoService;
+import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -94,6 +95,16 @@ public class VideoInfoController {
     @PostMapping("down_video")
     public ResultObject<Object> downVideo(@RequestParam String videoInfoId) throws IOException {
         videoInfoService.downVideo(videoInfoId);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员修改影视信息
+     */
+    @PostMapping("update_video_info")
+    public ResultObject<Object> updateVideoInfo(@Validated UpdateVideoInfoVo vo){
+        videoInfoService.updateVideoInfo(vo);
 
         return ResultObject.ok();
     }

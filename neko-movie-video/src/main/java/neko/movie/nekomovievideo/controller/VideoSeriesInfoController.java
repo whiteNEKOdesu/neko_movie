@@ -73,4 +73,16 @@ public class VideoSeriesInfoController {
     public ResultObject<List<VideoSeriesInfoUserVo>> videoSeriesInfos(@RequestParam String videoInfoId) throws ExecutionException, InterruptedException {
         return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfosByVideoInfoId(videoInfoId));
     }
+
+    /**
+     * 管理员删除指定videoSeriesId视频分集信息
+     */
+    @SaCheckLogin
+    @SaCheckRole(RoleType.ADMIN)
+    @DeleteMapping("delete_video_series_info")
+    public ResultObject<Object> deleteVideoSeriesInfo(@RequestParam String videoSeriesId){
+        videoSeriesInfoService.deleteVideoSeriesInfo(videoSeriesId);
+
+        return ResultObject.ok();
+    }
 }

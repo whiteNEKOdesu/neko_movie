@@ -128,7 +128,8 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             try {
                 if(this.baseMapper.selectOne(new QueryWrapper<VideoSeriesInfo>().lambda()
                         .eq(VideoSeriesInfo::getVideoInfoId, videoInfoId)
-                        .eq(VideoSeriesInfo::getSeriesNumber, seriesNumber)) != null){
+                        .eq(VideoSeriesInfo::getSeriesNumber, seriesNumber)
+                        .eq(VideoSeriesInfo::getIsDelete, false)) != null){
                     throw new DuplicateKeyException("集数重复");
                 }
 
@@ -165,7 +166,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
      */
     @Override
     public VideoSeriesInfoVo getVideoSeriesInfoByVideoSeriesInfoId(String videoSeriesId) {
-        VideoSeriesInfo videoSeriesInfo = this.baseMapper.selectById(videoSeriesId);
+        VideoSeriesInfo videoSeriesInfo = this.baseMapper.selectOne(new QueryWrapper<VideoSeriesInfo>().lambda()
+                .eq(VideoSeriesInfo::getVideoSeriesId, videoSeriesId)
+                .eq(VideoSeriesInfo::getIsDelete, false));
         if(videoSeriesInfo == null){
             throw new NoSuchResultException("无此影视集数信息");
         }
@@ -190,7 +193,7 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
     }
 
     /**
-     * 查询指定videoSeriesId全部视频分集信息
+     * 查询指定videoInfoId全部视频分集信息
      */
     @Override
     public List<VideoSeriesInfoUserVo> getVideoSeriesInfosByVideoInfoId(String videoInfoId) throws ExecutionException, InterruptedException {
@@ -217,6 +220,29 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         }
 
         return list;
+    }
+
+    /**
+     * 删除指定videoSeriesId视频分集信息
+     */
+    @Override
+    public void deleteVideoSeriesInfo(String videoSeriesId) {
+        VideoSeriesInfo videoSeriesInfo = this.baseMapper.selectById(videoSeriesId);
+        if(videoSeriesInfo == null){
+            return;
+        }
+
+        //远程调用thirdparty微服务删除视频
+        ResultObject<Object> r = ossFeignService.deleteFile(videoSeriesInfo.getVideoUrl());
+        if(!r.getResponseCode().equals(200)){
+            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+        }
+
+        VideoSeriesInfo todoUpdate = new VideoSeriesInfo();
+        todoUpdate.setVideoSeriesId(videoSeriesId)
+                .setIsDelete(true);
+
+        this.baseMapper.updateById(todoUpdate);
     }
 
     /**

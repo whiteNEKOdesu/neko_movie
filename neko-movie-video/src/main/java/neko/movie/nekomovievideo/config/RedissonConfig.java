@@ -13,7 +13,7 @@ public class RedissonConfig {
     /**
      * redisson分布式锁配置
      */
-    @Bean(destroyMethod="shutdown")
+    @Bean(destroyMethod = "shutdown")
     public RedissonClient redisson(@Value("${spring.redis.host}") String host,
                                    @Value("${spring.redis.port}") String port,
                                    @Value("${spring.redis.password}") String password) {

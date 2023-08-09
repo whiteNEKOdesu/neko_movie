@@ -30,4 +30,6 @@ public interface VideoSeriesInfoService extends IService<VideoSeriesInfo> {
     VideoSeriesInfoVo getVideoSeriesInfoByVideoSeriesInfoId(String videoSeriesId);
 
     List<VideoSeriesInfoUserVo> getVideoSeriesInfosByVideoInfoId(String videoInfoId) throws ExecutionException, InterruptedException;
+
+    void deleteVideoSeriesInfo(String videoSeriesId);
 }

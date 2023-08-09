@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,4 +35,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     VideoInfoVo getVideoInfoByVideoInfoId(String videoInfoId);
 
     void downVideo(String videoInfoId) throws IOException;
+
+    void updateVideoInfo(UpdateVideoInfoVo vo);
 }
