@@ -82,6 +82,8 @@ public class VideoInfoController {
     /**
      * 管理员根据videoInfoId查询影视视频信息
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @GetMapping("video_info_by_video_info_id")
     public ResultObject<VideoInfoVo> videoInfoByVideoInfoId(@RequestParam String videoInfoId){
         return ResultObject.ok(videoInfoService.getVideoInfoByVideoInfoId(videoInfoId));
@@ -102,9 +104,21 @@ public class VideoInfoController {
     /**
      * 管理员修改影视信息
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @PostMapping("update_video_info")
     public ResultObject<Object> updateVideoInfo(@Validated UpdateVideoInfoVo vo) throws IOException {
         videoInfoService.updateVideoInfo(vo);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员将指定影视信息放入回收站中
+     */
+    @DeleteMapping("logic_delete_video_info")
+    public ResultObject<Object> logicDeleteVideoInfo(@RequestParam String videoInfoId){
+        videoInfoService.sendDeleteVideoInfoMessage(videoInfoId);
 
         return ResultObject.ok();
     }

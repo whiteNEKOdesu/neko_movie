@@ -23,7 +23,7 @@
         <springcloud.version>2021.0.5</springcloud.version>
         <springcloud.alibaba.version>2021.0.4.0</springcloud.alibaba.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <mysql.version>5.1.40</mysql.version>
+        <mysql.version>5.1.47</mysql.version>
         <mybatis.plus.version>3.5.3</mybatis.plus.version>
     </properties>
     <dependencyManagement>

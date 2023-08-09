@@ -1,6 +1,7 @@
 package neko.movie.nekomovievideo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
@@ -8,11 +9,9 @@ import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import neko.movie.nekomoviecommonbase.utils.entity.Constant;
-import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
-import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
-import neko.movie.nekomoviecommonbase.utils.entity.VideoStatus;
+import neko.movie.nekomoviecommonbase.utils.entity.*;
 import neko.movie.nekomoviecommonbase.utils.exception.ElasticSearchUpdateException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
@@ -23,11 +22,15 @@ import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
 import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
 import neko.movie.nekomovievideo.service.VideoInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.ReturnedMessage;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,9 +38,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -62,6 +65,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 添加影视信息
@@ -269,7 +275,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         this.baseMapper.updateById(todoUpdate);
 
-        //影视视频处于上架状态
+        //影视视频处于上架状态，则修改elasticsearch中影视信息数据
         if(videoInfo.getStatus().equals(VideoStatus.UP)){
             //将影视视频信息收集为elasticsearch形式
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -287,5 +293,44 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                             .docAsUpsert(true), VideoInfoES.class);
             log.info("修改elasticsearch中影视数据，videoInfoId: " + vo.getVideoInfoId() + "，修改数量: " + response.shards().successful().intValue());
         }
+    }
+
+    /**
+     * 将指定影视信息放入回收站中
+     */
+    @Override
+    public void sendDeleteVideoInfoMessage(String videoInfoId) {
+        VideoInfo videoInfo = this.baseMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
+                .eq(VideoInfo::getVideoInfoId, videoInfoId)
+                .ne(VideoInfo::getStatus, VideoStatus.DELETED)
+                .ne(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE));
+
+        if(videoInfo == null){
+            return;
+        }
+
+        RabbitMQMessageTo<String> rabbitMQMessageTo = RabbitMQMessageTo.generateMessage(videoInfoId, MQMessageType.VIDEO_DELETE_TYPE);
+        //在CorrelationData中设置回退消息
+        CorrelationData correlationData = new CorrelationData(MQMessageType.VIDEO_DELETE_TYPE.toString());
+        String jsonMessage = JSONUtil.toJsonStr(rabbitMQMessageTo);
+        String notAvailable = "not available";
+        correlationData.setReturned(new ReturnedMessage(new Message(jsonMessage.getBytes(StandardCharsets.UTF_8)),
+                0,
+                notAvailable,
+                notAvailable,
+                notAvailable));
+        //向延迟队列发送videoInfoId，用于回收站自动删除影视视频
+        rabbitTemplate.convertAndSend(RabbitMqConstant.VIDEO_DELETE_EXCHANGE_NAME,
+                RabbitMqConstant.VIDEO_DELETE_DEAD_LETTER_ROUTING_KEY_NAME,
+                jsonMessage,
+                correlationData);
+
+        VideoInfo todoUpdate = new VideoInfo();
+        todoUpdate.setVideoInfoId(videoInfoId)
+                .setDeleteExpireTime(LocalDateTime.now().plusDays(30))
+                .setStatus(VideoStatus.LOGIC_DELETE);
+
+        //修改影视信息状态为 回收站 状态
+        this.baseMapper.updateById(todoUpdate);
     }
 }

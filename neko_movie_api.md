@@ -2090,85 +2090,63 @@ $baseUrl/video/video_info/video_infos
     "result": {
         "records": [
             {
-                "videoInfoId": "1680783199812259841",
+                "videoInfoId": "1680783166308159489",
                 "videoName": "NEKO",
                 "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/68085315-f614-42de-ba03-329b09a95762_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/f75d6c13-e485-420b-8437-920261b9618f_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
                 "videoProducer": "NEKO",
                 "videoActors": "NEKO",
                 "categoryId": 34,
                 "upTime": "2023-03-29T15:46:35",
+                "deleteExpireTime": null,
                 "status": -1,
-                "createTime": "2023-07-17T11:35:17",
-                "updateTime": "2023-07-17T11:35:17"
+                "createTime": "2023-07-17T11:35:09",
+                "updateTime": "2023-07-17T11:35:09"
             },
             {
-                "videoInfoId": "1680783216799191041",
+                "videoInfoId": "1680783148910186498",
                 "videoName": "NEKO",
                 "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/4614a8fc-6307-48c0-b250-5726358041a5_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/73580e48-e4a8-4c98-bef5-1582d63aa0cb_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
                 "videoProducer": "NEKO",
                 "videoActors": "NEKO",
                 "categoryId": 34,
                 "upTime": "2023-03-29T15:46:35",
+                "deleteExpireTime": null,
                 "status": -1,
-                "createTime": "2023-07-17T11:35:21",
-                "updateTime": "2023-07-17T11:35:21"
+                "createTime": "2023-07-17T11:35:05",
+                "updateTime": "2023-07-17T11:35:05"
             },
             {
-                "videoInfoId": "1680783233358303233",
+                "videoInfoId": "1680783130899845122",
                 "videoName": "NEKO",
                 "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/40f59830-6945-4c48-8cec-5bc5433364d5_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/0b88989f-13ac-4b4c-883e-c80f22510f1e_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
                 "videoProducer": "NEKO",
                 "videoActors": "NEKO",
                 "categoryId": 34,
                 "upTime": "2023-03-29T15:46:35",
+                "deleteExpireTime": null,
                 "status": -1,
-                "createTime": "2023-07-17T11:35:25",
-                "updateTime": "2023-07-17T11:35:25"
+                "createTime": "2023-07-17T11:35:01",
+                "updateTime": "2023-07-17T11:35:01"
             },
             {
-                "videoInfoId": "1680783251037294593",
+                "videoInfoId": "1680781825485639682",
                 "videoName": "NEKO",
                 "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/463e007e-74a6-43c2-ab7a-37345a2bfe8d_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
                 "videoProducer": "NEKO",
                 "videoActors": "NEKO",
                 "categoryId": 34,
                 "upTime": "2023-03-29T15:46:35",
+                "deleteExpireTime": null,
                 "status": -1,
-                "createTime": "2023-07-17T11:35:29",
-                "updateTime": "2023-07-17T11:35:29"
-            },
-            {
-                "videoInfoId": "1680783299959656449",
-                "videoName": "NEKO",
-                "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/260b5481-b78e-4ea9-92ec-5bb88d0d3842_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
-                "videoProducer": "NEKO",
-                "videoActors": "NEKO",
-                "categoryId": 34,
-                "upTime": "2023-03-29T15:46:35",
-                "status": -1,
-                "createTime": "2023-07-17T11:35:41",
-                "updateTime": "2023-07-17T11:35:41"
-            },
-            {
-                "videoInfoId": "1680783320826318849",
-                "videoName": "NEKO",
-                "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/259da5b9-f07d-4d0e-ad94-f0cae0a64762_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
-                "videoProducer": "NEKO",
-                "videoActors": "NEKO",
-                "categoryId": 34,
-                "upTime": "2023-03-29T15:46:35",
-                "status": -1,
-                "createTime": "2023-07-17T11:35:46",
-                "updateTime": "2023-07-17T11:35:46"
+                "createTime": "2023-07-17T11:29:49",
+                "updateTime": "2023-07-17T11:29:49"
             }
         ],
-        "total": 6,
+        "total": 4,
         "size": 8,
         "current": 1,
         "orders": [],
@@ -2303,6 +2281,47 @@ $baseUrl/video/video_info/update_video_info
 | videoActors      | 演员信息     |
 | categoryId       | 分类id       |
 | upTime           | 上映时间     |
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.2.7 管理员将指定影视信息放入回收站中
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_info/logic_delete_video_info
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/logic_delete_video_info?videoInfoId=1689195932266029058
+```
 
 
 
