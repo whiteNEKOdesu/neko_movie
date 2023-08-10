@@ -9,6 +9,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.Response;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.exception.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -365,6 +366,15 @@ public class ExceptionResponse {
         exceptionLogger(e);
         return new ResultObject<>()
                 .setResponseStatus(Response.ARGUMENT_ILLEGAL_FORMAT_ERROR)
+                .compact();
+    }
+
+    //对象仍被使用异常
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    public ResultObject<Object> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException e){
+        exceptionLogger(e);
+        return new ResultObject<>()
+                .setResponseStatus(Response.OBJECT_STILL_USING_ERROR)
                 .compact();
     }
 }

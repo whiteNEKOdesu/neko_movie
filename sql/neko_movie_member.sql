@@ -11,7 +11,7 @@
  Target Server Version : 50738 (5.7.38)
  File Encoding         : 65001
 
- Date: 01/08/2023 08:38:52
+ Date: 10/08/2023 16:34:22
 */
 
 SET NAMES utf8mb4;
@@ -136,6 +136,19 @@ INSERT INTO `admin_log_in_log` VALUES ('1685174971795615746', '16423983695969443
 INSERT INTO `admin_log_in_log` VALUES ('1685802302482485250', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-07-31 07:59:24', '2023-07-31 07:59:24');
 INSERT INTO `admin_log_in_log` VALUES ('1685899538751037442', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-07-31 14:25:47', '2023-07-31 14:25:47');
 INSERT INTO `admin_log_in_log` VALUES ('1686166153128357889', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-01 08:05:13', '2023-08-01 08:05:13');
+INSERT INTO `admin_log_in_log` VALUES ('1686282606724833281', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-01 15:47:58', '2023-08-01 15:47:58');
+INSERT INTO `admin_log_in_log` VALUES ('1688343594710138882', '1642398369596944385', '0:0:0:0:0:0:0:1', 0, 0, '2023-08-07 08:17:36', '2023-08-07 08:17:36');
+INSERT INTO `admin_log_in_log` VALUES ('1688343618978381825', '1642398369596944385', '0:0:0:0:0:0:0:1', 0, 0, '2023-08-07 08:17:41', '2023-08-07 08:17:41');
+INSERT INTO `admin_log_in_log` VALUES ('1688343649470971905', '1642398369596944385', '0:0:0:0:0:0:0:1', 0, 0, '2023-08-07 08:17:49', '2023-08-07 08:17:49');
+INSERT INTO `admin_log_in_log` VALUES ('1688343676968828929', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-07 08:17:55', '2023-08-07 08:17:55');
+INSERT INTO `admin_log_in_log` VALUES ('1688437444384440322', '1642398369596944385', '0:0:0:0:0:0:0:1', 0, 0, '2023-08-07 14:30:31', '2023-08-07 14:30:31');
+INSERT INTO `admin_log_in_log` VALUES ('1688437471697747970', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-07 14:30:38', '2023-08-07 14:30:38');
+INSERT INTO `admin_log_in_log` VALUES ('1688704240794578945', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 08:10:40', '2023-08-08 08:10:40');
+INSERT INTO `admin_log_in_log` VALUES ('1688800098940706818', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 14:31:35', '2023-08-08 14:31:35');
+INSERT INTO `admin_log_in_log` VALUES ('1689068112860729346', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-09 08:16:34', '2023-08-09 08:16:34');
+INSERT INTO `admin_log_in_log` VALUES ('1689163808540516353', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-09 14:36:50', '2023-08-09 14:36:50');
+INSERT INTO `admin_log_in_log` VALUES ('1689427899699982338', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-10 08:06:14', '2023-08-10 08:06:14');
+INSERT INTO `admin_log_in_log` VALUES ('1689526269517029377', '1642398369596944385', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-10 14:37:07', '2023-08-10 14:37:07');
 
 -- ----------------------------
 -- Table structure for member_info
@@ -169,8 +182,8 @@ CREATE TABLE `member_info`  (
 -- ----------------------------
 INSERT INTO `member_info` VALUES ('1642067605873348610', 'NEKO', 'f819e011ccf284ffe99b223c4603615d', '[70, -58, -15, -127, 82, 126, -113, 120, -88, 28]', NULL, 'https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg', NULL, NULL, NULL, 'NEKO', '420881200101184053', 'https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_convenient/2023-05-26/0b578be8-82d4-4967-8261-9d686d963a71_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg', NULL, 'NEKO@NEKO.com', 0, 0, '2023-04-01 15:33:20', '2023-07-29 17:40:33');
 INSERT INTO `member_info` VALUES ('1645332216386969601', NULL, NULL, NULL, 'nekochannanodesu', NULL, NULL, 'gitee', '12356244', NULL, NULL, NULL, NULL, NULL, 0, 0, '2023-04-10 15:45:44', '2023-04-10 15:45:44');
-INSERT INTO `member_info` VALUES ('1684853753762611201', 'zhou', '2b03cd2e03e8f100d50d32749c3d6e61', '[-6, -37, 120, 123, 80, 85, -11, -58, 22, -83]', NULL, 'https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-31/8bf7c670-a570-4395-bb91-41bfd3b6f9cb_90dc57044c2661b42aa62b08a452b81c.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2531567053@qq.com', 0, 0, '2023-07-28 17:10:13', '2023-07-31 17:19:39');
-INSERT INTO `member_info` VALUES ('1685850632348516354', 'xian', '213a97052dcf83d015d0580fe9a66924', '[-43, 36, -71, 122, -30, 10, 43, 19, 13, 28]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1336182556@qq.com', 0, 0, '2023-07-31 11:11:27', '2023-07-31 11:11:27');
+INSERT INTO `member_info` VALUES ('1684853753762611201', 'zhou', '2b03cd2e03e8f100d50d32749c3d6e61', '[-6, -37, 120, 123, 80, 85, -11, -58, 22, -83]', NULL, 'https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-08/0c003fb9-3ed0-4d8d-aedf-c08b255853f1_301882efc3b3dcabaad03a7b607ab228.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2531567053@qq.com', 0, 0, '2023-07-28 17:10:13', '2023-08-08 16:36:34');
+INSERT INTO `member_info` VALUES ('1685850632348516354', 'xian', '213a97052dcf83d015d0580fe9a66924', '[-43, 36, -71, 122, -30, 10, 43, 19, 13, 28]', NULL, 'https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-08/f853539e-37eb-48aa-a9d3-e30059c9353d_301882efc3b3dcabaad03a7b607ab228.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1336182556@qq.com', 0, 0, '2023-07-31 11:11:27', '2023-08-08 17:22:45');
 
 -- ----------------------------
 -- Table structure for member_level_dict
@@ -185,7 +198,9 @@ CREATE TABLE `member_level_dict`  (
                                       `create_time` datetime NOT NULL COMMENT '创建时间',
                                       `update_time` datetime NOT NULL COMMENT '更新时间',
                                       PRIMARY KEY (`member_level_id`) USING BTREE,
-                                      UNIQUE INDEX `idx_level`(`level`) USING BTREE
+                                      UNIQUE INDEX `idx_level`(`level`) USING BTREE,
+                                      INDEX `idx_for_member_level_dict_role_id`(`role_id`) USING BTREE,
+                                      CONSTRAINT `idx_for_member_level_dict_role_id` FOREIGN KEY (`role_id`) REFERENCES `user_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户等级字典表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -209,12 +224,16 @@ CREATE TABLE `member_level_relation`  (
                                           `create_time` datetime NOT NULL COMMENT '创建时间',
                                           `update_time` datetime NOT NULL COMMENT '修改时间',
                                           PRIMARY KEY (`relation_id`) USING BTREE,
-                                          INDEX `idx_uid`(`uid`) USING BTREE
+                                          INDEX `idx_uid`(`uid`) USING BTREE,
+                                          INDEX `idx_for_member_level_relation_member_level_id`(`member_level_id`) USING BTREE,
+                                          CONSTRAINT `idx_for_member_level_relation_member_level_id` FOREIGN KEY (`member_level_id`) REFERENCES `member_level_dict` (`member_level_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户，会员等级关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_level_relation
 -- ----------------------------
+INSERT INTO `member_level_relation` VALUES ('1688832208925712386', '1684853753762611201', 4, '2023-09-08 16:39:10', 0, 0, '2023-08-08 16:39:10', '2023-08-08 16:39:10');
+INSERT INTO `member_level_relation` VALUES ('1688843555113623554', '1685850632348516354', 4, '2023-09-08 17:24:15', 0, 0, '2023-08-08 17:24:15', '2023-08-08 17:24:15');
 
 -- ----------------------------
 -- Table structure for member_log_in_log
@@ -506,6 +525,47 @@ INSERT INTO `member_log_in_log` VALUES ('1685917140890165249', '1684853753762611
 INSERT INTO `member_log_in_log` VALUES ('1685917199115493378', '1684853753762611201', '192.168.30.129', 1, 0, '2023-07-31 15:35:58', '2023-07-31 15:35:58');
 INSERT INTO `member_log_in_log` VALUES ('1685917359744753665', '1684853753762611201', '192.168.30.129', 1, 0, '2023-07-31 15:36:36', '2023-07-31 15:36:36');
 INSERT INTO `member_log_in_log` VALUES ('1685943350961643522', '1684853753762611201', '192.168.30.129', 1, 0, '2023-07-31 17:19:53', '2023-07-31 17:19:53');
+INSERT INTO `member_log_in_log` VALUES ('1686262003351478273', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-01 14:26:05', '2023-08-01 14:26:05');
+INSERT INTO `member_log_in_log` VALUES ('1686283190920077314', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-01 15:50:17', '2023-08-01 15:50:17');
+INSERT INTO `member_log_in_log` VALUES ('1686302473662291969', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-01 17:06:54', '2023-08-01 17:06:54');
+INSERT INTO `member_log_in_log` VALUES ('1688361823222394882', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-07 09:30:02', '2023-08-07 09:30:02');
+INSERT INTO `member_log_in_log` VALUES ('1688441386312974338', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-07 14:46:11', '2023-08-07 14:46:11');
+INSERT INTO `member_log_in_log` VALUES ('1688466641991565313', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:26:32', '2023-08-07 16:26:32');
+INSERT INTO `member_log_in_log` VALUES ('1688467103289507841', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:28:22', '2023-08-07 16:28:22');
+INSERT INTO `member_log_in_log` VALUES ('1688467476460929025', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:29:51', '2023-08-07 16:29:51');
+INSERT INTO `member_log_in_log` VALUES ('1688467687665106946', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:30:42', '2023-08-07 16:30:42');
+INSERT INTO `member_log_in_log` VALUES ('1688467824353280002', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:31:14', '2023-08-07 16:31:14');
+INSERT INTO `member_log_in_log` VALUES ('1688467920167960578', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:31:37', '2023-08-07 16:31:37');
+INSERT INTO `member_log_in_log` VALUES ('1688468573804101633', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:34:13', '2023-08-07 16:34:13');
+INSERT INTO `member_log_in_log` VALUES ('1688468758122790914', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:34:57', '2023-08-07 16:34:57');
+INSERT INTO `member_log_in_log` VALUES ('1688468789311635458', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:35:04', '2023-08-07 16:35:04');
+INSERT INTO `member_log_in_log` VALUES ('1688468836988289025', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:35:16', '2023-08-07 16:35:16');
+INSERT INTO `member_log_in_log` VALUES ('1688468924355641345', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:35:36', '2023-08-07 16:35:36');
+INSERT INTO `member_log_in_log` VALUES ('1688468981876326401', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:35:50', '2023-08-07 16:35:50');
+INSERT INTO `member_log_in_log` VALUES ('1688469051308834817', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-07 16:36:07', '2023-08-07 16:36:07');
+INSERT INTO `member_log_in_log` VALUES ('1688706990374760449', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 08:21:36', '2023-08-08 08:21:36');
+INSERT INTO `member_log_in_log` VALUES ('1688714847975485441', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 08:52:49', '2023-08-08 08:52:49');
+INSERT INTO `member_log_in_log` VALUES ('1688720786531135490', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 09:16:25', '2023-08-08 09:16:25');
+INSERT INTO `member_log_in_log` VALUES ('1688721117021319170', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 09:17:44', '2023-08-08 09:17:44');
+INSERT INTO `member_log_in_log` VALUES ('1688723662632497154', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 09:27:51', '2023-08-08 09:27:51');
+INSERT INTO `member_log_in_log` VALUES ('1688723744907964418', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 09:28:10', '2023-08-08 09:28:10');
+INSERT INTO `member_log_in_log` VALUES ('1688724012240318466', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 09:29:14', '2023-08-08 09:29:14');
+INSERT INTO `member_log_in_log` VALUES ('1688727575951613954', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 09:43:24', '2023-08-08 09:43:24');
+INSERT INTO `member_log_in_log` VALUES ('1688737240492027906', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 10:21:48', '2023-08-08 10:21:48');
+INSERT INTO `member_log_in_log` VALUES ('1688737463478026242', '1642067605873348610', '0:0:0:0:0:0:0:1', 1, 0, '2023-08-08 10:22:41', '2023-08-08 10:22:41');
+INSERT INTO `member_log_in_log` VALUES ('1688802788382957570', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 14:42:16', '2023-08-08 14:42:16');
+INSERT INTO `member_log_in_log` VALUES ('1688820332414197761', '1685850632348516354', '192.168.30.129', 1, 0, '2023-08-08 15:51:59', '2023-08-08 15:51:59');
+INSERT INTO `member_log_in_log` VALUES ('1688823314920857601', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 16:03:50', '2023-08-08 16:03:50');
+INSERT INTO `member_log_in_log` VALUES ('1688831808243851266', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 16:37:35', '2023-08-08 16:37:35');
+INSERT INTO `member_log_in_log` VALUES ('1688833642450739201', '1685850632348516354', '192.168.30.129', 1, 0, '2023-08-08 16:44:52', '2023-08-08 16:44:52');
+INSERT INTO `member_log_in_log` VALUES ('1688835644610142209', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-08 16:52:49', '2023-08-08 16:52:49');
+INSERT INTO `member_log_in_log` VALUES ('1688836507563024386', '1685850632348516354', '192.168.30.129', 1, 0, '2023-08-08 16:56:15', '2023-08-08 16:56:15');
+INSERT INTO `member_log_in_log` VALUES ('1688842122150633473', '1685850632348516354', '192.168.30.129', 1, 0, '2023-08-08 17:18:34', '2023-08-08 17:18:34');
+INSERT INTO `member_log_in_log` VALUES ('1689078332315979777', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-09 08:57:11', '2023-08-09 08:57:11');
+INSERT INTO `member_log_in_log` VALUES ('1689100694650408962', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-09 10:26:02', '2023-08-09 10:26:02');
+INSERT INTO `member_log_in_log` VALUES ('1689531280200359938', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-10 14:57:02', '2023-08-10 14:57:02');
+INSERT INTO `member_log_in_log` VALUES ('1689535960464809985', '1685850632348516354', '192.168.30.129', 1, 0, '2023-08-10 15:15:38', '2023-08-10 15:15:38');
+INSERT INTO `member_log_in_log` VALUES ('1689536511743156225', '1684853753762611201', '192.168.30.129', 1, 0, '2023-08-10 15:17:49', '2023-08-10 15:17:49');
 
 -- ----------------------------
 -- Table structure for mq_return_message
@@ -561,28 +621,33 @@ CREATE TABLE `user_role_relation`  (
                                        `relation_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '关系id',
                                        `uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
                                        `role_id` int(255) NOT NULL DEFAULT 1 COMMENT '角色id，对应user_role表role_id',
+                                       `update_version` int(255) NOT NULL DEFAULT 0 COMMENT '乐观锁',
                                        `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
                                        `create_time` datetime NOT NULL COMMENT '创建时间',
                                        `update_time` datetime NOT NULL COMMENT '更新时间',
                                        PRIMARY KEY (`relation_id`) USING BTREE,
-                                       INDEX `idx_uid`(`uid`) USING BTREE
+                                       INDEX `idx_uid`(`uid`) USING BTREE,
+                                       INDEX `idx_for_user_role_relation_role_id`(`role_id`) USING BTREE,
+                                       CONSTRAINT `idx_for_user_role_relation_role_id` FOREIGN KEY (`role_id`) REFERENCES `user_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户，角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_role_relation
 -- ----------------------------
-INSERT INTO `user_role_relation` VALUES ('1642067605898514434', '1642067605873348610', 1, 0, '2023-04-01 15:33:20', '2023-04-01 15:33:20');
-INSERT INTO `user_role_relation` VALUES ('1642398369596944385', '1642398369596944385', 2, 0, '2023-04-02 13:31:44', '2023-04-02 13:31:47');
-INSERT INTO `user_role_relation` VALUES ('1645332216386969602', '1645332216386969601', 1, 0, '2023-04-10 15:45:44', '2023-04-10 15:45:44');
-INSERT INTO `user_role_relation` VALUES ('1647869825072066562', '1642067605873348610', 7, 0, '2023-04-17 15:49:17', '2023-04-17 15:49:17');
-INSERT INTO `user_role_relation` VALUES ('1648211754670399490', '1642067605873348610', 7, 0, '2023-04-18 14:27:59', '2023-04-18 14:27:59');
-INSERT INTO `user_role_relation` VALUES ('1661985779347415042', '1642067605873348610', 8, 0, '2023-05-26 14:41:03', '2023-05-26 14:41:03');
-INSERT INTO `user_role_relation` VALUES ('1684125989174550530', '1642067605873348610', 11, 0, '2023-07-26 16:59:01', '2023-07-26 16:59:01');
-INSERT INTO `user_role_relation` VALUES ('1684126422936887298', '1645332216386969601', 11, 0, '2023-07-26 17:00:44', '2023-07-26 17:00:44');
-INSERT INTO `user_role_relation` VALUES ('1684853753829720065', '1684853753762611201', 1, 0, '2023-07-28 17:10:13', '2023-07-28 17:10:13');
-INSERT INTO `user_role_relation` VALUES ('1684853753829720066', '1684853753762611201', 11, 0, '2023-07-28 17:10:13', '2023-07-28 17:10:13');
-INSERT INTO `user_role_relation` VALUES ('1685850632411430914', '1685850632348516354', 1, 0, '2023-07-31 11:11:27', '2023-07-31 11:11:27');
-INSERT INTO `user_role_relation` VALUES ('1685850632411430915', '1685850632348516354', 11, 0, '2023-07-31 11:11:27', '2023-07-31 11:11:27');
+INSERT INTO `user_role_relation` VALUES ('1642067605898514434', '1642067605873348610', 1, 0, 0, '2023-04-01 15:33:20', '2023-04-01 15:33:20');
+INSERT INTO `user_role_relation` VALUES ('1642398369596944385', '1642398369596944385', 2, 0, 0, '2023-04-02 13:31:44', '2023-04-02 13:31:47');
+INSERT INTO `user_role_relation` VALUES ('1645332216386969602', '1645332216386969601', 1, 0, 0, '2023-04-10 15:45:44', '2023-04-10 15:45:44');
+INSERT INTO `user_role_relation` VALUES ('1647869825072066562', '1642067605873348610', 7, 0, 0, '2023-04-17 15:49:17', '2023-04-17 15:49:17');
+INSERT INTO `user_role_relation` VALUES ('1648211754670399490', '1642067605873348610', 7, 0, 0, '2023-04-18 14:27:59', '2023-04-18 14:27:59');
+INSERT INTO `user_role_relation` VALUES ('1661985779347415042', '1642067605873348610', 8, 0, 0, '2023-05-26 14:41:03', '2023-05-26 14:41:03');
+INSERT INTO `user_role_relation` VALUES ('1684125989174550530', '1642067605873348610', 11, 0, 0, '2023-07-26 16:59:01', '2023-07-26 16:59:01');
+INSERT INTO `user_role_relation` VALUES ('1684126422936887298', '1645332216386969601', 11, 0, 0, '2023-07-26 17:00:44', '2023-07-26 17:00:44');
+INSERT INTO `user_role_relation` VALUES ('1684853753829720065', '1684853753762611201', 1, 0, 0, '2023-07-28 17:10:13', '2023-07-28 17:10:13');
+INSERT INTO `user_role_relation` VALUES ('1684853753829720066', '1684853753762611201', 11, 0, 0, '2023-07-28 17:10:13', '2023-07-28 17:10:13');
+INSERT INTO `user_role_relation` VALUES ('1685850632411430914', '1685850632348516354', 1, 0, 0, '2023-07-31 11:11:27', '2023-07-31 11:11:27');
+INSERT INTO `user_role_relation` VALUES ('1685850632411430915', '1685850632348516354', 11, 0, 0, '2023-07-31 11:11:27', '2023-07-31 11:11:27');
+INSERT INTO `user_role_relation` VALUES ('1688832208925712387', '1684853753762611201', 15, 0, 0, '2023-08-08 16:39:10', '2023-08-08 16:39:10');
+INSERT INTO `user_role_relation` VALUES ('1688843555113623555', '1685850632348516354', 15, 0, 0, '2023-08-08 17:24:15', '2023-08-08 17:24:15');
 
 -- ----------------------------
 -- Table structure for user_weight
@@ -625,33 +690,37 @@ CREATE TABLE `weight_role_relation`  (
                                          `relation_id` int(255) NOT NULL AUTO_INCREMENT COMMENT '关系id',
                                          `weight_id` int(255) NOT NULL COMMENT '权限id，对应user_weight表weight_id',
                                          `role_id` int(255) NOT NULL COMMENT '角色id，对应user_role表role_id',
+                                         `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
                                          `create_time` datetime NOT NULL COMMENT '创建时间',
                                          `update_time` datetime NOT NULL COMMENT '更新时间',
                                          PRIMARY KEY (`relation_id`) USING BTREE,
-                                         INDEX `idx_role_id`(`role_id`) USING BTREE
+                                         INDEX `idx_role_id`(`role_id`) USING BTREE,
+                                         INDEX `idx_for_weight_role_relation_weight_id`(`weight_id`) USING BTREE,
+                                         CONSTRAINT `idx_for_weight_role_relation_role_id` FOREIGN KEY (`role_id`) REFERENCES `user_role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                                         CONSTRAINT `idx_for_weight_role_relation_weight_id` FOREIGN KEY (`weight_id`) REFERENCES `user_weight` (`weight_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限，角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of weight_role_relation
 -- ----------------------------
-INSERT INTO `weight_role_relation` VALUES (1, 1, 1, '2023-03-27 16:04:06', '2023-03-27 16:04:08');
-INSERT INTO `weight_role_relation` VALUES (2, 2, 2, '2023-04-01 21:18:31', '2023-04-01 21:18:33');
-INSERT INTO `weight_role_relation` VALUES (3, 3, 3, '2023-04-01 21:25:22', '2023-04-01 21:25:25');
-INSERT INTO `weight_role_relation` VALUES (4, 4, 3, '2023-04-01 21:25:34', '2023-04-01 21:25:37');
-INSERT INTO `weight_role_relation` VALUES (5, 5, 4, '2023-04-02 13:37:58', '2023-04-02 13:38:00');
-INSERT INTO `weight_role_relation` VALUES (6, 6, 4, '2023-04-02 13:38:10', '2023-04-02 13:38:12');
-INSERT INTO `weight_role_relation` VALUES (13, 8, 6, '2023-04-07 15:12:53', '2023-04-07 15:12:53');
-INSERT INTO `weight_role_relation` VALUES (14, 1, 7, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
-INSERT INTO `weight_role_relation` VALUES (15, 9, 7, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
-INSERT INTO `weight_role_relation` VALUES (16, 10, 7, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
-INSERT INTO `weight_role_relation` VALUES (17, 1, 8, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
-INSERT INTO `weight_role_relation` VALUES (18, 11, 8, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
-INSERT INTO `weight_role_relation` VALUES (19, 12, 8, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
-INSERT INTO `weight_role_relation` VALUES (29, 16, 11, '2023-07-26 16:08:38', '2023-07-26 16:08:38');
-INSERT INTO `weight_role_relation` VALUES (30, 16, 15, '2023-07-26 16:10:14', '2023-07-26 16:10:14');
-INSERT INTO `weight_role_relation` VALUES (31, 17, 15, '2023-07-26 16:10:14', '2023-07-26 16:10:14');
-INSERT INTO `weight_role_relation` VALUES (32, 16, 16, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
-INSERT INTO `weight_role_relation` VALUES (33, 17, 16, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
-INSERT INTO `weight_role_relation` VALUES (34, 18, 16, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
+INSERT INTO `weight_role_relation` VALUES (1, 1, 1, 0, '2023-03-27 16:04:06', '2023-03-27 16:04:08');
+INSERT INTO `weight_role_relation` VALUES (2, 2, 2, 0, '2023-04-01 21:18:31', '2023-04-01 21:18:33');
+INSERT INTO `weight_role_relation` VALUES (3, 3, 3, 0, '2023-04-01 21:25:22', '2023-04-01 21:25:25');
+INSERT INTO `weight_role_relation` VALUES (4, 4, 3, 0, '2023-04-01 21:25:34', '2023-04-01 21:25:37');
+INSERT INTO `weight_role_relation` VALUES (5, 5, 4, 0, '2023-04-02 13:37:58', '2023-04-02 13:38:00');
+INSERT INTO `weight_role_relation` VALUES (6, 6, 4, 0, '2023-04-02 13:38:10', '2023-04-02 13:38:12');
+INSERT INTO `weight_role_relation` VALUES (13, 8, 6, 0, '2023-04-07 15:12:53', '2023-04-07 15:12:53');
+INSERT INTO `weight_role_relation` VALUES (14, 1, 7, 0, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
+INSERT INTO `weight_role_relation` VALUES (15, 9, 7, 0, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
+INSERT INTO `weight_role_relation` VALUES (16, 10, 7, 0, '2023-04-16 15:33:43', '2023-04-16 15:33:43');
+INSERT INTO `weight_role_relation` VALUES (17, 1, 8, 0, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
+INSERT INTO `weight_role_relation` VALUES (18, 11, 8, 0, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
+INSERT INTO `weight_role_relation` VALUES (19, 12, 8, 0, '2023-05-25 12:05:24', '2023-05-25 12:05:24');
+INSERT INTO `weight_role_relation` VALUES (29, 16, 11, 0, '2023-07-26 16:08:38', '2023-07-26 16:08:38');
+INSERT INTO `weight_role_relation` VALUES (30, 16, 15, 0, '2023-07-26 16:10:14', '2023-07-26 16:10:14');
+INSERT INTO `weight_role_relation` VALUES (31, 17, 15, 0, '2023-07-26 16:10:14', '2023-07-26 16:10:14');
+INSERT INTO `weight_role_relation` VALUES (32, 16, 16, 0, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
+INSERT INTO `weight_role_relation` VALUES (33, 17, 16, 0, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
+INSERT INTO `weight_role_relation` VALUES (34, 18, 16, 0, '2023-07-26 16:10:19', '2023-07-26 16:10:19');
 
 SET FOREIGN_KEY_CHECKS = 1;

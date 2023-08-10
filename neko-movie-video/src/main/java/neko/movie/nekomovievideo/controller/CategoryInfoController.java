@@ -53,7 +53,7 @@ public class CategoryInfoController {
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
     @DeleteMapping("delete_leaf_category_info")
-    public ResultObject<Object> deleteLeafCategoryInfo(@RequestParam Integer categoryId) throws InterruptedException {
+    public ResultObject<Object> deleteLeafCategoryInfo(@RequestParam Integer categoryId) {
         categoryInfoService.deleteLeafCategoryInfo(categoryId);
 
         return ResultObject.ok();

@@ -19,5 +19,5 @@ public interface CategoryInfoService extends IService<CategoryInfo> {
 
     void newCategoryInfo(NewCategoryInfoVo vo);
 
-    void deleteLeafCategoryInfo(Integer categoryId) throws InterruptedException;
+    void deleteLeafCategoryInfo(Integer categoryId);
 }

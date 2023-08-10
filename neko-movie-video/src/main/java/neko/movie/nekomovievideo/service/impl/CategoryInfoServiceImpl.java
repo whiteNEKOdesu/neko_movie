@@ -2,19 +2,13 @@ package neko.movie.nekomovievideo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
-import neko.movie.nekomoviecommonbase.utils.exception.ObjectStillUsingException;
 import neko.movie.nekomovievideo.entity.CategoryInfo;
-import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.mapper.CategoryInfoMapper;
-import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.CategoryInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomovievideo.vo.NewCategoryInfoVo;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +30,7 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, CategoryInfo> implements CategoryInfoService {
     @Resource
-    private VideoInfoMapper videoInfoMapper;
-
-    @Resource
     private StringRedisTemplate stringRedisTemplate;
-
-    @Resource
-    private RedissonClient redissonClient;
 
     /**
      * 获取层级影视分类信息
@@ -101,28 +89,12 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
      * 删除叶节点影视分类信息
      */
     @Override
-    public void deleteLeafCategoryInfo(Integer categoryId) throws InterruptedException {
-        //获取分布式锁
-        RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:level_category:" + categoryId);
-        //尝试加锁，最多等待100秒，上锁以后1分钟自动解锁
-        boolean isLock = lock.tryLock(100, 1, TimeUnit.SECONDS);
+    public void deleteLeafCategoryInfo(Integer categoryId) {
+        this.baseMapper.deleteLeafCategoryInfo(categoryId);
 
-        if(isLock){
-            try {
-                if(videoInfoMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
-                        .eq(VideoInfo::getCategoryId, categoryId)) != null || this.baseMapper.deleteLeafCategoryInfo(categoryId) != 1){
-                    throw new ObjectStillUsingException("节点仍被引用");
-                }
-
-                String key = Constant.VIDEO_REDIS_PREFIX + "level_category";
-                //删除缓存
-                stringRedisTemplate.delete(key);
-            }finally {
-                lock.unlock();
-            }
-        }else{
-            throw new InterruptedException("获取分布式锁失败");
-        }
+        String key = Constant.VIDEO_REDIS_PREFIX + "level_category";
+        //删除缓存
+        stringRedisTemplate.delete(key);
     }
 
     /**
