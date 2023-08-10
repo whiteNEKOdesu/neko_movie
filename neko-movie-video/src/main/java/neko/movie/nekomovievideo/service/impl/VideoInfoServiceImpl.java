@@ -304,7 +304,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      * 将指定影视信息放入回收站中
      */
     @Override
-    public void sendDeleteVideoInfoMessage(String videoInfoId) {
+    public void addVideoInfoToRecycleBin(String videoInfoId) {
         VideoInfo videoInfo = this.baseMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
                 .eq(VideoInfo::getVideoInfoId, videoInfoId)
                 .ne(VideoInfo::getStatus, VideoStatus.DELETED)
@@ -332,7 +332,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         VideoInfo todoUpdate = new VideoInfo();
         todoUpdate.setVideoInfoId(videoInfoId)
-                .setDeleteExpireTime(LocalDateTime.now().plusDays(30))
+                .setDeleteExpireTime(LocalDateTime.now().plusDays(15))
                 .setStatus(VideoStatus.LOGIC_DELETE);
 
         //修改影视信息状态为 回收站 状态
@@ -343,6 +343,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      * 将指定影视信息删除
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteVideoInfo(String videoInfoId) {
         VideoInfo videoInfo = new VideoInfo();
         LocalDateTime now = LocalDateTime.now();
@@ -351,7 +352,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         //修改影视信息状态为删除状态
         if(this.baseMapper.update(videoInfo, new UpdateWrapper<VideoInfo>().lambda()
-                .eq(VideoInfo::getVideoInfoId, videoInfo)
+                .eq(VideoInfo::getVideoInfoId, videoInfoId)
                 .eq(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)) != 1){
             return;
         }

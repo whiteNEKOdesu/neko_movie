@@ -7,15 +7,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.*;
 import neko.movie.nekomoviecommonbase.utils.exception.FileTypeNotSupportException;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
+import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
 import neko.movie.nekomovievideo.feign.member.UserWeightFeignService;
 import neko.movie.nekomovievideo.feign.thirdparty.OSSFeignService;
+import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.mapper.VideoSeriesInfoMapper;
 import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.service.VideoWatchHistoryService;
@@ -51,6 +54,7 @@ import java.util.stream.Collectors;
  * @since 2023-07-16
  */
 @Service
+@Slf4j
 public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMapper, VideoSeriesInfo> implements VideoSeriesInfoService {
     @Resource
     private OSSFeignService ossFeignService;
@@ -66,6 +70,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
     @Resource
     private VideoWatchHistoryService videoWatchHistoryService;
+
+    @Resource
+    private VideoInfoMapper videoInfoMapper;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -268,11 +275,18 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         //将全部视频分集信息视频地址收集为list
         List<String> videoUrls = videoSeriesInfos.stream().map(VideoSeriesInfo::getVideoUrl)
                 .collect(Collectors.toList());
+        VideoInfo videoInfo = videoInfoMapper.selectById(videoInfoId);
+        if(videoInfo != null && videoInfo.getVideoImage() != null){
+            //将封面图添加到删除list
+            videoUrls.add(videoInfo.getVideoImage());
+        }
         //远程调用thirdparty微服务批量删除视频
         ResultObject<Object> r = ossFeignService.deleteFileBatch(videoUrls);
         if(!r.getResponseCode().equals(200)){
             throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
         }
+
+        log.info("影视视频删除成功，videoInfoId: " + videoInfoId);
     }
 
     /**

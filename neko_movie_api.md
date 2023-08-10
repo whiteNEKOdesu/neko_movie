@@ -2164,7 +2164,7 @@ $baseUrl/video/video_info/video_infos
 
 
 
-##### 2.2.4 管理员根据videoInfoId查询影视视频信息
+##### 2.2.4 根据videoInfoId查询影视视频信息
 
 - get请求，url传参
 
@@ -2304,7 +2304,7 @@ $baseUrl/video/video_info/update_video_info
 - 需要admin角色
 
 ```bash
-$baseUrl/video/video_info/logic_delete_video_info
+$baseUrl/video/video_info/delete_into_recycle_bin
 ```
 
 
@@ -2320,7 +2320,7 @@ $baseUrl/video/video_info/logic_delete_video_info
 - 示例
 
 ```bash
-$baseUrl/video/video_info/logic_delete_video_info?videoInfoId=1689195932266029058
+$baseUrl/video/video_info/delete_into_recycle_bin?videoInfoId=1689443800025444354
 ```
 
 
