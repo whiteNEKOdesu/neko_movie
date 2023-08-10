@@ -27,7 +27,6 @@ import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.ReturnedMessage;
@@ -43,7 +42,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 /**
  * <p>
@@ -397,5 +396,13 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                                 q.term(t ->
                                         t.field("videoInfoId")
                                                 .value(videoInfoId))));
+    }
+
+    /**
+     * 根据根分类id获取热门影视信息
+     */
+    @Override
+    public List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId) {
+        return this.baseMapper.getVideoInfoByRootCategoryId(categoryId);
     }
 }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="neko.movie.nekomovievideo.mapper.VideoInfoMapper">
-
+    <select id="getVideoInfoByRootCategoryId" resultType="neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES">
+        select video_info.video_info_id, video_info.video_name,
+               video_info.video_description, video_info.video_image,
+               child.category_id, child.category_name, video_info.video_producer,
+               video_info.video_actors, video_info.up_time from category_info child
+        join category_info root
+        on child.parent_id = root.category_id
+        join video_info
+        on child.category_id = video_info.category_id
+        where root.category_id = #{categoryId} and video_info.status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@UP}
+        order by video_info.video_info_id desc
+        limit 10
+    </select>
 </mapper>

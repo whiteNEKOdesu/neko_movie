@@ -2,6 +2,7 @@ package neko.movie.nekomovievideo.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
+import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -43,4 +45,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     void deleteVideoInfo(String videoInfoId) throws IOException;
 
     void deleteVideoInfoDirectly(String videoInfoId) throws IOException;
+
+    List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId);
 }

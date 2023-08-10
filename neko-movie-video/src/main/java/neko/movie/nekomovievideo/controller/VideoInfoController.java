@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
+import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -133,5 +135,13 @@ public class VideoInfoController {
         videoInfoService.deleteVideoInfoDirectly(videoInfoId);
 
         return ResultObject.ok();
+    }
+
+    /**
+     * 根据根分类id获取热门影视信息
+     */
+    @GetMapping("top_video_info_by_root_category_id")
+    public ResultObject<List<VideoInfoES>> topVideoInfoByRootCategoryId(@RequestParam Integer categoryId){
+        return ResultObject.ok(videoInfoService.getVideoInfoByRootCategoryId(categoryId));
     }
 }

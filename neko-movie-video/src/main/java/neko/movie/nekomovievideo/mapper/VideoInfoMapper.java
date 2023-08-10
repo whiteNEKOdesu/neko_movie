@@ -1,8 +1,11 @@
 package neko.movie.nekomovievideo.mapper;
 
+import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
-
+    List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId);
 }
