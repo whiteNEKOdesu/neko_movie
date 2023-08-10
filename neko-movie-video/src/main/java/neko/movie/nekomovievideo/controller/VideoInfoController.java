@@ -117,7 +117,7 @@ public class VideoInfoController {
     @SaCheckRole(RoleType.ADMIN)
     @SaCheckLogin
     @DeleteMapping("delete_into_recycle_bin")
-    public ResultObject<Object> logicDeleteVideoInfo(@RequestParam String videoInfoId){
+    public ResultObject<Object> logicDeleteVideoInfo(@RequestParam String videoInfoId) throws IOException {
         videoInfoService.addVideoInfoToRecycleBin(videoInfoId);
 
         return ResultObject.ok();

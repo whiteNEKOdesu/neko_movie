@@ -122,6 +122,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         if(videoInfo == null){
             throw new NoSuchResultException("无此videoInfoId影视信息");
         }
+        if(videoInfo.getStatus().equals(VideoStatus.LOGIC_DELETE) || videoInfo.getStatus().equals(VideoStatus.DELETED)){
+            return;
+        }
 
         //获取分类信息
         CategoryInfo categoryInfo = categoryInfoService.getById(videoInfo.getCategoryId());
@@ -214,6 +217,9 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         if(videoInfo == null){
             throw new NoSuchResultException("无此videoInfoId影视信息");
         }
+        if(videoInfo.getStatus().equals(VideoStatus.LOGIC_DELETE) || videoInfo.getStatus().equals(VideoStatus.DELETED)){
+            return;
+        }
 
         VideoInfo todoUpdate = new VideoInfo();
         todoUpdate.setVideoInfoId(videoInfoId)
@@ -291,7 +297,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      * 将指定影视信息放入回收站中
      */
     @Override
-    public void addVideoInfoToRecycleBin(String videoInfoId) {
+    public void addVideoInfoToRecycleBin(String videoInfoId) throws IOException {
         VideoInfo videoInfo = this.baseMapper.selectOne(new QueryWrapper<VideoInfo>().lambda()
                 .eq(VideoInfo::getVideoInfoId, videoInfoId)
                 .ne(VideoInfo::getStatus, VideoStatus.DELETED)
@@ -324,6 +330,14 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         //修改影视信息状态为 回收站 状态
         this.baseMapper.updateById(todoUpdate);
+
+        //删除elasticsearch中数据
+        elasticsearchClient.deleteByQuery(builder ->
+                builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                        .query(q ->
+                                q.term(t ->
+                                        t.field("videoInfoId")
+                                                .value(videoInfoId))));
     }
 
     /**

@@ -38,7 +38,7 @@ public interface VideoInfoService extends IService<VideoInfo> {
 
     void updateVideoInfo(UpdateVideoInfoVo vo) throws IOException;
 
-    void addVideoInfoToRecycleBin(String videoInfoId);
+    void addVideoInfoToRecycleBin(String videoInfoId) throws IOException;
 
     void deleteVideoInfo(String videoInfoId) throws IOException;
 
