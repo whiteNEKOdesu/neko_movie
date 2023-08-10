@@ -85,44 +85,31 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                              Integer categoryId,
                              LocalDateTime upTime,
                              MultipartFile file) throws InterruptedException {
-        //获取分布式锁
-        RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:level_category:" + categoryId);
-        //尝试加锁，最多等待100秒，上锁以后1分钟自动解锁
-        boolean isLock = lock.tryLock(100, 1, TimeUnit.SECONDS);
-
-        if(isLock){
-            try {
-                //分类id不存在
-                if(categoryInfoService.getById(categoryId) == null){
-                    return;
-                }
-
-                //上传图片到oss
-                ResultObject<String> r = ossFeignService.uploadImage(file);
-                if(!r.getResponseCode().equals(200)){
-                    throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
-                }
-
-                String videoImage = r.getResult();
-                VideoInfo videoInfo = new VideoInfo();
-                LocalDateTime now = LocalDateTime.now();
-                videoInfo.setVideoName(videoName)
-                        .setVideoDescription(videoDescription)
-                        .setVideoImage(videoImage)
-                        .setVideoProducer(videoProducer)
-                        .setVideoActors(videoActors)
-                        .setCategoryId(categoryId)
-                        .setUpTime(upTime)
-                        .setCreateTime(now)
-                        .setUpdateTime(now);
-
-                this.baseMapper.insert(videoInfo);
-            }finally {
-                lock.unlock();
-            }
-        }else{
-            throw new InterruptedException("获取分布式锁失败");
+        //分类id不存在
+        if(categoryInfoService.getById(categoryId) == null){
+            return;
         }
+
+        //上传图片到oss
+        ResultObject<String> r = ossFeignService.uploadImage(file);
+        if(!r.getResponseCode().equals(200)){
+            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+        }
+
+        String videoImage = r.getResult();
+        VideoInfo videoInfo = new VideoInfo();
+        LocalDateTime now = LocalDateTime.now();
+        videoInfo.setVideoName(videoName)
+                .setVideoDescription(videoDescription)
+                .setVideoImage(videoImage)
+                .setVideoProducer(videoProducer)
+                .setVideoActors(videoActors)
+                .setCategoryId(categoryId)
+                .setUpTime(upTime)
+                .setCreateTime(now)
+                .setUpdateTime(now);
+
+        this.baseMapper.insert(videoInfo);
     }
 
     /**
@@ -344,7 +331,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteVideoInfo(String videoInfoId) {
+    public void deleteVideoInfo(String videoInfoId) throws IOException {
         VideoInfo videoInfo = new VideoInfo();
         LocalDateTime now = LocalDateTime.now();
         videoInfo.setStatus(VideoStatus.DELETED)
@@ -359,5 +346,42 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
 
         //删除全部视频分集信息
         videoSeriesInfoService.deleteVideoSeriesInfosByVideoInfoId(videoInfoId);
+
+        //删除elasticsearch中数据
+        elasticsearchClient.deleteByQuery(builder ->
+                builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                        .query(q ->
+                                q.term(t ->
+                                        t.field("videoInfoId")
+                                                .value(videoInfoId))));
+    }
+
+    /**
+     * 将指定影视信息直接删除
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteVideoInfoDirectly(String videoInfoId) throws IOException {
+        VideoInfo videoInfo = new VideoInfo();
+        LocalDateTime now = LocalDateTime.now();
+        videoInfo.setStatus(VideoStatus.DELETED)
+                .setUpdateTime(now);
+
+        //修改影视信息状态为删除状态
+        if(this.baseMapper.update(videoInfo, new UpdateWrapper<VideoInfo>().lambda()
+                .eq(VideoInfo::getVideoInfoId, videoInfoId)) != 1){
+            return;
+        }
+
+        //删除全部视频分集信息
+        videoSeriesInfoService.deleteVideoSeriesInfosByVideoInfoId(videoInfoId);
+
+        //删除elasticsearch中数据
+        elasticsearchClient.deleteByQuery(builder ->
+                builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                        .query(q ->
+                                q.term(t ->
+                                        t.field("videoInfoId")
+                                                .value(videoInfoId))));
     }
 }

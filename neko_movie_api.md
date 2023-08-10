@@ -2338,6 +2338,47 @@ $baseUrl/video/video_info/delete_into_recycle_bin?videoInfoId=168944380002544435
 
 
 
+##### 2.2.8 管理员将指定影视信息直接删除
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_info/delete_video_info
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/delete_video_info?videoInfoId=1689466743069667330
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息

@@ -280,10 +280,12 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             //将封面图添加到删除list
             videoUrls.add(videoInfo.getVideoImage());
         }
-        //远程调用thirdparty微服务批量删除视频
-        ResultObject<Object> r = ossFeignService.deleteFileBatch(videoUrls);
-        if(!r.getResponseCode().equals(200)){
-            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+        if(!videoUrls.isEmpty()){
+            //远程调用thirdparty微服务批量删除视频
+            ResultObject<Object> r = ossFeignService.deleteFileBatch(videoUrls);
+            if(!r.getResponseCode().equals(200)){
+                throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+            }
         }
 
         log.info("影视视频删除成功，videoInfoId: " + videoInfoId);

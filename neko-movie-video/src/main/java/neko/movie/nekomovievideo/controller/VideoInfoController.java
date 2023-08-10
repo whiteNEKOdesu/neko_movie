@@ -114,9 +114,23 @@ public class VideoInfoController {
     /**
      * 管理员将指定影视信息放入回收站中
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @DeleteMapping("delete_into_recycle_bin")
     public ResultObject<Object> logicDeleteVideoInfo(@RequestParam String videoInfoId){
         videoInfoService.addVideoInfoToRecycleBin(videoInfoId);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员将指定影视信息直接删除
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @DeleteMapping("delete_video_info")
+    public ResultObject<Object> deleteVideoInfo(@RequestParam String videoInfoId) throws IOException {
+        videoInfoService.deleteVideoInfoDirectly(videoInfoId);
 
         return ResultObject.ok();
     }
