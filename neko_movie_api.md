@@ -3543,6 +3543,136 @@ $baseUrl/video/video_watch_history/watch_history_infos
 
 
 
+#### 2.9 RollVideoController
+
+##### 2.9.1 管理员添加轮播图信息
+
+- put请求，form-data上传文件
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/roll_video/new_roll_video
+```
+
+
+
+- 参数
+
+| 参数名          | 参数含义                       |
+| --------------- | ------------------------------ |
+| file            | 文件                           |
+| rollDescription | 轮播图描述                     |
+| videoInfoId     | 影视信息id                     |
+| sort            | 排序字段，越小越靠前，范围0-15 |
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.9.2 获取轮播图信息
+
+- get请求
+
+```bash
+$baseUrl/video/roll_video/roll_videos
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "rollId": 2,
+            "rollDescription": "koori",
+            "videoInfoId": "1683373796746121218",
+            "rollImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-12/6f994036-cc09-4bf2-8114-96e9c43d7401_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+            "sort": 0,
+            "createTime": "2023-08-12T10:31:05",
+            "updateTime": "2023-08-12T10:31:05"
+        },
+        {
+            "rollId": 3,
+            "rollDescription": "koori",
+            "videoInfoId": "1683373796746121218",
+            "rollImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-12/63f54179-c91e-4970-9356-7bc40a4a6345_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+            "sort": 1,
+            "createTime": "2023-08-12T10:31:11",
+            "updateTime": "2023-08-12T10:31:11"
+        },
+        {
+            "rollId": 4,
+            "rollDescription": "koori",
+            "videoInfoId": "1683373796746121218",
+            "rollImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-12/3660bd24-0fe3-47b6-9987-949432c72117_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
+            "sort": 2,
+            "createTime": "2023-08-12T10:31:21",
+            "updateTime": "2023-08-12T10:31:21"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.9.3 管理员删除指定rollId轮播图信息
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/roll_video/delete_roll_video
+```
+
+
+
+- 参数
+
+| 参数名 | 参数含义 |
+| ------ | -------- |
+| rollId | 轮播图id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/roll_video/delete_roll_video?rollId=4
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 3 third_party第三方微服务
 
 #### 3.1 MailController
