@@ -399,10 +399,18 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     }
 
     /**
-     * 根据根分类id获取热门影视信息
+     * 根据根分类id获取少量热门影视信息
      */
     @Override
     public List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId) {
-        return this.baseMapper.getVideoInfoByRootCategoryId(categoryId);
+        return this.baseMapper.getVideoInfoByRootCategoryId(categoryId, 10);
+    }
+
+    /**
+     * 根据根分类id获取大量热门影视信息
+     */
+    @Override
+    public List<VideoInfoES> getPlentyVideoInfoByRootCategoryId(Integer categoryId) {
+        return this.baseMapper.getVideoInfoByRootCategoryId(categoryId, 20);
     }
 }

@@ -47,4 +47,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     void deleteVideoInfoDirectly(String videoInfoId) throws IOException;
 
     List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId);
+
+    List<VideoInfoES> getPlentyVideoInfoByRootCategoryId(Integer categoryId);
 }

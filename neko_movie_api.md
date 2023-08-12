@@ -2379,7 +2379,7 @@ $baseUrl/video/video_info/delete_video_info?videoInfoId=1689466743069667330
 
 
 
-##### 2.2.9 根据根分类id获取热门影视信息
+##### 2.2.9 根据根分类id获取少量热门影视信息
 
 - get请求，url传参
 
@@ -2412,26 +2412,16 @@ $baseUrl/video/video_info/top_video_info_by_root_category_id?categoryId=1
 {
     "result": [
         {
-            "videoInfoId": "1689463385999040514",
-            "videoName": "蜘蛛侠：平行宇宙",
-            "videoDescription": "《蜘蛛侠：平行宇宙》（英语：Spider-Man: Into the Spider-Verse）是一部于2018年上映的美国电脑动画超级英雄电影，本片为蜘蛛宇宙系列的第一部电影，由哥伦比亚影业、漫威娱乐和索尼动画联合制作，并由索尼影视娱乐负责发行。本片由鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼执导，并由菲尔·罗德与克里斯托弗·米勒撰写剧本，剧情围绕着由布瑞恩·马克·班迪斯与莎拉·皮谢利创作的漫威漫画角色迈尔斯·莫拉莱斯／蜘蛛侠展开。本片由沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森担任主要配音员。\r\n\r\n由菲尔·罗德和克里斯托弗·米勒共同筹拍的一部蜘蛛侠动画电影的计划于2014年首度公开，并于2015年4月受到证实。沙梅克·摩尔与列夫·施赖伯于2017年4月加入剧组，而马赫沙拉·阿里和布莱恩·泰里·亨利则于同年6月签约参演。\r\n\r\n本片的片名于12月公布。该片于2018年12月14日在美国上映。电影发行后口碑和票房双收，动画效果、动作场面、角色设计、编剧皆获得正面评价，本片同时获颁众多奖项，这其中包含第91届奥斯卡金像奖的最佳动画长片奖、第46届安妮奖的七项奖项、第76届金球奖最佳动画。",
-            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/803380b7-a437-4c28-a038-4a0d96587fd7_994927.jpg",
-            "categoryId": 28,
-            "categoryName": "战斗",
-            "videoProducer": "鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼",
-            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森",
-            "upTime": "2018-12-04 00:00:00.0"
-        },
-        {
-            "videoInfoId": "1689457959261745154",
-            "videoName": "蜘蛛侠：纵横宇宙",
-            "videoDescription": "《蜘蛛侠：纵横宇宙》（英语：Spider-Man: Across the Spider-Verse，香港译《蜘蛛侠：飞跃蜘蛛宇宙》，台湾译《蜘蛛人：穿越新宇宙》）是一部2023年美国电脑动画超级英雄电影，2018年电影《蜘蛛侠：平行宇宙》的续集，亦是《蜘蛛宇宙系列》的第二部电影。本片由瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森共同执导，大卫·卡拉汉、菲尔·罗德与克里斯托弗·米勒共同撰写剧本；声演阵容包括沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克。本片2023年6月2日在美国上映。",
-            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/fce67f1f-0d2c-4c9f-a5cf-4ce53b3c3179_spider-man-into-the-spider-verse-miles-morales-spider-man-2880x1800-2948.jpg",
-            "categoryId": 28,
-            "categoryName": "战斗",
-            "videoProducer": "瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森",
-            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克",
-            "upTime": "2023-06-02 00:00:00.0"
+            "videoInfoId": "1689450889653301249",
+            "videoName": "誓约",
+            "videoDescription": "《誓约》是2012年的一部美国浪漫电影。导演是迈克尔·苏克西，由瑞秋·麦克亚当斯、查尼·泰坦、山姆·尼尔等主演。影片改编自真实故事。于2011年8月至11月拍摄。2012年2月首映。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/2cc8206e-f195-4d7c-9d37-eaebb7cea5a6_the-vow-2.jpg",
+            "categoryId": 27,
+            "categoryName": "恋爱",
+            "videoProducer": "迈克尔·苏克西",
+            "videoActors": "瑞秋·麦克亚当斯、查尼·泰坦、山姆·尼尔",
+            "upTime": "2012-02-01 00:00:00.0",
+            "playNumber": 0
         },
         {
             "videoInfoId": "1689451900174381058",
@@ -2442,8 +2432,98 @@ $baseUrl/video/video_info/top_video_info_by_root_category_id?categoryId=1
             "categoryName": "科幻",
             "videoProducer": "J·布莱克森",
             "videoActors": "科洛·莫瑞兹、尼克·罗宾森、荣·利文斯通、玛姬·丝弗、阿莱克斯·罗、玛丽亚·贝罗、麦卡·梦露、列夫·施赖",
-            "upTime": "2016-01-01 00:00:00.0"
+            "upTime": "2016-01-01 00:00:00.0",
+            "playNumber": 0
         },
+        {
+            "videoInfoId": "1689454145213345793",
+            "videoName": "全面回忆",
+            "videoDescription": "《全面回忆》是一部2012年美国科幻动作片，根据1990年的英文同名电影和菲利普·狄克的1966年中篇小说《We Can Remember It for You Wholesale》改编而成。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/9ec42129-61f5-4047-8ef2-d09dd679ff11_total-recall-movie (21).jpg",
+            "categoryId": 26,
+            "categoryName": "科幻",
+            "videoProducer": "保罗·范霍文",
+            "videoActors": "菲利普·迪克 罗纳德·舒塞特 丹·欧班农 Jon Povill 加里·戈德曼 雷切尔·蒂科汀 莎朗·斯通 罗尼·考克斯 迈克尔·艾恩塞德 马绍尔·贝尔 梅尔约翰逊 迈克尔切姆平 罗伊·布罗克斯史密斯 雷·贝克 萝丝玛丽·邓斯莫尔 戴维·奈尔 阿列卡夏罗宾逊 迪恩·诺里斯 马克卡尔顿 黛比·李·卡林顿 Lycia Naff 罗伯特·康斯坦佐 Michael LaGuardia Priscilla Allen 马克·阿莱莫 迈克尔·格雷戈里",
+            "upTime": "2012-01-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689455440183734273",
+            "videoName": "最长的旅程",
+            "videoDescription": "《最长的旅程》是一部美国2015年浪漫剧情片，为小乔治·提曼所执导，克雷格·波顿编剧。电影改编自尼可拉斯·史派克的2013年小说《The Longest Ride》。由布丽特妮·罗伯森、斯科特·伊斯威特、杰克·休斯顿、奥娜·卓别林、亚伦·艾达、梅莉莎·班诺伊、洛莉塔·黛维琪和葛萝莉亚·鲁宾主演。为二十世紀福克斯负责发行，美国于2015年4月10日上映。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/0a7cde10-d827-44f3-a908-05a646ee157f_69917b294a20135e07043db1e09b27e5.jpg",
+            "categoryId": 27,
+            "categoryName": "恋爱",
+            "videoProducer": "小乔治·提曼",
+            "videoActors": "布丽特妮·罗伯森、斯科特·伊斯威特、杰克·休斯顿、奥娜·卓别林、亚伦·艾达、梅莉莎·班诺伊、洛莉塔·黛维琪和葛萝莉亚·鲁宾",
+            "upTime": "2015-01-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689457959261745154",
+            "videoName": "蜘蛛侠：纵横宇宙",
+            "videoDescription": "《蜘蛛侠：纵横宇宙》（英语：Spider-Man: Across the Spider-Verse，香港译《蜘蛛侠：飞跃蜘蛛宇宙》，台湾译《蜘蛛人：穿越新宇宙》）是一部2023年美国电脑动画超级英雄电影，2018年电影《蜘蛛侠：平行宇宙》的续集，亦是《蜘蛛宇宙系列》的第二部电影。本片由瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森共同执导，大卫·卡拉汉、菲尔·罗德与克里斯托弗·米勒共同撰写剧本；声演阵容包括沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克。本片2023年6月2日在美国上映。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/fce67f1f-0d2c-4c9f-a5cf-4ce53b3c3179_spider-man-into-the-spider-verse-miles-morales-spider-man-2880x1800-2948.jpg",
+            "categoryId": 28,
+            "categoryName": "战斗",
+            "videoProducer": "瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森",
+            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克",
+            "upTime": "2023-06-02 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689463385999040514",
+            "videoName": "蜘蛛侠：平行宇宙",
+            "videoDescription": "《蜘蛛侠：平行宇宙》（英语：Spider-Man: Into the Spider-Verse）是一部于2018年上映的美国电脑动画超级英雄电影，本片为蜘蛛宇宙系列的第一部电影，由哥伦比亚影业、漫威娱乐和索尼动画联合制作，并由索尼影视娱乐负责发行。本片由鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼执导，并由菲尔·罗德与克里斯托弗·米勒撰写剧本，剧情围绕着由布瑞恩·马克·班迪斯与莎拉·皮谢利创作的漫威漫画角色迈尔斯·莫拉莱斯／蜘蛛侠展开。本片由沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森担任主要配音员。\r\n\r\n由菲尔·罗德和克里斯托弗·米勒共同筹拍的一部蜘蛛侠动画电影的计划于2014年首度公开，并于2015年4月受到证实。沙梅克·摩尔与列夫·施赖伯于2017年4月加入剧组，而马赫沙拉·阿里和布莱恩·泰里·亨利则于同年6月签约参演。\r\n\r\n本片的片名于12月公布。该片于2018年12月14日在美国上映。电影发行后口碑和票房双收，动画效果、动作场面、角色设计、编剧皆获得正面评价，本片同时获颁众多奖项，这其中包含第91届奥斯卡金像奖的最佳动画长片奖、第46届安妮奖的七项奖项、第76届金球奖最佳动画。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/803380b7-a437-4c28-a038-4a0d96587fd7_994927.jpg",
+            "categoryId": 28,
+            "categoryName": "战斗",
+            "videoProducer": "鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼",
+            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森",
+            "upTime": "2018-12-04 00:00:00.0",
+            "playNumber": 0
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.2.10 根据根分类id获取大量热门影视信息
+
+- get请求，url传参
+
+```bash
+$baseUrl/video/video_info/top_plenty_video_info_by_root_category_id
+```
+
+
+
+- 参数
+
+| 参数名     | 参数含义 |
+| ---------- | -------- |
+| categoryId | 分类id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/top_plenty_video_info_by_root_category_id?categoryId=1
+```
+
+
+
+- 响应结果
+- 最大20条
+
+```json
+{
+    "result": [
         {
             "videoInfoId": "1689450889653301249",
             "videoName": "誓约",
@@ -2453,7 +2533,68 @@ $baseUrl/video/video_info/top_video_info_by_root_category_id?categoryId=1
             "categoryName": "恋爱",
             "videoProducer": "迈克尔·苏克西",
             "videoActors": "瑞秋·麦克亚当斯、查尼·泰坦、山姆·尼尔",
-            "upTime": "2012-02-01 00:00:00.0"
+            "upTime": "2012-02-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689451900174381058",
+            "videoName": "第五波",
+            "videoDescription": "《第五波》是2016年的一部美国科幻动作电影，由J·布莱克森执导，以及由苏珊娜·葛兰特、阿奇瓦·高斯曼及杰夫·平克纳担任编剧，改编自瑞克·杨西于2013年的同名小说。电影由科洛·莫瑞兹、尼克·罗宾森、荣·利文斯通、玛姬·丝弗、阿莱克斯·罗、玛丽亚·贝罗、麦卡·梦露、列夫·施赖伯等人主演。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/848de928-0a90-4191-8242-a309de173d04_MV5BOTI5NDQ2N2ItZTAyMi00YjIxLTkzMWMtN2UzODJlN2M2YTYyXkEyXkFqcGdeQXVyNzExMzc0MDg@._V1_.jpg",
+            "categoryId": 26,
+            "categoryName": "科幻",
+            "videoProducer": "J·布莱克森",
+            "videoActors": "科洛·莫瑞兹、尼克·罗宾森、荣·利文斯通、玛姬·丝弗、阿莱克斯·罗、玛丽亚·贝罗、麦卡·梦露、列夫·施赖",
+            "upTime": "2016-01-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689454145213345793",
+            "videoName": "全面回忆",
+            "videoDescription": "《全面回忆》是一部2012年美国科幻动作片，根据1990年的英文同名电影和菲利普·狄克的1966年中篇小说《We Can Remember It for You Wholesale》改编而成。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/9ec42129-61f5-4047-8ef2-d09dd679ff11_total-recall-movie (21).jpg",
+            "categoryId": 26,
+            "categoryName": "科幻",
+            "videoProducer": "保罗·范霍文",
+            "videoActors": "菲利普·迪克 罗纳德·舒塞特 丹·欧班农 Jon Povill 加里·戈德曼 雷切尔·蒂科汀 莎朗·斯通 罗尼·考克斯 迈克尔·艾恩塞德 马绍尔·贝尔 梅尔约翰逊 迈克尔切姆平 罗伊·布罗克斯史密斯 雷·贝克 萝丝玛丽·邓斯莫尔 戴维·奈尔 阿列卡夏罗宾逊 迪恩·诺里斯 马克卡尔顿 黛比·李·卡林顿 Lycia Naff 罗伯特·康斯坦佐 Michael LaGuardia Priscilla Allen 马克·阿莱莫 迈克尔·格雷戈里",
+            "upTime": "2012-01-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689455440183734273",
+            "videoName": "最长的旅程",
+            "videoDescription": "《最长的旅程》是一部美国2015年浪漫剧情片，为小乔治·提曼所执导，克雷格·波顿编剧。电影改编自尼可拉斯·史派克的2013年小说《The Longest Ride》。由布丽特妮·罗伯森、斯科特·伊斯威特、杰克·休斯顿、奥娜·卓别林、亚伦·艾达、梅莉莎·班诺伊、洛莉塔·黛维琪和葛萝莉亚·鲁宾主演。为二十世紀福克斯负责发行，美国于2015年4月10日上映。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/0a7cde10-d827-44f3-a908-05a646ee157f_69917b294a20135e07043db1e09b27e5.jpg",
+            "categoryId": 27,
+            "categoryName": "恋爱",
+            "videoProducer": "小乔治·提曼",
+            "videoActors": "布丽特妮·罗伯森、斯科特·伊斯威特、杰克·休斯顿、奥娜·卓别林、亚伦·艾达、梅莉莎·班诺伊、洛莉塔·黛维琪和葛萝莉亚·鲁宾",
+            "upTime": "2015-01-01 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689457959261745154",
+            "videoName": "蜘蛛侠：纵横宇宙",
+            "videoDescription": "《蜘蛛侠：纵横宇宙》（英语：Spider-Man: Across the Spider-Verse，香港译《蜘蛛侠：飞跃蜘蛛宇宙》，台湾译《蜘蛛人：穿越新宇宙》）是一部2023年美国电脑动画超级英雄电影，2018年电影《蜘蛛侠：平行宇宙》的续集，亦是《蜘蛛宇宙系列》的第二部电影。本片由瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森共同执导，大卫·卡拉汉、菲尔·罗德与克里斯托弗·米勒共同撰写剧本；声演阵容包括沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克。本片2023年6月2日在美国上映。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/fce67f1f-0d2c-4c9f-a5cf-4ce53b3c3179_spider-man-into-the-spider-verse-miles-morales-spider-man-2880x1800-2948.jpg",
+            "categoryId": 28,
+            "categoryName": "战斗",
+            "videoProducer": "瓦昆·杜斯·山托斯、肯普·包沃斯和贾斯汀·K·汤普森",
+            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、布莱恩·泰里·亨利、萝伦·维莱斯、杰克·强森、杰森·薛兹曼、伊萨·雷、卡兰·索尼、谢伊·惠格姆、格里塔·李、丹尼尔·卡卢亚、马赫沙拉·阿里以及奥斯卡·伊萨克",
+            "upTime": "2023-06-02 00:00:00.0",
+            "playNumber": 0
+        },
+        {
+            "videoInfoId": "1689463385999040514",
+            "videoName": "蜘蛛侠：平行宇宙",
+            "videoDescription": "《蜘蛛侠：平行宇宙》（英语：Spider-Man: Into the Spider-Verse）是一部于2018年上映的美国电脑动画超级英雄电影，本片为蜘蛛宇宙系列的第一部电影，由哥伦比亚影业、漫威娱乐和索尼动画联合制作，并由索尼影视娱乐负责发行。本片由鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼执导，并由菲尔·罗德与克里斯托弗·米勒撰写剧本，剧情围绕着由布瑞恩·马克·班迪斯与莎拉·皮谢利创作的漫威漫画角色迈尔斯·莫拉莱斯／蜘蛛侠展开。本片由沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森担任主要配音员。\r\n\r\n由菲尔·罗德和克里斯托弗·米勒共同筹拍的一部蜘蛛侠动画电影的计划于2014年首度公开，并于2015年4月受到证实。沙梅克·摩尔与列夫·施赖伯于2017年4月加入剧组，而马赫沙拉·阿里和布莱恩·泰里·亨利则于同年6月签约参演。\r\n\r\n本片的片名于12月公布。该片于2018年12月14日在美国上映。电影发行后口碑和票房双收，动画效果、动作场面、角色设计、编剧皆获得正面评价，本片同时获颁众多奖项，这其中包含第91届奥斯卡金像奖的最佳动画长片奖、第46届安妮奖的七项奖项、第76届金球奖最佳动画。",
+            "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-08-10/803380b7-a437-4c28-a038-4a0d96587fd7_994927.jpg",
+            "categoryId": 28,
+            "categoryName": "战斗",
+            "videoProducer": "鲍伯·培斯奇提、彼得·拉姆齐与罗德斯尼·罗斯曼",
+            "videoActors": "沙梅克·摩尔、海莉·斯坦菲尔德、列夫·施赖伯、马赫沙拉·阿里、布莱恩·泰里·亨利和杰克·强森",
+            "upTime": "2018-12-04 00:00:00.0",
+            "playNumber": 0
         }
     ],
     "responseStatus": "SUCCESS",
@@ -2461,6 +2602,8 @@ $baseUrl/video/video_info/top_video_info_by_root_category_id?categoryId=1
     "responseMessage": "ok"
 }
 ```
+
+
 
 
 

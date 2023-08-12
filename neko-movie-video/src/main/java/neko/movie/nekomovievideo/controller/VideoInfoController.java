@@ -138,10 +138,18 @@ public class VideoInfoController {
     }
 
     /**
-     * 根据根分类id获取热门影视信息
+     * 根据根分类id获取少量热门影视信息
      */
     @GetMapping("top_video_info_by_root_category_id")
     public ResultObject<List<VideoInfoES>> topVideoInfoByRootCategoryId(@RequestParam Integer categoryId){
         return ResultObject.ok(videoInfoService.getVideoInfoByRootCategoryId(categoryId));
+    }
+
+    /**
+     * 根据根分类id获取大量热门影视信息
+     */
+    @GetMapping("top_plenty_video_info_by_root_category_id")
+    public ResultObject<List<VideoInfoES>> topPlentyVideoInfoByRootCategoryId(@RequestParam Integer categoryId){
+        return ResultObject.ok(videoInfoService.getPlentyVideoInfoByRootCategoryId(categoryId));
     }
 }

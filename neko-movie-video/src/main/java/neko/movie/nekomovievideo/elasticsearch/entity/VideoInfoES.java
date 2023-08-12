@@ -45,4 +45,9 @@ public class VideoInfoES implements Serializable {
      * 上映时间
      */
     private String upTime;
+
+    /**
+     * 总播放量
+     */
+    private Long playNumber;
 }

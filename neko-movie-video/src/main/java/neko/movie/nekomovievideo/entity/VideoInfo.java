@@ -57,6 +57,11 @@ public class VideoInfo implements Serializable {
     private LocalDateTime upTime;
 
     /**
+     * 总播放量
+     */
+    private Long playNumber;
+
+    /**
      * 回收站到期时间
      */
     private LocalDateTime deleteExpireTime;

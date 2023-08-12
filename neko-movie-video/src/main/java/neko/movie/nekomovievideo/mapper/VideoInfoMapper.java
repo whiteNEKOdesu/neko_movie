@@ -17,5 +17,5 @@ import java.util.List;
  */
 @Mapper
 public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
-    List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId);
+    List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId, Integer limited);
 }
