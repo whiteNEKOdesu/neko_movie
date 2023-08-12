@@ -14,4 +14,18 @@
         order by video_info.play_number desc
         limit #{limited}
     </select>
+
+    <select id="getRecentUpVideoInfo" resultType="neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES">
+        select video_info.video_info_id, video_info.video_name,
+               video_info.video_description, video_info.video_image,
+               child.category_id, child.category_name, video_info.video_producer,
+               video_info.video_actors, video_info.up_time, video_info.play_number from category_info child
+        join category_info root
+        on child.parent_id = root.category_id
+        join video_info
+        on child.category_id = video_info.category_id
+        where video_info.status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@UP}
+        order by video_info.update_time desc
+        limit 20
+    </select>
 </mapper>

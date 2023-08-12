@@ -413,4 +413,12 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     public List<VideoInfoES> getPlentyVideoInfoByRootCategoryId(Integer categoryId) {
         return this.baseMapper.getVideoInfoByRootCategoryId(categoryId, 20);
     }
+
+    /**
+     * 获取最近上映影视信息
+     */
+    @Override
+    public List<VideoInfoES> getRecentUpVideoInfo() {
+        return this.baseMapper.getRecentUpVideoInfo();
+    }
 }

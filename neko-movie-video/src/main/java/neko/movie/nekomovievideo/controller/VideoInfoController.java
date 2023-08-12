@@ -152,4 +152,12 @@ public class VideoInfoController {
     public ResultObject<List<VideoInfoES>> topPlentyVideoInfoByRootCategoryId(@RequestParam Integer categoryId){
         return ResultObject.ok(videoInfoService.getPlentyVideoInfoByRootCategoryId(categoryId));
     }
+
+    /**
+     * 获取最近上映影视信息
+     */
+    @GetMapping("recent_up")
+    public ResultObject<List<VideoInfoES>> recentUp(){
+        return ResultObject.ok(videoInfoService.getRecentUpVideoInfo());
+    }
 }

@@ -49,4 +49,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId);
 
     List<VideoInfoES> getPlentyVideoInfoByRootCategoryId(Integer categoryId);
+
+    List<VideoInfoES> getRecentUpVideoInfo();
 }

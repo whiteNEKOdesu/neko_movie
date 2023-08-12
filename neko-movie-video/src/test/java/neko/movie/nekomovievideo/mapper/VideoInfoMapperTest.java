@@ -14,4 +14,9 @@ public class VideoInfoMapperTest {
     public void getVideoInfoByRootCategoryId(){
         System.out.println(videoInfoMapper.getVideoInfoByRootCategoryId(1, 10));
     }
+
+    @Test
+    public void getRecentUpVideoInfo(){
+        System.out.println(videoInfoMapper.getRecentUpVideoInfo());
+    }
 }
