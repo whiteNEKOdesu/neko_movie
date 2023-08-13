@@ -3673,6 +3673,42 @@ $baseUrl/video/roll_video/delete_roll_video?rollId=4
 
 
 
+##### 2.9.4 管理员修改指定rollId轮播图信息
+
+- post请求，form-data上传文件
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/roll_video/update_roll_video
+```
+
+
+
+- 参数
+
+| 参数名          | 参数含义                             |
+| --------------- | ------------------------------------ |
+| file            | 文件，可选                           |
+| rollId          | 轮播图id                             |
+| rollDescription | 轮播图描述，可选                     |
+| sort            | 排序字段，越小越靠前，范围0-15，可选 |
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 ### 3 third_party第三方微服务
 
 #### 3.1 MailController

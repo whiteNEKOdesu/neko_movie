@@ -13,6 +13,8 @@ import neko.movie.nekomovievideo.mapper.RollVideoMapper;
 import neko.movie.nekomovievideo.mapper.VideoInfoMapper;
 import neko.movie.nekomovievideo.service.RollVideoService;
 import neko.movie.nekomovievideo.vo.NewRollVideoVo;
+import neko.movie.nekomovievideo.vo.UpdateRollVideoVo;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +45,10 @@ public class RollVideoServiceImpl extends ServiceImpl<RollVideoMapper, RollVideo
         VideoInfo videoInfo = videoInfoMapper.selectById(vo.getVideoInfoId());
         if(videoInfo == null){
             throw new NoSuchResultException("无此videoInfoId信息");
+        }
+        if(this.baseMapper.selectOne(new QueryWrapper<RollVideo>().lambda()
+                .eq(RollVideo::getSort, vo.getSort())) != null){
+            throw new DuplicateKeyException("排序位数重复");
         }
 
         //上传图片到oss
@@ -87,5 +93,35 @@ public class RollVideoServiceImpl extends ServiceImpl<RollVideoMapper, RollVideo
         }
 
         this.baseMapper.deleteById(rollId);
+    }
+
+    /**
+     * 修改指定rollId轮播图信息
+     */
+    @Override
+    public void updateRollVideo(UpdateRollVideoVo vo) {
+        RollVideo rollVideo = this.baseMapper.selectById(vo.getRollId());
+        if(rollVideo == null){
+            return;
+        }
+
+        RollVideo todoUpdate = new RollVideo();
+        BeanUtil.copyProperties(vo, todoUpdate);
+        if(vo.getFile() != null){
+            //远程调用thirdparty微服务删除轮播图
+            ResultObject<Object> r = ossFeignService.deleteFile(rollVideo.getRollImage());
+            if(!r.getResponseCode().equals(200)){
+                throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+            }
+            //远程调用thirdparty微服务上传新轮播图
+            ResultObject<String> uploadResult = ossFeignService.uploadImage(vo.getFile());
+            if(!uploadResult.getResponseCode().equals(200)){
+                throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+            }
+            todoUpdate.setRollImage(uploadResult.getResult());
+        }
+        todoUpdate.setUpdateTime(LocalDateTime.now());
+
+        this.baseMapper.updateById(todoUpdate);
     }
 }

@@ -3,6 +3,7 @@ package neko.movie.nekomovievideo.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import neko.movie.nekomovievideo.entity.RollVideo;
 import neko.movie.nekomovievideo.vo.NewRollVideoVo;
+import neko.movie.nekomovievideo.vo.UpdateRollVideoVo;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface RollVideoService extends IService<RollVideo> {
     List<RollVideo> getRollVideos();
 
     void deleteRollVideo(Integer rollId);
+
+    void updateRollVideo(UpdateRollVideoVo vo);
 }

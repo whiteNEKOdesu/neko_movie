@@ -7,6 +7,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.RoleType;
 import neko.movie.nekomovievideo.entity.RollVideo;
 import neko.movie.nekomovievideo.service.RollVideoService;
 import neko.movie.nekomovievideo.vo.NewRollVideoVo;
+import neko.movie.nekomovievideo.vo.UpdateRollVideoVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,18 @@ public class RollVideoController {
     @DeleteMapping("delete_roll_video")
     public ResultObject<Object> deleteRollVideo(@RequestParam Integer rollId){
         rollVideoService.deleteRollVideo(rollId);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员修改指定rollId轮播图信息
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("update_roll_video")
+    public ResultObject<Object> updateRollVideo(@Validated UpdateRollVideoVo vo){
+        rollVideoService.updateRollVideo(vo);
 
         return ResultObject.ok();
     }
