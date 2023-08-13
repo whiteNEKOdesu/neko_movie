@@ -37,8 +37,6 @@ public class UserWeight implements Serializable {
      */
     private Byte type;
 
-    private Boolean isDelete;
-
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

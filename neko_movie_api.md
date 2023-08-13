@@ -1066,6 +1066,88 @@ $baseUrl/member/user_weight/member_level_weight_name_by_weight_id?weightId=16
 
 
 
+##### 1.3.9 管理员删除指定weightId普通权限类型权限名
+
+- delete请求，url传参
+- 需要登录状态
+- 需要root角色
+
+```bash
+$baseUrl/member/user_weight/delete_weight
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义 |
+| -------- | -------- |
+| weightId | 权限id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_weight/delete_weight?weightId=19
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.3.10 管理员删除指定weightId会员等级类型权限名
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/member/user_weight/delete_member_level_weight
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义 |
+| -------- | -------- |
+| weightId | 权限id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_weight/delete_member_level_weight?weightId=21
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.4 UserRoleController
 
 ##### 1.4.1 管理员新增非会员等级类型角色信息角色

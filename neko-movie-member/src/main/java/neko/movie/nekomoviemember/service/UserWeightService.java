@@ -33,4 +33,8 @@ public interface UserWeightService extends IService<UserWeight> {
     List<UserWeight> getMemberLevelUserWeights();
 
     String getMemberLevelWeightTypeByWeightId(Integer weightId);
+
+    void deleteUserWeight(Integer weightId);
+
+    void deleteMemberLevelWeight(Integer weightId);
 }

@@ -1,6 +1,7 @@
 package neko.movie.nekomoviemember.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
@@ -136,8 +137,7 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
     @Override
     public List<UserWeight> getMemberLevelUserWeights() {
         return this.baseMapper.selectList(new QueryWrapper<UserWeight>().lambda()
-                .eq(UserWeight::getType, WeightSortType.MEMBER_LEVEL_TYPE)
-                .eq(UserWeight::getIsDelete, false));
+                .eq(UserWeight::getType, WeightSortType.MEMBER_LEVEL_TYPE));
     }
 
     /**
@@ -146,5 +146,27 @@ public class UserWeightServiceImpl extends ServiceImpl<UserWeightMapper, UserWei
     @Override
     public String getMemberLevelWeightTypeByWeightId(Integer weightId) {
         return this.baseMapper.getMemberLevelWeightTypeByWeightId(weightId);
+    }
+
+    /**
+     * 删除指定weightId普通权限类型权限名
+     */
+    @Override
+    public void deleteUserWeight(Integer weightId) {
+        this.baseMapper.delete(new UpdateWrapper<UserWeight>().lambda()
+                .eq(UserWeight::getWeightId, weightId)
+                //匹配普通权限类型
+                .eq(UserWeight::getType, WeightSortType.NORMAL_TYPE));
+    }
+
+    /**
+     * 删除指定weightId会员等级类型权限名
+     */
+    @Override
+    public void deleteMemberLevelWeight(Integer weightId) {
+        this.baseMapper.delete(new UpdateWrapper<UserWeight>().lambda()
+                .eq(UserWeight::getWeightId, weightId)
+                //匹配会员等级权限类型
+                .eq(UserWeight::getType, WeightSortType.MEMBER_LEVEL_TYPE));
     }
 }

@@ -107,4 +107,28 @@ public class UserWeightController {
     public ResultObject<String> memberLevelWeightNameByWeightId(@RequestParam Integer weightId){
         return ResultObject.ok(userWeightService.getMemberLevelWeightTypeByWeightId(weightId));
     }
+
+    /**
+     * 管理员删除指定weightId普通权限类型权限名
+     */
+    @SaCheckRole(RoleType.ROOT)
+    @SaCheckLogin
+    @DeleteMapping("delete_weight")
+    public ResultObject<Object> deleteWeight(@RequestParam Integer weightId){
+        userWeightService.deleteUserWeight(weightId);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 管理员删除指定weightId会员等级类型权限名
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @DeleteMapping("delete_member_level_weight")
+    public ResultObject<Object> deleteMemberLevelWeight(@RequestParam Integer weightId){
+        userWeightService.deleteMemberLevelWeight(weightId);
+
+        return ResultObject.ok();
+    }
 }
