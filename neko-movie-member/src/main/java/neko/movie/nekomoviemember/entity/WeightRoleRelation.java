@@ -38,8 +38,6 @@ public class WeightRoleRelation implements Serializable {
     @TableField(exist = false)
     private String roleType;
 
-    private Boolean isDelete;
-
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

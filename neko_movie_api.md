@@ -1365,6 +1365,88 @@ $baseUrl/member/user_role/new_member_level_role?roleType=普通会员
 
 
 
+##### 1.4.5 管理员删除普通角色，管理员角色类型角色信息
+
+- delete请求，url传参
+- 需要root角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_role/delete_role
+```
+
+
+
+- 参数
+
+| 参数名 | 参数含义 |
+| ------ | -------- |
+| roleId | 角色id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_role/delete_role?roleId=17
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.4.6 删除会员等级角色类型角色信息
+
+- delete请求，url传参
+- 需要admin角色
+- 需要登录状态
+
+```bash
+$baseUrl/member/user_role/delete_member_level_role
+```
+
+
+
+- 参数
+
+| 参数名 | 参数含义 |
+| ------ | -------- |
+| roleId | 角色id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/user_role/delete_member_level_role?roleId=19
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.5 WeightRoleRelationController
 
 ##### 1.5.1 管理员新增普通类型权重，角色关系

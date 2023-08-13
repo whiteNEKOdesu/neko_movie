@@ -72,4 +72,26 @@ public class UserRoleController {
 
         return ResultObject.ok();
     }
+
+    /**
+     * 管理员删除普通角色，管理员角色类型角色信息
+     */
+    @SaCheckRole(RoleType.ROOT)
+    @SaCheckLogin
+    @DeleteMapping("delete_role")
+    public ResultObject<Object> deleteRole(@RequestParam Integer roleId){
+        userRoleService.deleteUserRole(roleId);
+
+        return ResultObject.ok();
+    }
+
+    /**
+     * 删除会员等级角色类型角色信息
+     */
+    @DeleteMapping("delete_member_level_role")
+    public ResultObject<Object> deleteMemberLevelRole(@RequestParam Integer roleId){
+        userRoleService.deleteMemberLevelRole(roleId);
+
+        return ResultObject.ok();
+    }
 }

@@ -26,4 +26,8 @@ public interface UserRoleService extends IService<UserRole> {
     UserRole getUserRoleByRoleType(String roleType);
 
     void newMemberLevelRole(String roleType);
+
+    void deleteUserRole(Integer roleId);
+
+    void deleteMemberLevelRole(Integer roleId);
 }

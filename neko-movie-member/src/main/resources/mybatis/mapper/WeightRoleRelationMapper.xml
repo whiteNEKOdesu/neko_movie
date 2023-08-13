@@ -11,7 +11,6 @@
         <foreach collection="roleIds" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
-        and weight_role_relation.is_delete = 0
     </select>
 
     <select id="getRelationSbyRoleId" resultType="neko.movie.nekomoviemember.entity.WeightRoleRelation">
@@ -20,6 +19,6 @@
         on weight_role_relation.weight_id = user_weight.weight_id
         join user_role
         on weight_role_relation.role_id = user_role.role_id
-        where weight_role_relation.role_id = #{roleId} and weight_role_relation.is_delete = 0
+        where weight_role_relation.role_id = #{roleId}
     </select>
 </mapper>
