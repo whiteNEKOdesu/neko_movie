@@ -88,6 +88,8 @@ public class UserRoleController {
     /**
      * 删除会员等级角色类型角色信息
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @DeleteMapping("delete_member_level_role")
     public ResultObject<Object> deleteMemberLevelRole(@RequestParam Integer roleId){
         userRoleService.deleteMemberLevelRole(roleId);
