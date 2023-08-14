@@ -1,14 +1,20 @@
 package neko.movie.nekomovievideo.es;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.BulkRequest;
-import co.elastic.clients.elasticsearch.core.BulkResponse;
-import co.elastic.clients.elasticsearch.core.DeleteByQueryResponse;
-import co.elastic.clients.elasticsearch.core.DeleteResponse;
+import co.elastic.clients.elasticsearch._types.aggregations.LongTermsBucket;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
+import neko.movie.nekomoviecommonbase.utils.entity.VideoStatus;
 import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
+import neko.movie.nekomovievideo.entity.VideoInfo;
+import neko.movie.nekomovievideo.service.VideoInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,6 +27,9 @@ import java.util.List;
 public class ESClientTest {
     @Resource
     private ElasticsearchClient elasticsearchClient;
+
+    @Resource
+    private VideoInfoService videoInfoService;
 
     @Test
     public void upProduct() throws IOException {
@@ -95,5 +104,41 @@ public class ESClientTest {
                                 textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
                         .properties("upTime", propertyBuilder -> propertyBuilder.date(dateProperty -> dateProperty.format("yyyy-MM-dd HH:mm:ss")))));
         System.out.println(response.acknowledged());
+    }
+
+    @Test
+    public void videoCategoryAggTest() throws IOException {
+        Query query = MatchAllQuery.of(m -> m)._toQuery();
+
+        SearchResponse<Void> response = elasticsearchClient.search(b -> b
+                        .index(Constant.ELASTIC_SEARCH_INDEX)
+                        .size(0)
+                        .query(query)
+                        .aggregations("categoryTermsAgg", a -> a.terms(h -> h
+                                .field("categoryName"))
+                        ),
+                Void.class
+        );
+
+        List<StringTermsBucket> ageTermsAgg = response.aggregations()
+                .get("categoryTermsAgg")
+                .sterms()
+                .buckets()
+                .array();
+
+        for (StringTermsBucket bucket: ageTermsAgg) {
+            System.out.println("分类: " + bucket.key().stringValue() + " 有" + bucket.docCount() +
+                    " 个影视视频");
+        }
+    }
+
+    @Test
+    public void upAll() throws IOException {
+        List<VideoInfo> videoInfos = videoInfoService.getBaseMapper().selectList(new QueryWrapper<VideoInfo>().lambda()
+                .ne(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)
+                .ne(VideoInfo::getStatus, VideoStatus.DELETED));
+        for(VideoInfo videoInfo : videoInfos){
+            videoInfoService.upVideo(videoInfo.getVideoInfoId());
+        }
     }
 }

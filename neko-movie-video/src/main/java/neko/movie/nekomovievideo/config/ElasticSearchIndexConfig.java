@@ -46,8 +46,7 @@ public class ElasticSearchIndexConfig {
                                 textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
                         .properties("videoImage", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
                         .properties("categoryId", propertyBuilder -> propertyBuilder.long_(longProperty -> longProperty))
-                        .properties("categoryName", propertyBuilder -> propertyBuilder.text(textProperty ->
-                                textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
+                        .properties("categoryName", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
                         .properties("videoProducer", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
                         .properties("videoActors", propertyBuilder -> propertyBuilder.text(textProperty ->
                                 textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))

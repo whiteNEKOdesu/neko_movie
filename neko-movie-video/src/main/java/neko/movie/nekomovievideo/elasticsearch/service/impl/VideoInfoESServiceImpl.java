@@ -1,7 +1,10 @@
 package neko.movie.nekomovievideo.elasticsearch.service.impl;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -10,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.elasticsearch.service.VideoInfoESService;
+import neko.movie.nekomovievideo.vo.VideoCategoryAggPieVo;
 import neko.movie.nekomovievideo.vo.VideoInfoESQueryVo;
 import neko.movie.nekomovievideo.vo.VideoInfoESVo;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,6 +46,36 @@ public class VideoInfoESServiceImpl implements VideoInfoESService {
         VideoInfoESVo searchVo = getSearchVo(response);
         return searchVo.setSize(vo.getLimited())
                 .setCurrent(vo.getCurrentPage());
+    }
+
+    /**
+     * 获取按照影视信息分类聚合饼图信息
+     */
+    @Override
+    public List<VideoCategoryAggPieVo> videoCategoryAggPie() throws IOException {
+        Query query = MatchAllQuery.of(m -> m)._toQuery();
+
+        SearchResponse<Void> response = elasticsearchClient.search(b -> b
+                        .index(Constant.ELASTIC_SEARCH_INDEX)
+                        .size(0)
+                        .query(query)
+                        .aggregations("categoryTermsAgg", a -> a.terms(h -> h
+                                .field("categoryName"))
+                        ),
+                Void.class
+        );
+
+        List<StringTermsBucket> ageTermsAgg = response.aggregations()
+                .get("categoryTermsAgg")
+                .sterms()
+                .buckets()
+                .array();
+
+        return ageTermsAgg.stream().map(bucket -> {
+            VideoCategoryAggPieVo vo = new VideoCategoryAggPieVo();
+            return vo.setValue(bucket.docCount())
+                    .setName(bucket.key().stringValue());
+        }).collect(Collectors.toList());
     }
 
     /**

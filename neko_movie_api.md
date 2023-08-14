@@ -2998,6 +2998,62 @@ $baseUrl/video/elastic_search/product_infos
 
 
 
+##### 2.3.2 获取按照影视信息分类聚合饼图信息
+
+- get请求
+
+```bash
+$baseUrl/video/elastic_search/category_agg_pie
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "value": 15,
+            "name": "恋爱"
+        },
+        {
+            "value": 15,
+            "name": "战斗"
+        },
+        {
+            "value": 14,
+            "name": "科幻"
+        },
+        {
+            "value": 7,
+            "name": "喜剧"
+        },
+        {
+            "value": 7,
+            "name": "推理"
+        },
+        {
+            "value": 7,
+            "name": "校园"
+        },
+        {
+            "value": 6,
+            "name": "动物"
+        },
+        {
+            "value": 6,
+            "name": "地理"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.4 VideoSeriesInfoController
 
 ##### 2.4.1 管理员分页查询指定videoSeriesId视频分集信息
