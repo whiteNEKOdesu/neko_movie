@@ -3,6 +3,8 @@ package neko.movie.nekomovievideo.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,6 +15,7 @@ import neko.movie.nekomoviecommonbase.utils.exception.FileTypeNotSupportExceptio
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
 import neko.movie.nekomoviecommonbase.utils.exception.ThirdPartyServiceException;
+import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.entity.VideoInfo;
 import neko.movie.nekomovievideo.entity.VideoSeriesInfo;
 import neko.movie.nekomovievideo.feign.member.MemberLevelDictFeignService;
@@ -32,9 +35,12 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +82,9 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private ElasticsearchClient elasticsearchClient;
 
     @Resource(name = "threadPoolExecutor")
     private Executor threadPool;
@@ -183,8 +192,26 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
             throw new NoSuchResultException("无此影视集数信息");
         }
 
-        //添加观看记录
-        videoWatchHistoryService.newVideoWatchHistory(videoSeriesId);
+        //获取请求上下文
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        //异步处理播放记录，播放量数据
+        CompletableFuture.runAsync(() -> {
+            //为新线程设置请求上下文
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            //添加观看记录
+            videoWatchHistoryService.newVideoWatchHistory(videoSeriesId);
+
+            try {
+                //记录播放量
+                logPlayNumber(videoSeriesInfo.getVideoInfoId());
+            }catch (Exception e){
+                log.error("记录播放量出现异常，" + e);
+            }
+        }, threadPool).exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+
         //远程调用member微服务获取影视集数观看要求权限名
         ResultObject<String> r = userWeightFeignService.memberLevelWeightNameByWeightId(videoSeriesInfo.getWeightId());
         if(!r.getResponseCode().equals(200)){
@@ -342,6 +369,49 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
                     TimeUnit.MILLISECONDS);
 
             return r.getResult();
+        }
+    }
+
+    /**
+     * 记录播放量
+     */
+    private void logPlayNumber(String videoInfoId) throws IOException {
+        String key = Constant.MEMBER_REDIS_PREFIX + "play_number:" + videoInfoId;
+        Long playNumber = stringRedisTemplate.opsForValue().increment(key);
+        if(playNumber == null){
+            stringRedisTemplate.opsForValue().setIfAbsent(key,
+                    "1",
+                    30,
+                    TimeUnit.DAYS);
+            return;
+        }
+
+        stringRedisTemplate.expire(key,
+                30,
+                TimeUnit.DAYS);
+        if(playNumber >= 10){
+            //修改播放量
+            videoInfoMapper.increasePlayNumber(videoInfoId, playNumber, LocalDateTime.now());
+            //将redis中播放量设为0
+            stringRedisTemplate.opsForValue().set(key,
+                    "0",
+                    30,
+                    TimeUnit.DAYS);
+
+            //获取影视信息数据
+            VideoInfo videoInfo = videoInfoMapper.selectById(videoInfoId);
+            if(videoInfo != null){
+                VideoInfoES videoInfoES = new VideoInfoES();
+                videoInfoES.setPlayNumber(videoInfo.getPlayNumber());
+                //修改elasticsearch中影视信息数据
+                UpdateResponse<VideoInfoES> response = elasticsearchClient.update(builder ->
+                        builder.index(Constant.ELASTIC_SEARCH_INDEX)
+                                .id(videoInfoId)
+                                .doc(videoInfoES)
+                                //表示修改而不是覆盖
+                                .docAsUpsert(true), VideoInfoES.class);
+                log.info("修改elasticsearch中影视数据，videoInfoId: " + videoInfoId + "，修改数量: " + response.shards().successful().intValue());
+            }
         }
     }
 }

@@ -28,4 +28,10 @@
         order by video_info.update_time desc
         limit 20
     </select>
+
+    <update id="increasePlayNumber">
+        update video_info
+        set play_number = play_number + #{increaseNumber}, update_time = #{updateTime}
+        where video_info_id = #{videoInfoId}
+    </update>
 </mapper>

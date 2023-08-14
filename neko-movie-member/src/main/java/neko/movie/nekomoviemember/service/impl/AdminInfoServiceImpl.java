@@ -100,7 +100,8 @@ public class AdminInfoServiceImpl extends ServiceImpl<AdminInfoMapper, AdminInfo
         //生成盐
         String salt = Arrays.toString(RandomUtil.randomBytes(10));
         BeanUtil.copyProperties(vo, adminInfo);
-        adminInfo.setSalt(salt)
+        adminInfo.setUserPassword(DigestUtils.md5DigestAsHex((vo.getUserPassword() + salt).getBytes()))
+                .setSalt(salt)
                 .setOperateAdminId(StpUtil.getLoginId().toString())
                 .setCreateTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());

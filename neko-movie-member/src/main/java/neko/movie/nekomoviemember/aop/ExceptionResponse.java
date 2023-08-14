@@ -18,10 +18,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 
 @RestControllerAdvice
@@ -44,12 +48,16 @@ public class ExceptionResponse {
         if(isDebug){
             debugExceptionLogger(e);
         }else{
-            log.error(e.toString());
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+            log.error(e.toString() + "，路径: " + (request != null ? request.getRequestURI() : ""));
         }
     }
 
     public void debugExceptionLogger(Exception e){
-        log.error(e.toString());
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes != null ? servletRequestAttributes.getRequest() : null;
+        log.error(e.toString() + "，路径: " + (request != null ? request.getRequestURI() : ""));
         for(StackTraceElement trace : e.getStackTrace()){
             log.error(trace.toString());
         }

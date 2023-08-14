@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 public class VideoInfoMapperTest {
@@ -18,5 +19,12 @@ public class VideoInfoMapperTest {
     @Test
     public void getRecentUpVideoInfo(){
         System.out.println(videoInfoMapper.getRecentUpVideoInfo());
+    }
+
+    @Test
+    public void increasePlayNumber(){
+        videoInfoMapper.increasePlayNumber("1683373796746121218",
+                5L,
+                LocalDateTime.now());
     }
 }

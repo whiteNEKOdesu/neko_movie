@@ -51,7 +51,8 @@ public class ElasticSearchIndexConfig {
                         .properties("videoProducer", propertyBuilder -> propertyBuilder.keyword(keyWordProperty -> keyWordProperty))
                         .properties("videoActors", propertyBuilder -> propertyBuilder.text(textProperty ->
                                 textProperty.analyzer("ik_smart").searchAnalyzer("ik_smart")))
-                        .properties("upTime", propertyBuilder -> propertyBuilder.date(dateProperty -> dateProperty.format("yyyy-MM-dd HH:mm:ss")))));
+                        .properties("upTime", propertyBuilder -> propertyBuilder.date(dateProperty -> dateProperty.format("yyyy-MM-dd HH:mm:ss")))
+                        .properties("playNumber", propertyBuilder -> propertyBuilder.long_(longProperty -> longProperty))));
 
         return response.acknowledged();
     }

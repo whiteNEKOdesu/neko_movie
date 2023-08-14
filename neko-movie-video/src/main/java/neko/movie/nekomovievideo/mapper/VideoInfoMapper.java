@@ -5,6 +5,7 @@ import neko.movie.nekomovievideo.entity.VideoInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,4 +21,8 @@ public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
     List<VideoInfoES> getVideoInfoByRootCategoryId(Integer categoryId, Integer limited);
 
     List<VideoInfoES> getRecentUpVideoInfo();
+
+    void increasePlayNumber(String videoInfoId,
+                            Long increaseNumber,
+                            LocalDateTime updateTime);
 }

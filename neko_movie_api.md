@@ -2950,18 +2950,43 @@ $baseUrl/video/elastic_search/product_infos
     "result": {
         "records": [
             {
-                "videoInfoId": "1680781825485639682",
-                "videoName": "NEO",
-                "videoDescription": "NEKO",
-                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-17/dbe85cae-7196-48b4-86e6-34cf54c0717c_1ad3ffe0-e81f-4439-8937-2fc22e2045ba_A400388D-AE79-4F23-8390-7D549A78D795.jpeg",
-                "categoryId": 34,
-                "categoryName": "校园",
-                "videoProducer": "NEKO",
-                "videoActors": "NEKO",
-                "upTime": "2023-07-17 11:29:49"
+                "videoInfoId": "1682551371754180610",
+                "videoName": "花神之舞",
+                "videoDescription": "妮露 花神之舞",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-22/62286bc7-6c92-4dc1-80e4-71c2fefca495_捕获.PNG",
+                "categoryId": 24,
+                "categoryName": "战斗",
+                "videoProducer": "mihoyo",
+                "videoActors": "妮露",
+                "upTime": "2023-07-22 08:40:46",
+                "playNumber": 0
+            },
+            {
+                "videoInfoId": "1683373796746121218",
+                "videoName": "鬼灭之刃 锻刀村篇",
+                "videoDescription": "卖炭维生的善良少年炭治郎，某天家人惨遭鬼杀害。而唯一幸存的妹妹祢豆子，却变化成鬼。遭到绝望现实打击的炭治郎，为了让妹妹恢复回人类，为了被杀害的家人向鬼报仇，决定踏上”猎鬼”之路。",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-24/99460edc-3409-4973-97a8-5302e45b2cad_捕获.PNG",
+                "categoryId": 24,
+                "categoryName": "战斗",
+                "videoProducer": "外崎春雄",
+                "videoActors": "花江夏树 下野纮 松冈祯丞 鬼头明里 宫野真守 花泽香菜 河西健吾",
+                "upTime": "2023-07-24 15:09:00",
+                "playNumber": 0
+            },
+            {
+                "videoInfoId": "1683374868122357762",
+                "videoName": "鬼灭之刃 游郭篇",
+                "videoDescription": "鬼灭之刃游郭篇故事剧情将从《鬼灭之刃无限列车篇》失去炎柱后做为开端，以日本花街为舞台，而最让人期待的音柱、堕姬即将在鬼灭第二季登场！",
+                "videoImage": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-24/032df54a-fb38-40da-a64d-893223e20e4d_20230411164723_513.jpg",
+                "categoryId": 24,
+                "categoryName": "战斗",
+                "videoProducer": "外崎春雄",
+                "videoActors": "花江夏树 鬼头明里 下野纮 松冈祯丞 小西克幸 森川智之 泽城美雪 逢坂良太 石上静香 东山奈央 种崎敦美 关俊彦 浪川大辅 上田丽奈 江原裕理 石田彰",
+                "upTime": "2023-07-24 15:12:27",
+                "playNumber": 0
             }
         ],
-        "total": 1,
+        "total": 3,
         "size": 8,
         "current": 1
     },
