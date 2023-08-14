@@ -6,6 +6,7 @@ import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.MQMessageType;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
+import neko.movie.nekomoviecommonbase.utils.exception.RabbitMQMessageRejectException;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
 import neko.movie.nekomoviemember.service.MemberLevelRelationService;
 import neko.movie.nekomoviemember.to.MemberLevelExpireTo;
@@ -87,6 +88,7 @@ public class MemberLevelListener {
             log.error("开通会员等级发生异常，uid: " + updateMemberLevelTo.getUid() + "，开通会员等级id: " + updateMemberLevelTo.getMemberLevelId());
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            throw new RabbitMQMessageRejectException("开通会员等级发生异常");
         }
     }
 }

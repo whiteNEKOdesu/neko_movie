@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
+import neko.movie.nekomoviecommonbase.utils.exception.RabbitMQMessageRejectException;
 import neko.movie.nekomoviemember.service.MemberLevelRelationService;
 import neko.movie.nekomoviemember.to.MemberLevelExpireTo;
 import neko.movie.nekomoviemember.to.RabbitMQMessageTo;
@@ -41,9 +42,10 @@ public class MemberLevelExpireListener {
             //单个确认消费消息
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception e){
-            log.error("订单关闭发生异常，relationId: " + memberLevelExpireTo.getRelationId());
+            log.error("删除会员等级信息发生异常，relationId: " + memberLevelExpireTo.getRelationId());
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            throw new RabbitMQMessageRejectException("删除会员等级信息发生异常");
         }
     }
 }

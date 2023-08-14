@@ -3282,7 +3282,7 @@ $baseUrl/video/order_info/preorder_token
 
 
 
-##### 2.6.1 提交订单
+##### 2.5.1 提交订单
 
 - put请求，请求体传参
 - 需要登录状态
@@ -3330,7 +3330,7 @@ $baseUrl/video/order_info/new_order
 
 
 
-##### 2.6.3 根据订单号获取支付宝支付页面
+##### 2.5.2 根据订单号获取支付宝支付页面
 
 - get请求，url传参
 - 需要登录状态
@@ -3390,7 +3390,7 @@ hbwmin1080@sandbox.com
 
 
 
-##### 2.6.4 根据订单号获取未取消订单信息
+##### 2.5.3 根据订单号获取未取消订单信息
 
 - get请求，url传参
 - 需要登录状态
@@ -3563,6 +3563,47 @@ $baseUrl/video/discount_info/discount_infos
             "updateTime": "2023-07-31T11:17:07"
         }
     ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 2.6.4 管理员删除指定discountId折扣信息
+
+- delete请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/discount_info/delete_discount_info
+```
+
+
+
+- 参数
+
+| 参数名     | 参数含义 |
+| ---------- | -------- |
+| discountId | 折扣id   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/discount_info/delete_discount_info?discountId=1690985946784247809
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

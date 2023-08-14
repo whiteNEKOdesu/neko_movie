@@ -146,7 +146,21 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
     @Override
     public List<DiscountInfo> getDiscountInfos() {
         return this.baseMapper.selectList(new QueryWrapper<DiscountInfo>().lambda()
-                .eq(DiscountInfo::getIsDelete, false));
+                .eq(DiscountInfo::getIsDelete, false)
+                .orderByDesc(DiscountInfo::getDiscountId));
+    }
+
+    /**
+     * 删除指定discountId折扣信息
+     */
+    @Override
+    public void deleteDiscountInfo(String discountId) {
+        DiscountInfo todoUpdate = new DiscountInfo();
+        todoUpdate.setDiscountId(discountId)
+                .setIsDelete(true)
+                .setUpdateTime(LocalDateTime.now());
+
+        this.baseMapper.updateById(todoUpdate);
     }
 
     private void unlockStockTask(String orderId){

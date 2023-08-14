@@ -6,6 +6,7 @@ import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.OrderStatus;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
+import neko.movie.nekomoviecommonbase.utils.exception.RabbitMQMessageRejectException;
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.service.DiscountInfoService;
 import neko.movie.nekomovievideo.service.OrderInfoService;
@@ -71,6 +72,7 @@ public class OrderListener {
             log.error("订单关闭发生异常，订单号: " + orderId);
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            throw new RabbitMQMessageRejectException("订单关闭发生异常");
         }
     }
 }

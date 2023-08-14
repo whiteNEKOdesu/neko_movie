@@ -27,4 +27,6 @@ public interface DiscountInfoService extends IService<DiscountInfo> {
     void unlockStock(String orderId);
 
     List<DiscountInfo> getDiscountInfos();
+
+    void deleteDiscountInfo(String discountId);
 }

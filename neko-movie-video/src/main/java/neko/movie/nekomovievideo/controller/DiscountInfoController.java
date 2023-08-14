@@ -51,8 +51,22 @@ public class DiscountInfoController {
     /**
      * 管理员获取所有折扣信息
      */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
     @GetMapping("discount_infos")
     public ResultObject<List<DiscountInfo>> discountInfos(){
         return ResultObject.ok(discountInfoService.getDiscountInfos());
+    }
+
+    /**
+     * 管理员删除指定discountId折扣信息
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @DeleteMapping("delete_discount_info")
+    public ResultObject<Object> deleteDiscountInfo(@RequestParam String discountId){
+        discountInfoService.deleteDiscountInfo(discountId);
+
+        return ResultObject.ok();
     }
 }

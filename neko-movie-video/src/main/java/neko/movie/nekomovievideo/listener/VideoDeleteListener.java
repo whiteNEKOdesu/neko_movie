@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.RabbitMqConstant;
+import neko.movie.nekomoviecommonbase.utils.exception.RabbitMQMessageRejectException;
 import neko.movie.nekomovievideo.service.VideoInfoService;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import org.springframework.amqp.core.Message;
@@ -44,6 +45,7 @@ public class VideoDeleteListener {
             log.error("影视信息回收站到期删除发生异常，videoInfoId: " + videoInfoId);
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            throw new RabbitMQMessageRejectException("影视信息回收站到期删除发生异常");
         }
     }
 }
