@@ -2,6 +2,7 @@ package neko.movie.nekomovievideo.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.OrderStatus;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -136,6 +138,15 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
 
         //解锁库存
         unlockStockTask(orderId);
+    }
+
+    /**
+     * 获取所有折扣信息
+     */
+    @Override
+    public List<DiscountInfo> getDiscountInfos() {
+        return this.baseMapper.selectList(new QueryWrapper<DiscountInfo>().lambda()
+                .eq(DiscountInfo::getIsDelete, false));
     }
 
     private void unlockStockTask(String orderId){

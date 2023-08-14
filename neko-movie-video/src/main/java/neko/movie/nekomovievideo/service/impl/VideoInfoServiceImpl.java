@@ -27,7 +27,6 @@ import neko.movie.nekomovievideo.service.VideoSeriesInfoService;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import neko.movie.nekomovievideo.vo.UpdateVideoInfoVo;
 import neko.movie.nekomovievideo.vo.VideoInfoVo;
-import org.redisson.api.RedissonClient;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.ReturnedMessage;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -68,9 +67,6 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     private ElasticsearchClient elasticsearchClient;
 
     @Resource
-    private RedissonClient redissonClient;
-
-    @Resource
     private RabbitTemplate rabbitTemplate;
 
     /**
@@ -83,7 +79,7 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
                              String videoActors,
                              Integer categoryId,
                              LocalDateTime upTime,
-                             MultipartFile file) throws InterruptedException {
+                             MultipartFile file) {
         //分类id不存在
         if(categoryInfoService.getById(categoryId) == null){
             return;

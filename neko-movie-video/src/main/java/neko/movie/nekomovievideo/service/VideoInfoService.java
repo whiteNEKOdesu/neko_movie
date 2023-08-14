@@ -28,7 +28,7 @@ public interface VideoInfoService extends IService<VideoInfo> {
                       String videoActors,
                       Integer categoryId,
                       LocalDateTime upTime,
-                      MultipartFile file) throws InterruptedException;
+                      MultipartFile file);
 
     void upVideo(String videoInfoId) throws IOException;
 

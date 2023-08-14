@@ -10,7 +10,10 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import neko.movie.nekomoviecommonbase.utils.entity.*;
+import neko.movie.nekomoviecommonbase.utils.entity.Constant;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
+import neko.movie.nekomoviecommonbase.utils.entity.Response;
+import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviecommonbase.utils.exception.FileTypeNotSupportException;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberServiceException;
 import neko.movie.nekomoviecommonbase.utils.exception.NoSuchResultException;
@@ -29,8 +32,6 @@ import neko.movie.nekomovievideo.to.MemberLevelDictTo;
 import neko.movie.nekomovievideo.to.UserWeightTo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoUserVo;
 import neko.movie.nekomovievideo.vo.VideoSeriesInfoVo;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -64,9 +65,6 @@ import java.util.stream.Collectors;
 public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMapper, VideoSeriesInfo> implements VideoSeriesInfoService {
     @Resource
     private OSSFeignService ossFeignService;
-
-    @Resource
-    private RedissonClient redissonClient;
 
     @Resource
     private MemberLevelDictFeignService memberLevelDictFeignService;
@@ -137,47 +135,34 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
     public void newVideoSeriesInfo(String videoInfoId,
                                    Integer seriesNumber,
                                    Integer weightId,
-                                   MultipartFile file) throws InterruptedException {
-        //获取分布式锁
-        RLock lock = redissonClient.getLock(Constant.VIDEO_REDIS_PREFIX + "lock:video_series:" + videoInfoId);
-        //尝试加锁，最多等待100秒，上锁以后10分钟自动解锁
-        boolean isLock = lock.tryLock(100, 60 * 10, TimeUnit.SECONDS);
-
-        if(isLock){
-            try {
-                if(this.baseMapper.selectOne(new QueryWrapper<VideoSeriesInfo>().lambda()
-                        .eq(VideoSeriesInfo::getVideoInfoId, videoInfoId)
-                        .eq(VideoSeriesInfo::getSeriesNumber, seriesNumber)
-                        .eq(VideoSeriesInfo::getIsDelete, false)) != null){
-                    throw new DuplicateKeyException("集数重复");
-                }
-
-                //上传视频到oss
-                ResultObject<String> r = ossFeignService.uploadVideo(file);
-                if(!r.getResponseCode().equals(200)){
-                    throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
-                }else if(r.getResponseCode().equals(Response.FILE_TYPE_NOT_SUPPORT_ERROR.getResponseCode())){
-                    throw new FileTypeNotSupportException("视频类型错误");
-                }
-
-                //获取 oss 上传视频地址
-                String videoUrl = r.getResult();
-                VideoSeriesInfo videoSeriesInfo = new VideoSeriesInfo();
-                LocalDateTime now = LocalDateTime.now();
-                videoSeriesInfo.setVideoInfoId(videoInfoId)
-                        .setSeriesNumber(seriesNumber)
-                        .setVideoUrl(videoUrl)
-                        .setWeightId(weightId)
-                        .setCreateTime(now)
-                        .setUpdateTime(now);
-
-                this.baseMapper.insert(videoSeriesInfo);
-            }finally {
-                lock.unlock();
-            }
-        }else{
-            throw new InterruptedException("获取分布式锁失败");
+                                   MultipartFile file) {
+        if(this.baseMapper.selectOne(new QueryWrapper<VideoSeriesInfo>().lambda()
+                .eq(VideoSeriesInfo::getVideoInfoId, videoInfoId)
+                .eq(VideoSeriesInfo::getSeriesNumber, seriesNumber)
+                .eq(VideoSeriesInfo::getIsDelete, false)) != null){
+            throw new DuplicateKeyException("集数重复");
         }
+
+        //上传视频到oss
+        ResultObject<String> r = ossFeignService.uploadVideo(file);
+        if(!r.getResponseCode().equals(200)){
+            throw new ThirdPartyServiceException("thirdparty微服务远程调用异常");
+        }else if(r.getResponseCode().equals(Response.FILE_TYPE_NOT_SUPPORT_ERROR.getResponseCode())){
+            throw new FileTypeNotSupportException("视频类型错误");
+        }
+
+        //获取 oss 上传视频地址
+        String videoUrl = r.getResult();
+        VideoSeriesInfo videoSeriesInfo = new VideoSeriesInfo();
+        LocalDateTime now = LocalDateTime.now();
+        videoSeriesInfo.setVideoInfoId(videoInfoId)
+                .setSeriesNumber(seriesNumber)
+                .setVideoUrl(videoUrl)
+                .setWeightId(weightId)
+                .setCreateTime(now)
+                .setUpdateTime(now);
+
+        this.baseMapper.insert(videoSeriesInfo);
     }
 
     /**
@@ -316,33 +301,6 @@ public class VideoSeriesInfoServiceImpl extends ServiceImpl<VideoSeriesInfoMappe
         }
 
         log.info("影视视频删除成功，videoInfoId: " + videoInfoId);
-    }
-
-    /**
-     * 获取会员等级信息
-     */
-    private List<MemberLevelDictTo> getLevelInfos(){
-        String key = Constant.MEMBER_REDIS_PREFIX + "level_info";
-        String cache = stringRedisTemplate.opsForValue().get(key);
-
-        //缓存有数据
-        if(cache != null){
-            return JSONUtil.toList(JSONUtil.parseArray(cache), MemberLevelDictTo.class);
-        }else{
-            //获取会员等级信息
-            ResultObject<List<MemberLevelDictTo>> r = memberLevelDictFeignService.levelInfos();
-            if(!r.getResponseCode().equals(200)){
-                throw new MemberServiceException("member微服务远程调用异常");
-            }
-
-            //缓存无数据，查询存入缓存
-            stringRedisTemplate.opsForValue().setIfAbsent(key,
-                    JSONUtil.toJsonStr(r.getResult()),
-                    1000 * 60 * 60 * 5,
-                    TimeUnit.MILLISECONDS);
-
-            return r.getResult();
-        }
     }
 
     /**

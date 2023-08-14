@@ -3531,6 +3531,46 @@ $baseUrl/video/discount_info/two_days_or_available_discount_info
 
 
 
+##### 2.6.3 管理员获取所有折扣信息
+
+- get请求
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/discount_info/discount_infos
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": [
+        {
+            "discountId": "1684813417543634945",
+            "discountName": "会员折扣活动",
+            "discountRate": 90,
+            "operateAdminUid": "1642398369596944385",
+            "number": 5,
+            "lockNumber": 0,
+            "isEnd": false,
+            "isDelete": false,
+            "startTime": "2023-07-29T11:35:41",
+            "endTime": "2023-08-03T12:35:41",
+            "createTime": "2023-07-28T14:29:56",
+            "updateTime": "2023-07-31T11:17:07"
+        }
+    ],
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.7 VideoCollectionController
 
 ##### 2.7.1 添加影视收藏

@@ -49,7 +49,7 @@ public class VideoSeriesInfoController {
     public ResultObject<Object> newVideoSeries(@RequestParam String videoInfoId,
                                                @RequestParam Integer seriesNumber,
                                                @RequestParam Integer weightId,
-                                               @RequestPart MultipartFile file) throws InterruptedException {
+                                               @RequestPart MultipartFile file) {
         videoSeriesInfoService.newVideoSeriesInfo(videoInfoId,
                 seriesNumber,
                 weightId,
