@@ -417,4 +417,19 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
     public List<VideoInfoES> getRecentUpVideoInfo() {
         return this.baseMapper.getRecentUpVideoInfo();
     }
+
+    /**
+     * 上架全部影视视频
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void upAllVideo() {
+        List<VideoInfo> videoInfos = this.baseMapper.selectList(new QueryWrapper<VideoInfo>().lambda()
+                .ne(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)
+                .ne(VideoInfo::getStatus, VideoStatus.DELETED));
+
+        for(VideoInfo videoInfo : videoInfos){
+            upVideo(videoInfo.getVideoInfoId());
+        }
+    }
 }

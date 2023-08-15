@@ -2901,6 +2901,31 @@ $baseUrl/video/video_info/recent_up
 
 
 
+##### 2.2.12 管理员上架全部影视视频
+
+- post请求
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_info/up_all_video
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息

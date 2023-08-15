@@ -160,4 +160,16 @@ public class VideoInfoController {
     public ResultObject<List<VideoInfoES>> recentUp(){
         return ResultObject.ok(videoInfoService.getRecentUpVideoInfo());
     }
+
+    /**
+     * 管理员上架全部影视视频
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("up_all_video")
+    public ResultObject<Object> upAllVideo(){
+        videoInfoService.upAllVideo();
+
+        return ResultObject.ok();
+    }
 }

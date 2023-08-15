@@ -3,66 +3,145 @@ version: "3"
 services:
   redis:
     image: redis:7.0.5
-    container_name: neko-convenient-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - /usr/local/neko_convenient/backend/docker_data/redis_6379/data:/data
-      - /usr/local/neko_convenient/backend/docker_data/redis_6379/conf:/etc/redis/conf
-    command: redis-server /etc/redis/conf/redis.conf
+    container_name: neko-movie-redis
     networks:
-      - neko_convenient
+      - neko_movie
 
   mysql:
-    image: mysql:5.7.38
-    container_name: neko-convenient-mysql
+    image: neko-movie-mysql:1.0
+    container_name: neko-movie-mysql
     ports:
-      - "3306:3306"
+      - "3309:3306"
     volumes:
-      - /usr/local/neko_convenient/backend/docker_data/mysql_3306/log:/var/log/mysql
-      - /usr/local/neko_convenient/backend/docker_data/mysql_3306/data:/var/lib/mysql
-      - /usr/local/neko_convenient/backend/docker_data/mysql_3306/log:/etc/mysql/conf.d
+      - /usr/local/neko_movie/backend/docker_data/mysql/data:/var/lib/mysql
     networks:
-      - neko_convenient
+      - neko_movie
     environment:
-      MYSQL_ROOT_PASSWORD: group_2_password
+      MYSQL_ROOT_PASSWORD: 123456
       MYSQL_ALLOW_EMPTY_PASSWORD: no
 
   rabbitmq:
-    image: rabbitmq:3.11.4-management
-    container_name: neko-convenient-rabbitmq
-    ports:
-      - "5672:5672"
+    image: neko-movie-rabbitmq:1.0
+    container_name: neko-movie-rabbitmq
     networks:
-      - neko_convenient
+      - neko_movie
 
   elasticsearch:
-    image: elasticsearch:7.17.7
-    container_name: neko-convenient-elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/data:/usr/share/elasticsearch/data
-      - /usr/local/neko_convenient/backend/docker_data/elasticsearch_9200_9300/plugins:/usr/share/elasticsearch/plugins
+    image: neko-movie-elasticsearch:1.0
+    container_name: neko-movie-elasticsearch
     networks:
-      - neko_convenient
+      - neko_movie
     environment:
-      - ES_JAVA_OPTS=-Xms128m -Xmx256m
+      - ES_JAVA_OPTS=-Xms256m -Xmx512m
       - discovery.type=single-node
 
   nginx:
-    image: nginx:1.23.3
-    container_name: neko-convenient-nginx
+    image: neko-movie-nginx:1.0
+    container_name: neko-movie-nginx
     ports:
-      - "80:80"
-    volumes:
-      - /usr/local/neko_convenient/backend/docker_data/nginx_80/html:/etc/nginx/html
-      - /usr/local/neko_convenient/backend/docker_data/nginx_80/logs:/var/log/nginx
-      - /usr/local/neko_convenient/backend/docker_data/nginx_80/conf:/etc/nginx
+      - "86:80"
     networks:
-      - neko_convenient
+      - neko_movie
+
+  nacos:
+    image: neko-movie-nacos:1.0
+    container_name: neko-movie-nacos
+    ports:
+      - "3000:8848"
+    networks:
+      - neko_movie
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_URL: mysql:3306
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 123456
+
+  gateway-service:
+    image: neko-movie-gateway:1.0
+    container_name: neko-movie-gateway
+    ports:
+      - "8004:8004"
+    networks:
+      - neko_movie
+    depends_on:
+      - nacos
+    environment:
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD_URL: 192.168.30.131:8080
+      SENTINEL_PORT: 8719
+
+  member-service:
+    image: neko-movie-member:1.0
+    container_name: neko-movie-member
+    ports:
+      - "8003:8003"
+    networks:
+      - neko_movie
+    depends_on:
+      - mysql
+      - nacos
+      - redis
+      - rabbitmq
+    environment:
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD_URL: 192.168.30.131:8080
+      SENTINEL_PORT: 8719
+      MYSQL_URL: mysql:3306
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+
+  video-service:
+    image: neko-movie-video:1.0
+    container_name: neko-movie-video
+    ports:
+      - "8008:8008"
+    networks:
+      - neko_movie
+    depends_on:
+      - mysql
+      - nacos
+      - redis
+      - rabbitmq
+      - elasticsearch
+    environment:
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD_URL: 192.168.30.131:8080
+      SENTINEL_PORT: 8719
+      MYSQL_URL: mysql:3306
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      ELASTIC_SEARCH_HOSTS: elasticsearch:9200
+
+  third-party-service:
+    image: neko-movie-third-party:1.0
+    container_name: neko-movie-third-party
+    ports:
+      - "8006:8006"
+    networks:
+      - neko_movie
+    depends_on:
+      - mysql
+      - nacos
+      - redis
+    environment:
+      NACOS_SERVER_ADDR: nacos:8848
+      SENTINEL_DASHBOARD_URL: 192.168.30.131:8080
+      SENTINEL_PORT: 8719
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
 networks:
-  neko_convenient:
+  neko_movie:
