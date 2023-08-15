@@ -53,7 +53,7 @@ services:
     depends_on:
       - mysql
     environment:
-      MYSQL_URL: mysql:3306
+      MYSQL_URL: mysql:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: 123456
 
