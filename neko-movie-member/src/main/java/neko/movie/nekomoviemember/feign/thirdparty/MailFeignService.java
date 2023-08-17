@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MailFeignService {
     @PostMapping("mail/send_register_mail")
     ResultObject<Object> sendRegisterMail(@RequestParam String receiver, @RequestParam String code);
+
+    @PostMapping("mail/send_password_reset_mail")
+    ResultObject<Object> sendPasswordResetMail(@RequestParam String receiver, @RequestParam String code);
 }

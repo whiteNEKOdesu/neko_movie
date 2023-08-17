@@ -5,6 +5,7 @@ import neko.movie.nekomoviemember.entity.MemberInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import neko.movie.nekomoviemember.vo.LogInVo;
 import neko.movie.nekomoviemember.vo.MemberInfoVo;
+import neko.movie.nekomoviemember.vo.ResetUserPasswordVo;
 import neko.movie.nekomoviemember.vo.UpdateUserPasswordVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,4 +35,8 @@ public interface MemberInfoService extends IService<MemberInfo> {
     String updateUserImagePath(MultipartFile file);
 
     MemberInfoVo getUserInfo();
+
+    String sendUserPasswordResetCode(String userName);
+
+    void resetUserPassword(ResetUserPasswordVo vo);
 }

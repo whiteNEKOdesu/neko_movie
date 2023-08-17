@@ -5,6 +5,7 @@ import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomoviemember.service.MemberInfoService;
 import neko.movie.nekomoviemember.vo.LogInVo;
 import neko.movie.nekomoviemember.vo.MemberInfoVo;
+import neko.movie.nekomoviemember.vo.ResetUserPasswordVo;
 import neko.movie.nekomoviemember.vo.UpdateUserPasswordVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -82,5 +83,23 @@ public class MemberInfoController {
     @GetMapping("user_info")
     public ResultObject<MemberInfoVo> userInfo(){
         return ResultObject.ok(memberInfoService.getUserInfo());
+    }
+
+    /**
+     * 发送密码重置邮件
+     */
+    @PostMapping("send_user_password_reset_code")
+    public ResultObject<Object> sendPasswordResetCode(@RequestParam String userName){
+        return ResultObject.ok(memberInfoService.sendUserPasswordResetCode(userName));
+    }
+
+    /**
+     * 重置密码
+     */
+    @PostMapping("reset_user_password")
+    public ResultObject<Object> resetUserPassword(@Validated @RequestBody ResetUserPasswordVo vo){
+        memberInfoService.resetUserPassword(vo);
+
+        return ResultObject.ok();
     }
 }

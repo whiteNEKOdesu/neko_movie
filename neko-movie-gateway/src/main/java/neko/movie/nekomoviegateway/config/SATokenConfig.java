@@ -34,6 +34,7 @@ public class SATokenConfig {
                 .addInclude("/member/member_level_dict/role_type_by_member_level_id")
                 .addInclude("/member/user_weight/member_level_weight_name_by_weight_id")
                 .addInclude("/third_party/oss/delete_file_batch")
+                .addInclude("/third_party/mail/send_password_reset_mail")
                 .setAuth(obj -> {
                     StpUtil.checkRole("*");
                 })

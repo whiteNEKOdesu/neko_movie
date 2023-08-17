@@ -21,4 +21,10 @@ public class MailController {
         mailService.sendRegisterMail(receiver, code);
         return ResultObject.ok();
     }
+
+    @PostMapping("send_password_reset_mail")
+    public ResultObject<Object> sendPasswordResetMail(@RequestParam String receiver, @RequestParam String code) throws MessagingException {
+        mailService.sendPasswordResetMail(receiver, code);
+        return ResultObject.ok();
+    }
 }

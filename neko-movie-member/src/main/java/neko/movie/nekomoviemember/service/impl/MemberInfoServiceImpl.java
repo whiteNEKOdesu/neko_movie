@@ -25,6 +25,7 @@ import neko.movie.nekomoviemember.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import neko.movie.nekomoviemember.vo.LogInVo;
 import neko.movie.nekomoviemember.vo.MemberInfoVo;
+import neko.movie.nekomoviemember.vo.ResetUserPasswordVo;
 import neko.movie.nekomoviemember.vo.UpdateUserPasswordVo;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -141,6 +142,7 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         //为用户设置普通用户以及普通会员角色
         userRoleRelationService.newRelations(memberInfoByUserName.getUid(),
                 Arrays.asList(BaseRoleId.BASE_NORMAL_TYPE_ROLE_ID, BaseRoleId.BASE_MEMBER_LEVEL_TYPE_ROLE_ID));
+        stringRedisTemplate.delete(key);
     }
 
     @Override
@@ -250,5 +252,64 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
         return memberInfoVo.setMemberLevelRoleTypes(memberLevelRelationMapper.getMemberLevelRoleTypesByUid(uid))
                 .setWeightTypes(weightRoleRelationService.getWeightTypesByUid(uid))
                 .setRoleTypes(weightRoleRelationService.getRoleTypesByUid(uid));
+    }
+
+    /**
+     * 发送密码重置邮箱验证码
+     */
+    @Override
+    public String sendUserPasswordResetCode(String userName) {
+        MemberInfo memberInfo = this.baseMapper.getMemberInfoByUserName(userName);
+        if(memberInfo == null){
+            throw new NoSuchResultException("无此用户");
+        }
+
+        String email = memberInfo.getMail();
+        String key = Constant.MEMBER_REDIS_PREFIX + "password_reset_mail_code:" + email;
+        String code = RandomUtil.randomNumbers(6);
+        stringRedisTemplate.opsForValue().set(key,
+                code,
+                1000 * 60 * 5,
+                TimeUnit.MILLISECONDS);
+        ResultObject<Object> r = mailFeignService.sendPasswordResetMail(email, code);
+
+        if(r.getResponseCode() != 200){
+            throw new MailSendException("邮件发送错误");
+        }
+
+        return email;
+    }
+
+    /**
+     * 重置密码
+     */
+    @Override
+    public void resetUserPassword(ResetUserPasswordVo vo) {
+        MemberInfo memberInfo = this.baseMapper.getMemberInfoByUserName(vo.getUserName());
+        if(memberInfo == null){
+            throw new NoSuchResultException("无此用户");
+        }
+
+        String key = Constant.MEMBER_REDIS_PREFIX + "password_reset_mail_code:" + memberInfo.getMail();
+        String todoCode = stringRedisTemplate.opsForValue().get(key);
+
+        if(!vo.getCode().equals(todoCode)){
+            throw new CodeIllegalException("验证码错误");
+        }
+        String uid = memberInfo.getUid();
+        String userPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getUserPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
+        if(DigestUtils.md5DigestAsHex((userPassword + memberInfo.getSalt()).getBytes()).equals(memberInfo.getUserPassword())){
+            String todoPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getTodoPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
+            MemberInfo todoMemberInfo = new MemberInfo();
+            todoPassword = DigestUtils.md5DigestAsHex((todoPassword + memberInfo.getSalt()).getBytes());
+            todoMemberInfo.setUid(uid)
+                    .setUserPassword(todoPassword)
+                    .setUpdateTime(LocalDateTime.now());
+
+            this.baseMapper.updateById(todoMemberInfo);
+            stringRedisTemplate.delete(key);
+        }else{
+            throw new LoginException("密码错误");
+        }
     }
 }

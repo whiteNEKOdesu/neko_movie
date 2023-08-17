@@ -465,6 +465,92 @@ $baseUrl/member/member_info/user_info
 
 
 
+##### 1.1.11发送密码重置邮件
+
+- post请求，url传参
+
+```bash
+$baseUrl/member/member_info/send_user_password_reset_code
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义 |
+| -------- | -------- |
+| userName | 用户名   |
+
+
+
+- 示例
+
+```bash
+$baseUrl/member/member_info/send_user_password_reset_code?userName=NEKO
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": "2665249580@qq.com",
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 1.1.12 重置密码
+
+- post请求，请求体传参
+
+```bash
+$baseUrl/member/member_info/reset_user_password
+```
+
+
+
+- 参数
+
+| 参数名       | 参数含义                        |
+| ------------ | ------------------------------- |
+| userName     | 用户名                          |
+| userPassword | 原密码，需要RSA加密后Base64编码 |
+| todoPassword | 新密码，需要RSA加密后Base64编码 |
+| code         | 验证码                          |
+
+
+
+- 示例
+
+```json
+{
+    "userName": "NEKO",
+    "userPassword": "QWTfNFa5JBWNDjawnGp2HShWBIWSXagEmQ/bttkmApglyPbdGRDUAwUzGgI/DGIZyhimznKlB0FTQtnOFWm93A0uzEKFKtgiOHxiOAouPR1AU8erCiSFwH0LvqcsdhTVzx3BRa5OvEfq2jsSQNjNxnAhcEL8YV4VjOVbBWnH0Bo=",
+    "todoPassword": "QWTfNFa5JBWNDjawnGp2HShWBIWSXagEmQ/bttkmApglyPbdGRDUAwUzGgI/DGIZyhimznKlB0FTQtnOFWm93A0uzEKFKtgiOHxiOAouPR1AU8erCiSFwH0LvqcsdhTVzx3BRa5OvEfq2jsSQNjNxnAhcEL8YV4VjOVbBWnH0Bo=",
+    "code": "973579"
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 1.2 AdminInfoController
 
 ##### 1.2.1 管理员登录
@@ -4088,6 +4174,47 @@ $baseUrl/third_party/mail/send_register_mail
 
 ```bash
 $baseUrl/third_party/mail/send_register_mail?receiver=$receiver&code=$code
+```
+
+
+
+- 响应格式
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
+##### 3.1.2 发送密码重置邮件
+
+- post请求
+- 建议只提供给微服务远程调用
+
+```bash
+$baseUrl/third_party/mail/send_password_reset_mail?receiver=2665249580@qq.com&code=koori
+```
+
+
+
+- 参数
+
+| 参数名   | 参数含义   |
+| -------- | ---------- |
+| receiver | 接收者邮件 |
+| code     | 验证码     |
+
+
+
+- 示例
+
+```bash
+$baseUrl/third_party/mail/send_password_reset_mail?$receiver&code=$code
 ```
 
 
