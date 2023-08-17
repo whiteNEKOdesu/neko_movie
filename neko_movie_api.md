@@ -3119,12 +3119,12 @@ $baseUrl/video/elastic_search/product_infos
 
 
 
-##### 2.3.2 获取按照影视信息分类聚合饼图信息
+##### 2.3.2 获取按照影视信息分类聚合信息
 
 - get请求
 
 ```bash
-$baseUrl/video/elastic_search/category_agg_pie
+$baseUrl/video/elastic_search/category_agg
 ```
 
 
@@ -3133,40 +3133,76 @@ $baseUrl/video/elastic_search/category_agg_pie
 
 ```json
 {
-    "result": [
-        {
-            "value": 15,
-            "name": "恋爱"
-        },
-        {
-            "value": 15,
-            "name": "战斗"
-        },
-        {
-            "value": 14,
-            "name": "科幻"
-        },
-        {
-            "value": 7,
-            "name": "喜剧"
-        },
-        {
-            "value": 7,
-            "name": "推理"
-        },
-        {
-            "value": 7,
-            "name": "校园"
-        },
-        {
-            "value": 6,
-            "name": "动物"
-        },
-        {
-            "value": 6,
-            "name": "地理"
-        }
-    ],
+    "result": {
+        "pieVos": [
+            {
+                "value": 15,
+                "name": "恋爱"
+            },
+            {
+                "value": 15,
+                "name": "战斗"
+            },
+            {
+                "value": 14,
+                "name": "科幻"
+            },
+            {
+                "value": 7,
+                "name": "喜剧"
+            },
+            {
+                "value": 7,
+                "name": "推理"
+            },
+            {
+                "value": 7,
+                "name": "校园"
+            },
+            {
+                "value": 6,
+                "name": "动物"
+            },
+            {
+                "value": 6,
+                "name": "地理"
+            }
+        ],
+        "barVos": [
+            {
+                "value": 489542,
+                "name": "恋爱"
+            },
+            {
+                "value": 542100,
+                "name": "战斗"
+            },
+            {
+                "value": 557001,
+                "name": "科幻"
+            },
+            {
+                "value": 438606,
+                "name": "喜剧"
+            },
+            {
+                "value": 446303,
+                "name": "推理"
+            },
+            {
+                "value": 622358,
+                "name": "校园"
+            },
+            {
+                "value": 587164,
+                "name": "动物"
+            },
+            {
+                "value": 593733,
+                "name": "地理"
+            }
+        ]
+    },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
     "responseMessage": "ok"

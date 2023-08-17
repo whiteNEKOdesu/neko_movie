@@ -116,6 +116,9 @@ public class ESClientTest {
                         .query(query)
                         .aggregations("categoryTermsAgg", a -> a.terms(h -> h
                                 .field("categoryName"))
+                                .aggregations("categoryAvgAgg", categoryAvgAgg -> categoryAvgAgg.avg(h -> h
+                                        .field("playNumber"))
+                                )
                         ),
                 Void.class
         );
@@ -128,7 +131,7 @@ public class ESClientTest {
 
         for (StringTermsBucket bucket: ageTermsAgg) {
             System.out.println("分类: " + bucket.key().stringValue() + " 有" + bucket.docCount() +
-                    " 个影视视频");
+                    " 个影视视频，平均播放量为: " + bucket.aggregations().get("categoryAvgAgg").avg().value());
         }
     }
 

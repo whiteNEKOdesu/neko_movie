@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomovievideo.elasticsearch.entity.VideoInfoES;
 import neko.movie.nekomovievideo.elasticsearch.service.VideoInfoESService;
-import neko.movie.nekomovievideo.vo.VideoCategoryAggPieVo;
+import neko.movie.nekomovievideo.vo.VideoCategoryAggVo;
 import neko.movie.nekomovievideo.vo.VideoInfoESQueryVo;
 import neko.movie.nekomovievideo.vo.VideoInfoESVo;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -52,7 +51,7 @@ public class VideoInfoESServiceImpl implements VideoInfoESService {
      * 获取按照影视信息分类聚合饼图信息
      */
     @Override
-    public List<VideoCategoryAggPieVo> videoCategoryAggPie() throws IOException {
+    public VideoCategoryAggVo videoCategoryAgg() throws IOException {
         Query query = MatchAllQuery.of(m -> m)._toQuery();
 
         SearchResponse<Void> response = elasticsearchClient.search(b -> b
@@ -61,6 +60,9 @@ public class VideoInfoESServiceImpl implements VideoInfoESService {
                         .query(query)
                         .aggregations("categoryTermsAgg", a -> a.terms(h -> h
                                 .field("categoryName"))
+                                .aggregations("categoryAvgAgg", categoryAvgAgg -> categoryAvgAgg.avg(h -> h
+                                        .field("playNumber"))
+                                )
                         ),
                 Void.class
         );
@@ -71,11 +73,26 @@ public class VideoInfoESServiceImpl implements VideoInfoESService {
                 .buckets()
                 .array();
 
-        return ageTermsAgg.stream().map(bucket -> {
-            VideoCategoryAggPieVo vo = new VideoCategoryAggPieVo();
-            return vo.setValue(bucket.docCount())
+        VideoCategoryAggVo videoCategoryAggVo = new VideoCategoryAggVo();
+        videoCategoryAggVo.setPieVos(new ArrayList<>())
+                .setBarVos(new ArrayList<>());
+
+        ageTermsAgg.forEach(bucket -> {
+            VideoCategoryAggVo.PieVo pieVo = new VideoCategoryAggVo.PieVo();
+            //为饼图vo设置值
+            pieVo.setValue(bucket.docCount())
                     .setName(bucket.key().stringValue());
-        }).collect(Collectors.toList());
+
+            VideoCategoryAggVo.BarVo barVo = new VideoCategoryAggVo.BarVo();
+            //为柱状图vo设置值
+            barVo.setValue((long) bucket.aggregations().get("categoryAvgAgg").avg().value())
+                    .setName(bucket.key().stringValue());
+
+            videoCategoryAggVo.getPieVos().add(pieVo);
+            videoCategoryAggVo.getBarVos().add(barVo);
+        });
+
+        return videoCategoryAggVo;
     }
 
     /**
