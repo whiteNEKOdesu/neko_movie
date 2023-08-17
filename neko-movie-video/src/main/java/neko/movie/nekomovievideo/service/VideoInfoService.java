@@ -53,4 +53,6 @@ public interface VideoInfoService extends IService<VideoInfo> {
     List<VideoInfoES> getRecentUpVideoInfo();
 
     void upAllVideo();
+
+    void undoDeleteVideoInfo(String videoInfoId);
 }

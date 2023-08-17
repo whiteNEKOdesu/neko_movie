@@ -349,7 +349,8 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         //修改影视信息状态为删除状态
         if(this.baseMapper.update(videoInfo, new UpdateWrapper<VideoInfo>().lambda()
                 .eq(VideoInfo::getVideoInfoId, videoInfoId)
-                .eq(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)) != 1){
+                .eq(VideoInfo::getStatus, VideoStatus.LOGIC_DELETE)
+                .le(VideoInfo::getDeleteExpireTime, LocalDateTime.now())) != 1){
             return;
         }
 
@@ -431,5 +432,13 @@ public class VideoInfoServiceImpl extends ServiceImpl<VideoInfoMapper, VideoInfo
         for(VideoInfo videoInfo : videoInfos){
             upVideo(videoInfo.getVideoInfoId());
         }
+    }
+
+    /**
+     * 将指定影视信息从回收站中撤销删除
+     */
+    @Override
+    public void undoDeleteVideoInfo(String videoInfoId) {
+        this.baseMapper.undoDeleteVideoInfo(videoInfoId, LocalDateTime.now());
     }
 }

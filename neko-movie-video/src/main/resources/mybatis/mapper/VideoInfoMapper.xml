@@ -34,4 +34,11 @@
         set play_number = play_number + #{increaseNumber}, update_time = #{updateTime}
         where video_info_id = #{videoInfoId}
     </update>
+
+    <update id="undoDeleteVideoInfo">
+        update video_info
+        set delete_expire_time = null, status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@DOWN},
+            update_time = #{updateTime}
+        where video_info_id = #{videoInfoId} and status = ${@neko.movie.nekomoviecommonbase.utils.entity.VideoStatus@LOGIC_DELETE}
+    </update>
 </mapper>

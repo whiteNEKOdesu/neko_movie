@@ -3022,6 +3022,47 @@ $baseUrl/video/video_info/up_all_video
 
 
 
+##### 2.2.13 管理员将指定影视信息从回收站中撤销删除
+
+- post请求，url传参
+- 需要登录状态
+- 需要admin角色
+
+```bash
+$baseUrl/video/video_info/undo_delete
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义   |
+| ----------- | ---------- |
+| videoInfoId | 影视信息id |
+
+
+
+- 示例
+
+```bash
+$baseUrl/video/video_info/undo_delete?videoInfoId=1690924812932743169
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": null,
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.3 ElasticSearchController
 
 ##### 2.3.1 分页查询查询影视信息

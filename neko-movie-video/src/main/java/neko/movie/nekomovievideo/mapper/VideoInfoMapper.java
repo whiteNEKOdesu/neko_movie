@@ -25,4 +25,6 @@ public interface VideoInfoMapper extends BaseMapper<VideoInfo> {
     void increasePlayNumber(String videoInfoId,
                             Long increaseNumber,
                             LocalDateTime updateTime);
+
+    void undoDeleteVideoInfo(String videoInfoId, LocalDateTime updateTime);
 }

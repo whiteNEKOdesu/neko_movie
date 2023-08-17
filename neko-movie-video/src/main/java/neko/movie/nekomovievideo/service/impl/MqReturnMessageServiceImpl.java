@@ -6,6 +6,7 @@ import neko.movie.nekomovievideo.mapper.MqReturnMessageMapper;
 import neko.movie.nekomovievideo.service.MqReturnMessageService;
 import neko.movie.nekomovievideo.to.RabbitMQMessageTo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,7 @@ public class MqReturnMessageServiceImpl extends ServiceImpl<MqReturnMessageMappe
      * 根据mqReturnId list删除订单rabbitmq消息发送失败记录
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteMqReturnMessageByMqReturnIds(List<String> mqReturnIds) {
         this.baseMapper.deleteMqReturnMessageByMqReturnIds(mqReturnIds, LocalDateTime.now());
     }

@@ -172,4 +172,16 @@ public class VideoInfoController {
 
         return ResultObject.ok();
     }
+
+    /**
+     * 管理员将指定影视信息从回收站中撤销删除
+     */
+    @SaCheckRole(RoleType.ADMIN)
+    @SaCheckLogin
+    @PostMapping("undo_delete")
+    public ResultObject<Object> undoDelete(@RequestParam String videoInfoId){
+        videoInfoService.undoDeleteVideoInfo(videoInfoId);
+
+        return ResultObject.ok();
+    }
 }

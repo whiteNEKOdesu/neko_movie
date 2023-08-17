@@ -27,4 +27,9 @@ public class VideoInfoMapperTest {
                 5L,
                 LocalDateTime.now());
     }
+
+    @Test
+    public void undoDeleteVideoInfo(){
+        videoInfoMapper.undoDeleteVideoInfo("1690924812932743169", LocalDateTime.now());
+    }
 }
