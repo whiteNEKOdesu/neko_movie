@@ -3,6 +3,8 @@ package neko.movie.nekomoviemember.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
 import neko.movie.nekomoviemember.entity.UserRoleRelation;
+import neko.movie.nekomoviemember.vo.MemberInfoVo;
+import neko.movie.nekomoviemember.vo.MemberLevelInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
@@ -28,5 +30,5 @@ public interface MemberLevelRelationMapper extends BaseMapper<MemberLevelRelatio
     /**
      * 根据uid获取用户会员类型角色名
      */
-    List<String> getMemberLevelRoleTypesByUid(String uid);
+    List<MemberLevelInfoVo> getMemberLevelRoleTypesByUid(String uid);
 }

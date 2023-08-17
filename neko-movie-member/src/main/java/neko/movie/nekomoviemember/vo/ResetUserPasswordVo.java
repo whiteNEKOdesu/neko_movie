@@ -18,12 +18,6 @@ public class ResetUserPasswordVo implements Serializable {
     private String userName;
 
     /**
-     * 原密码
-     */
-    @NotBlank
-    private String userPassword;
-
-    /**
      * 新密码
      */
     @NotBlank

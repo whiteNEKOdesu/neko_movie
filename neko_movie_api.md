@@ -49,21 +49,27 @@ $baseUrl/member/member_info/log_in
         "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg",
         "weightTypes": [
             "base",
-            "market_read",
-            "market_write",
             "courier_read",
             "courier_write",
+            "market_read",
+            "market_write",
             "基本视频观看"
         ],
         "roleTypes": [
-            "user",
-            "market",
             "courier",
+            "market",
+            "user",
             "普通会员"
         ],
         "memberLevelRoleTypes": [
-            "1级会员",
-            "2级会员"
+            {
+                "roleType": "1级会员",
+                "levelExpireTime": "2023-10-15T09:55:23"
+            },
+            {
+                "roleType": "2级会员",
+                "levelExpireTime": "2023-09-17T15:47:19"
+            }
         ],
         "token": "cec15363-7d2b-43e4-9239-2677b15730a2",
         "gender": null,
@@ -76,7 +82,7 @@ $baseUrl/member/member_info/log_in
         "isBan": false,
         "isDelete": false,
         "createTime": "2023-04-01T15:33:20",
-        "updateTime": "2023-07-29T17:40:33"
+        "updateTime": "2023-08-17T15:30:05"
     },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
@@ -428,21 +434,27 @@ $baseUrl/member/member_info/user_info
         "userImagePath": "https://neko-bucket.oss-cn-shanghai.aliyuncs.com/neko/neko_movie/2023-07-25/1430d607-b0a4-4f83-aa5c-bedb89a0d888_301882efc3b3dcabaad03a7b607ab228.jpg",
         "weightTypes": [
             "base",
-            "market_read",
-            "market_write",
             "courier_read",
             "courier_write",
+            "market_read",
+            "market_write",
             "基本视频观看"
         ],
         "roleTypes": [
-            "user",
-            "market",
             "courier",
+            "market",
+            "user",
             "普通会员"
         ],
         "memberLevelRoleTypes": [
-            "1级会员",
-            "2级会员"
+            {
+                "roleType": "1级会员",
+                "levelExpireTime": "2023-10-15T09:55:23"
+            },
+            {
+                "roleType": "2级会员",
+                "levelExpireTime": "2023-09-17T15:47:19"
+            }
         ],
         "token": null,
         "gender": null,
@@ -455,7 +467,7 @@ $baseUrl/member/member_info/user_info
         "isBan": false,
         "isDelete": false,
         "createTime": "2023-04-01T15:33:20",
-        "updateTime": "2023-07-29T17:40:33"
+        "updateTime": "2023-08-17T15:30:05"
     },
     "responseStatus": "SUCCESS",
     "responseCode": 200,
@@ -519,7 +531,6 @@ $baseUrl/member/member_info/reset_user_password
 | 参数名       | 参数含义                        |
 | ------------ | ------------------------------- |
 | userName     | 用户名                          |
-| userPassword | 原密码，需要RSA加密后Base64编码 |
 | todoPassword | 新密码，需要RSA加密后Base64编码 |
 | code         | 验证码                          |
 
@@ -530,9 +541,8 @@ $baseUrl/member/member_info/reset_user_password
 ```json
 {
     "userName": "NEKO",
-    "userPassword": "QWTfNFa5JBWNDjawnGp2HShWBIWSXagEmQ/bttkmApglyPbdGRDUAwUzGgI/DGIZyhimznKlB0FTQtnOFWm93A0uzEKFKtgiOHxiOAouPR1AU8erCiSFwH0LvqcsdhTVzx3BRa5OvEfq2jsSQNjNxnAhcEL8YV4VjOVbBWnH0Bo=",
     "todoPassword": "QWTfNFa5JBWNDjawnGp2HShWBIWSXagEmQ/bttkmApglyPbdGRDUAwUzGgI/DGIZyhimznKlB0FTQtnOFWm93A0uzEKFKtgiOHxiOAouPR1AU8erCiSFwH0LvqcsdhTVzx3BRa5OvEfq2jsSQNjNxnAhcEL8YV4VjOVbBWnH0Bo=",
-    "code": "973579"
+    "code": "163912"
 }
 ```
 

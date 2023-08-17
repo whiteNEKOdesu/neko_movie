@@ -30,7 +30,7 @@ public class MemberInfoVo implements Serializable {
 
     private List<String> roleTypes;
 
-    private List<String> memberLevelRoleTypes;
+    private List<MemberLevelInfoVo> memberLevelRoleTypes;
 
     private String token;
 

@@ -297,19 +297,14 @@ public class MemberInfoServiceImpl extends ServiceImpl<MemberInfoMapper, MemberI
             throw new CodeIllegalException("验证码错误");
         }
         String uid = memberInfo.getUid();
-        String userPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getUserPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
-        if(DigestUtils.md5DigestAsHex((userPassword + memberInfo.getSalt()).getBytes()).equals(memberInfo.getUserPassword())){
-            String todoPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getTodoPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
-            MemberInfo todoMemberInfo = new MemberInfo();
-            todoPassword = DigestUtils.md5DigestAsHex((todoPassword + memberInfo.getSalt()).getBytes());
-            todoMemberInfo.setUid(uid)
-                    .setUserPassword(todoPassword)
-                    .setUpdateTime(LocalDateTime.now());
+        String todoPassword = StrUtil.str(rsa.decrypt(Base64.decode(vo.getTodoPassword()), KeyType.PrivateKey), CharsetUtil.CHARSET_UTF_8);
+        MemberInfo todoMemberInfo = new MemberInfo();
+        todoPassword = DigestUtils.md5DigestAsHex((todoPassword + memberInfo.getSalt()).getBytes());
+        todoMemberInfo.setUid(uid)
+                .setUserPassword(todoPassword)
+                .setUpdateTime(LocalDateTime.now());
 
-            this.baseMapper.updateById(todoMemberInfo);
-            stringRedisTemplate.delete(key);
-        }else{
-            throw new LoginException("密码错误");
-        }
+        this.baseMapper.updateById(todoMemberInfo);
+        stringRedisTemplate.delete(key);
     }
 }
