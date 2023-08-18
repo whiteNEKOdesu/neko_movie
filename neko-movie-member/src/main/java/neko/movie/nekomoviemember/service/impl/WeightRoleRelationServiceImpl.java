@@ -80,7 +80,7 @@ public class WeightRoleRelationServiceImpl extends ServiceImpl<WeightRoleRelatio
     }
 
     /**
-     * 获指定uid角色
+     * 获取指定uid角色
      */
     @Override
     public List<String> getRoleTypesByUid(String uid) {

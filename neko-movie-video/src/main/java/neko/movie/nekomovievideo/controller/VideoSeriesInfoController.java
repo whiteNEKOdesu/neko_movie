@@ -61,6 +61,7 @@ public class VideoSeriesInfoController {
     /**
      * 根据影视集数id获取影视单集信息
      */
+    @SaCheckLogin
     @PostMapping("video_series_info_by_id")
     public ResultObject<VideoSeriesInfoVo> videoSeriesInfoById(@RequestParam String videoSeriesId){
         return ResultObject.ok(videoSeriesInfoService.getVideoSeriesInfoByVideoSeriesInfoId(videoSeriesId));

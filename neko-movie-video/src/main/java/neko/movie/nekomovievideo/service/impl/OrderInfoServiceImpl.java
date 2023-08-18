@@ -149,11 +149,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }
 
         DiscountInfo finalDiscountInfo = discountInfo;
-        CompletableFuture<BigDecimal> totalPriceTask = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<OrderInfo> totalPriceTask = CompletableFuture.supplyAsync(() -> {
+            OrderInfo orderInfo = new OrderInfo();
             //计算总价
             BigDecimal cost = memberLevelDictTo.getPrice()
                     .multiply(new BigDecimal(vo.getPayLevelMonths().toString()))
                     .setScale(2, BigDecimal.ROUND_DOWN);
+            orderInfo.setCost(cost);
 
             if (finalDiscountInfo != null) {
                 //锁定库存
@@ -167,20 +169,17 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                         .setScale(2, BigDecimal.ROUND_DOWN);
             }
 
-            return cost;
+            return orderInfo.setActualCost(cost);
         }, threadPool);
 
-        CompletableFuture<Void> orderLogTask = totalPriceTask.thenAcceptAsync((cost) -> {
-            if(cost == null){
+        CompletableFuture<Void> orderLogTask = totalPriceTask.thenAcceptAsync((orderInfo) -> {
+            if(orderInfo == null){
                 return;
             }
 
-            OrderInfo orderInfo = new OrderInfo();
             BeanUtil.copyProperties(vo, orderInfo);
             orderInfo.setOrderId(orderId)
                     .setUid(uid)
-                    .setCost(cost)
-                    .setActualCost(cost)
                     .setRoleType(memberLevelDictTo.getRoleType())
                     .setCreateTime(now)
                     .setUpdateTime(now);
@@ -190,7 +189,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }, threadPool);
 
 
-        CompletableFuture<Void> alipayTask = totalPriceTask.thenAcceptAsync((cost) -> {
+        CompletableFuture<Void> alipayTask = totalPriceTask.thenAcceptAsync((orderInfo) -> {
+            BigDecimal cost = orderInfo.getActualCost();
             if(cost == null){
                 return;
             }

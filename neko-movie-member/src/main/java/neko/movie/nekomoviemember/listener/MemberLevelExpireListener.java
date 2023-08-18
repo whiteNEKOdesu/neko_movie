@@ -42,7 +42,7 @@ public class MemberLevelExpireListener {
             //单个确认消费消息
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception e){
-            log.error("删除会员等级信息发生异常，relationId: " + memberLevelExpireTo.getRelationId());
+            log.error("删除会员等级信息发生异常，relationId: " + memberLevelExpireTo.getRelationId() + "，exception: " + e);
             //拒收消息，并让消息重新入队
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
             throw new RabbitMQMessageRejectException("删除会员等级信息发生异常");

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import neko.movie.nekomoviecommonbase.utils.entity.Constant;
 import neko.movie.nekomoviecommonbase.utils.exception.MemberLevelUpdateException;
 import neko.movie.nekomoviemember.entity.MemberLevelDict;
 import neko.movie.nekomoviemember.entity.MemberLevelRelation;
@@ -13,6 +14,7 @@ import neko.movie.nekomoviemember.service.MemberLevelDictService;
 import neko.movie.nekomoviemember.service.MemberLevelRelationService;
 import neko.movie.nekomoviemember.service.UserRoleRelationService;
 import neko.movie.nekomoviemember.to.MemberLevelExpireTo;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,9 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
 
     @Resource
     private UserRoleRelationService userRoleRelationService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 添加用户，会员等级关系
@@ -67,6 +72,8 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
 
             //添加用户，会员角色关系
             userRoleRelationService.newRelation(uid, memberLevelDict.getRoleId());
+            //删除用户权限缓存
+            deleteUserWeightCache(uid);
 
             return memberLevelRelation.setUpdateVersion(0);
         }else{
@@ -78,6 +85,8 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
                         memberLevelRelation.getLevelExpireTime().plusMonths(payLevelMonths),
                         memberLevelRelation.getUpdateVersion(),
                         now) == 1){
+                    //删除用户权限缓存
+                    deleteUserWeightCache(uid);
                     return memberLevelRelation.setUpdateVersion(memberLevelRelation.getUpdateVersion() + 1);
                 }
 
@@ -106,8 +115,13 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
                 .eq(MemberLevelRelation::getRelationId, to.getRelationId())
                 .eq(MemberLevelRelation::getUpdateVersion, to.getUpdateVersion())) == 1){
             UserRoleRelation userRoleRelation = this.baseMapper.getUserRoleRelationByRelationId(to.getRelationId());
+            if(userRoleRelation == null){
+                return;
+            }
             //根据relationId删除用户，角色关系
             userRoleRelationService.deleteUserRoleRelationByRelationId(userRoleRelation.getRelationId(), userRoleRelation.getUpdateVersion());
+            //删除用户权限缓存
+            deleteUserWeightCache(userRoleRelation.getUid());
 
             log.info("uid: " + userRoleRelation.getUid() + "，会员等级角色id: " + userRoleRelation.getRoleId() + "，过期");
         }else{
@@ -121,5 +135,13 @@ public class MemberLevelRelationServiceImpl extends ServiceImpl<MemberLevelRelat
     @Override
     public UserRoleRelation getUserRoleRelationByRelationId(String relationId) {
         return this.baseMapper.getUserRoleRelationByRelationId(relationId);
+    }
+
+    /**
+     * 删除用户权限缓存
+     */
+    private void deleteUserWeightCache(String uid){
+        String key = Constant.MEMBER_REDIS_PREFIX + "weight_cache:" + uid;
+        stringRedisTemplate.delete(key);
     }
 }
