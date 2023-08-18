@@ -1,7 +1,9 @@
 package neko.movie.nekomovievideo.service;
 
 import com.alipay.api.AlipayApiException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.vo.AliPayAsyncVo;
 import neko.movie.nekomovievideo.vo.NewOrderInfoVo;
@@ -29,4 +31,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     void updateOrderInfoStatusToCancel(String orderId);
 
     OrderInfo getUncanceledOrderInfoByOrderId(String orderId);
+
+    Page<OrderInfo> getUserSelfOrderInfoByQueryLimitedPage(QueryVo vo);
 }

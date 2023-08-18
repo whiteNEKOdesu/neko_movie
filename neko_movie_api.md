@@ -3698,6 +3698,176 @@ $baseUrl/video/order_info/order_info_by_order_id?orderId=20230731100542707168583
 
 
 
+##### 2.5.4 分页查询用户自身订单信息
+
+- post请求，请求体传参
+- 需要登录状态
+
+```bash
+$baseUrl/video/order_info/user_self_order_infos
+```
+
+
+
+- 参数
+
+| 参数名      | 参数含义         |
+| ----------- | ---------------- |
+| queryWords  | 查询关键字，可选 |
+| currentPage | 当前页数         |
+| limited     | 每页数量         |
+
+
+
+- 示例
+
+```json
+{
+    "queryWords": "1级会员",
+    "currentPage": 1,
+    "limited": 8
+}
+```
+
+
+
+- 响应结果
+
+```json
+{
+    "result": {
+        "records": [
+            {
+                "orderId": "202308171547407721692080741460017154",
+                "alipayTradeId": "2023081722001436790500635099",
+                "uid": "1642067605873348610",
+                "discountId": "1690988155940900866",
+                "cost": 9.00,
+                "actualCost": 9.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-17T15:47:42",
+                "updateTime": "2023-08-17T15:48:00"
+            },
+            {
+                "orderId": "202308150954333291691267099197984770",
+                "alipayTradeId": "2023081522001436790500599063",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-15T09:54:35",
+                "updateTime": "2023-08-15T09:55:23"
+            },
+            {
+                "orderId": "202308111612546971689912764178452482",
+                "alipayTradeId": "2023081122001436790500583347",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-11T16:12:56",
+                "updateTime": "2023-08-11T16:13:37"
+            },
+            {
+                "orderId": "202308081023175011688737615815122945",
+                "alipayTradeId": "2023080822001436790500557679",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-08T10:23:31",
+                "updateTime": "2023-08-08T10:24:14"
+            },
+            {
+                "orderId": "202308081017412261688736205341990913",
+                "alipayTradeId": "2023080822001436790500562116",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-08T10:17:47",
+                "updateTime": "2023-08-08T10:18:16"
+            },
+            {
+                "orderId": "202308081009369621688734174246084610",
+                "alipayTradeId": "2023080822001436790500556306",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-08T10:09:43",
+                "updateTime": "2023-08-08T10:10:16"
+            },
+            {
+                "orderId": "202308081003571491688732748971253762",
+                "alipayTradeId": "2023080822001436790500562115",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-08T10:04:05",
+                "updateTime": "2023-08-08T10:04:36"
+            },
+            {
+                "orderId": "202308081001248001688732109935484930",
+                "alipayTradeId": "2023080822001436790500560684",
+                "uid": "1642067605873348610",
+                "discountId": null,
+                "cost": 10.00,
+                "actualCost": 10.00,
+                "status": 1,
+                "memberLevelId": 4,
+                "roleType": "1级会员",
+                "payLevelMonths": 1,
+                "createTime": "2023-08-08T10:01:31",
+                "updateTime": "2023-08-08T10:02:13"
+            }
+        ],
+        "total": 27,
+        "size": 8,
+        "current": 1,
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": 4
+    },
+    "responseStatus": "SUCCESS",
+    "responseCode": 200,
+    "responseMessage": "ok"
+}
+```
+
+
+
 #### 2.6 DiscountInfoController
 
 ##### 2.6.1 管理员添加折扣信息

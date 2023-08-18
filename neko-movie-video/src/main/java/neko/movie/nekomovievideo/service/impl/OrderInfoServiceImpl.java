@@ -7,6 +7,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import neko.movie.nekomoviecommonbase.utils.entity.*;
@@ -336,5 +337,25 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return this.baseMapper.selectOne(new QueryWrapper<OrderInfo>().lambda()
                 .eq(OrderInfo::getOrderId, orderId)
                 .ne(OrderInfo::getStatus, OrderStatus.CANCELED));
+    }
+
+    /**
+     * 分页查询用户自身订单信息
+     */
+    @Override
+    public Page<OrderInfo> getUserSelfOrderInfoByQueryLimitedPage(QueryVo vo) {
+        Page<OrderInfo> page = new Page<>(vo.getCurrentPage(), vo.getLimited());
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(OrderInfo::getUid, StpUtil.getLoginId().toString())
+                //匹配已支付订单
+                .eq(OrderInfo::getStatus, OrderStatus.PAID)
+                .orderByDesc(OrderInfo::getOrderId);
+        if(StringUtils.hasText(vo.getQueryWords())){
+            queryWrapper.lambda().eq(OrderInfo::getRoleType, vo.getQueryWords());
+        }
+
+        this.baseMapper.selectPage(page, queryWrapper);
+
+        return page;
     }
 }

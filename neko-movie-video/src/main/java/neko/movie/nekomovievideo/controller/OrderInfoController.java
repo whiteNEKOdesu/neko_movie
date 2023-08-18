@@ -2,6 +2,8 @@ package neko.movie.nekomovievideo.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.alipay.api.AlipayApiException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import neko.movie.nekomoviecommonbase.utils.entity.QueryVo;
 import neko.movie.nekomoviecommonbase.utils.entity.ResultObject;
 import neko.movie.nekomovievideo.entity.OrderInfo;
 import neko.movie.nekomovievideo.service.OrderInfoService;
@@ -70,5 +72,13 @@ public class OrderInfoController {
     @GetMapping("order_info_by_order_id")
     public ResultObject<OrderInfo> orderInfoByOrderId(@RequestParam String orderId){
         return ResultObject.ok(orderInfoService.getUncanceledOrderInfoByOrderId(orderId));
+    }
+
+    /**
+     * 分页查询用户自身订单信息
+     */
+    @PostMapping("user_self_order_infos")
+    public ResultObject<Page<OrderInfo>> userSelfOrderInfos(@Validated @RequestBody QueryVo vo){
+        return ResultObject.ok(orderInfoService.getUserSelfOrderInfoByQueryLimitedPage(vo));
     }
 }
