@@ -48,7 +48,7 @@ public class VideoInfoESServiceImpl implements VideoInfoESService {
     }
 
     /**
-     * 获取按照影视信息分类聚合饼图信息
+     * 获取按照影视信息分类聚合信息
      */
     @Override
     public VideoCategoryAggVo videoCategoryAgg() throws IOException {

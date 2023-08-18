@@ -6,6 +6,7 @@ import neko.movie.nekomovievideo.vo.DiscountInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -30,4 +31,6 @@ public interface DiscountInfoMapper extends BaseMapper<DiscountInfo> {
     void unlockStock(String discountId,
                     String orderId,
                     LocalDateTime updateTime);
+
+    int expireDiscountInfo(List<String> discountIds, LocalDateTime updateTime);
 }

@@ -27,4 +27,13 @@
             where order_id = #{orderId} and status = ${@neko.movie.nekomoviecommonbase.utils.entity.StockStatus@LOCKING}), update_time = #{updateTime}
         where discount_id = #{discountId}
     </update>
+
+    <update id="expireDiscountInfo">
+        update discount_info
+        set is_end = 1, update_time = #{updateTime}
+        where discount_id in
+        <foreach collection="discountIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

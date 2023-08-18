@@ -29,4 +29,6 @@ public interface DiscountInfoService extends IService<DiscountInfo> {
     List<DiscountInfo> getDiscountInfos();
 
     void deleteDiscountInfo(String discountId);
+
+    void expireDiscountInfo();
 }

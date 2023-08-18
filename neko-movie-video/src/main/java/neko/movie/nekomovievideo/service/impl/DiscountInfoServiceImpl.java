@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -161,6 +162,32 @@ public class DiscountInfoServiceImpl extends ServiceImpl<DiscountInfoMapper, Dis
                 .setUpdateTime(LocalDateTime.now());
 
         this.baseMapper.updateById(todoUpdate);
+    }
+
+    /**
+     * 使结束折扣活动过期
+     */
+    @Override
+    public void expireDiscountInfo() {
+        //获取结束折扣活动
+        List<DiscountInfo> discountInfos = this.baseMapper.selectList(new QueryWrapper<DiscountInfo>().lambda()
+                .le(DiscountInfo::getEndTime, LocalDateTime.now())
+                .eq(DiscountInfo::getIsEnd, false)
+                .eq(DiscountInfo::getIsDelete, false));
+
+        List<String> discountIds = discountInfos.stream()
+                .map(DiscountInfo::getDiscountId)
+                .collect(Collectors.toList());
+
+        if(discountIds.isEmpty()){
+            log.info("无过期折扣活动");
+            return;
+        }
+
+        //修改结束折扣活动状态
+        int expired = this.baseMapper.expireDiscountInfo(discountIds, LocalDateTime.now());
+
+        log.info("折扣活动过期 " + expired + "个");
     }
 
     private void unlockStockTask(String orderId){

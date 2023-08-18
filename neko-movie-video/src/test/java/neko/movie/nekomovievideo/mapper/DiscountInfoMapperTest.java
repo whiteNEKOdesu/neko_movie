@@ -5,6 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @SpringBootTest
 public class DiscountInfoMapperTest {
@@ -34,6 +35,12 @@ public class DiscountInfoMapperTest {
     public void unlockStock(){
         discountInfoMapper.unlockStock("1684813417543634945",
                 "202307291554322811685197098011615234",
+                LocalDateTime.now());
+    }
+
+    @Test
+    public void expireDiscountInfo(){
+        discountInfoMapper.expireDiscountInfo(Arrays.asList("1684813417543634945", "1690988155940900866"),
                 LocalDateTime.now());
     }
 }
